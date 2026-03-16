@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MultiMian ImageKit – Extract Text • Convert • Compress • Resize</title>
-    <meta name="description" content="Free browser-based image toolkit. OCR, PDF converter, compressor, resizer and format converter. No upload, no install.">
+    <title>MultiMian ImageKit – Extract Text • Convert • Compress • Resize • Optimize</title>
+    <meta name="description" content="Free browser-based image toolkit. OCR, PDF converter, compressor, resizer, format converter and watermark. No upload, no install.">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -22,6 +22,7 @@
             <button class="tab-btn" data-tab="compress">🗜 Compress</button>
             <button class="tab-btn" data-tab="resize">✂️ Resize</button>
             <button class="tab-btn" data-tab="convert">🔄 Convert</button>
+            <button class="tab-btn" data-tab="watermark">💧 Watermark</button>
         </nav>
     </header>
 
@@ -39,8 +40,23 @@
                 <img id="ocrImg" alt="Preview">
                 <div class="file-info" id="ocrFileInfo"></div>
             </div>
-            <button id="ocrBtn" class="primary-btn" disabled>Extract Text</button>
-            <div class="progress-bar" id="ocrProgress" style="display:none;">
+            <div class="options-row" style="margin-top:14px;">
+                <label>Language:
+                    <select id="ocrLang">
+                        <option value="eng">English</option>
+                        <option value="ara">Arabic</option>
+                        <option value="fra">French</option>
+                        <option value="deu">German</option>
+                        <option value="spa">Spanish</option>
+                        <option value="chi_sim">Chinese (Simplified)</option>
+                        <option value="hin">Hindi</option>
+                        <option value="urd">Urdu</option>
+                        <option value="por">Portuguese</option>
+                        <option value="rus">Russian</option>
+                    </select>
+                </label>
+            </div>
+            <button id="ocrBtn" class="primary-btn" disabled>Extract Text</button>            <div class="progress-bar" id="ocrProgress" style="display:none;">
                 <div class="progress-fill" id="ocrProgressFill"></div>
                 <span id="ocrProgressLabel">0%</span>
             </div>
@@ -82,6 +98,10 @@
                 </label>
             </div>
             <button id="pdfBtn" class="primary-btn" disabled>Convert &amp; Download PDF</button>
+            <div id="pdfPreviewBox" style="display:none;">
+                <p class="preview-label">📋 PDF Preview</p>
+                <div id="pdfPreviewList" class="pdf-preview-list"></div>
+            </div>
             <div class="progress-bar" id="pdfProgress" style="display:none;">
                 <div class="progress-fill" id="pdfProgressFill"></div>
                 <span id="pdfProgressLabel">0%</span>
@@ -182,10 +202,68 @@
             <p class="success-msg" id="convertSuccess" style="display:none;">✔ Image converted successfully</p>
         </section>
 
+        <!-- ── Watermark Tab ── -->
+        <section id="tab-watermark" class="tab-section">
+            <h2>Add Watermark to Image</h2>
+            <div class="drop-zone" id="wmDrop">
+                <div class="drop-icon">💧</div>
+                <p>Drop image here or <label for="wmUpload" class="link">click to upload</label></p>
+                <input type="file" id="wmUpload" accept="image/*" hidden>
+            </div>
+            <div id="wmPreview" class="preview-box" style="display:none;">
+                <img id="wmImg" alt="Preview">
+                <div class="file-info" id="wmFileInfo"></div>
+            </div>
+            <div id="wmOptions" style="display:none;">
+                <div class="options-row">
+                    <label>Watermark Text:
+                        <input type="text" id="wmText" placeholder="e.g. © MultiMian" style="width:180px;">
+                    </label>
+                    <label>Font Size:
+                        <input type="number" id="wmSize" value="36" min="10" max="200" style="width:70px;">
+                    </label>
+                    <label>Opacity: <span id="wmOpacityVal">50</span>%
+                        <input type="range" id="wmOpacity" min="5" max="100" value="50">
+                    </label>
+                    <label>Color:
+                        <input type="color" id="wmColor" value="#ffffff">
+                    </label>
+                    <label>Position:
+                        <select id="wmPosition">
+                            <option value="bottom-right">Bottom Right</option>
+                            <option value="bottom-left">Bottom Left</option>
+                            <option value="top-right">Top Right</option>
+                            <option value="top-left">Top Left</option>
+                            <option value="center">Center</option>
+                            <option value="tile">Tile (repeat)</option>
+                        </select>
+                    </label>
+                </div>
+                <canvas id="wmCanvas" style="display:none;"></canvas>
+                <div id="wmLivePreview" class="preview-box" style="display:none; margin-top:12px;">
+                    <img id="wmResult" alt="Watermarked preview" style="max-width:100%; max-height:260px; border-radius:8px;">
+                    <p class="preview-label" style="margin-top:6px; font-size:0.82em; color:var(--text2);">Live preview</p>
+                </div>
+            </div>
+            <button id="wmBtn" class="primary-btn" disabled>Apply &amp; Download</button>
+            <p class="success-msg" id="wmSuccess" style="display:none;">✔ Watermarked image downloaded</p>
+        </section>
+
     </main>
 
     <footer>
-        <p>&copy; 2025 MultiMian. All rights reserved.</p>
+        <div class="footer-features">
+            <div class="feat-grid">
+                <div class="feat-card">🔤 <strong>OCR</strong><span>Extract text from any image. Multi-language support.</span></div>
+                <div class="feat-card">📄 <strong>Image → PDF</strong><span>Multi-image PDF with drag-to-reorder pages.</span></div>
+                <div class="feat-card">🗜 <strong>Compress</strong><span>Reduce file size with live quality preview.</span></div>
+                <div class="feat-card">✂️ <strong>Resize</strong><span>Aspect-ratio lock + social media presets.</span></div>
+                <div class="feat-card">🔄 <strong>Convert</strong><span>JPG ↔ PNG ↔ WebP with quality control.</span></div>
+                <div class="feat-card">💧 <strong>Watermark</strong><span>Add text watermark with position & opacity.</span></div>
+            </div>
+            <p class="browser-support">Chrome ✅ &nbsp; Edge ✅ &nbsp; Firefox ✅ &nbsp; Safari ✅ &nbsp; — Works on desktop &amp; mobile. No upload. No install.</p>
+        </div>
+        <p class="footer-copy">&copy; 2025 MultiMian. All rights reserved.</p>
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>

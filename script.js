@@ -138,7 +138,8 @@ ocrBtn.addEventListener('click', async () => {
     ocrResult.style.display = 'none';
     ocrSuccess.style.display = 'none';
     try {
-        const result = await Tesseract.recognize(ocrFile, 'eng', {
+        const lang = document.getElementById('ocrLang').value;
+        const result = await Tesseract.recognize(ocrFile, lang, {
             logger: m => {
                 if (m.status === 'recognizing text') {
                     setProgress(ocrFill, ocrLabel, Math.round(m.progress * 100));
@@ -193,6 +194,7 @@ setupDrop(pdfDrop, pdfUpload, files => {
     pdfFiles = pdfFiles.concat(files.filter(f => f.type.startsWith('image/')));
     renderPdfThumbs();
     pdfBtn.disabled = pdfFiles.length === 0;
+    updatePdfPreview();
 });
 
 function renderPdfThumbs() {
@@ -233,7 +235,28 @@ function renderPdfThumbs() {
             const moved = pdfFiles.splice(from, 1)[0];
             pdfFiles.splice(i, 0, moved);
             renderPdfThumbs();
+            updatePdfPreview();
         });
+    });
+}
+
+function updatePdfPreview() {
+    const box = document.getElementById('pdfPreviewBox');
+    const list = document.getElementById('pdfPreviewList');
+    if (!pdfFiles.length) { box.style.display = 'none'; return; }
+    box.style.display = 'block';
+    list.innerHTML = '';
+    pdfFiles.forEach((file, i) => {
+        const wrap = document.createElement('div');
+        wrap.className = 'pdf-preview-item';
+        const img = document.createElement('img');
+        img.src = URL.createObjectURL(file);
+        img.alt = 'Page ' + (i + 1);
+        const lbl = document.createElement('span');
+        lbl.textContent = 'Page ' + (i + 1);
+        wrap.appendChild(img);
+        wrap.appendChild(lbl);
+        list.appendChild(wrap);
     });
 }
 
@@ -479,4 +502,105 @@ convertBtn.addEventListener('click', () => {
         }, mime, quality);
     };
     img.src = URL.createObjectURL(convertFile);
+});
+
+// ══════════════════════════════════════════════════════════════
+// 6. Watermark
+// ══════════════════════════════════════════════════════════════
+const wmDrop       = document.getElementById('wmDrop');
+const wmUpload     = document.getElementById('wmUpload');
+const wmBtn        = document.getElementById('wmBtn');
+const wmPreview    = document.getElementById('wmPreview');
+const wmImg        = document.getElementById('wmImg');
+const wmFileInfo   = document.getElementById('wmFileInfo');
+const wmOptions    = document.getElementById('wmOptions');
+const wmCanvas     = document.getElementById('wmCanvas');
+const wmResult     = document.getElementById('wmResult');
+const wmLivePreview= document.getElementById('wmLivePreview');
+const wmSuccess    = document.getElementById('wmSuccess');
+const wmOpacity    = document.getElementById('wmOpacity');
+const wmOpacityVal = document.getElementById('wmOpacityVal');
+let wmFile = null;
+
+setupDrop(wmDrop, wmUpload, files => {
+    if (!files[0]) return;
+    wmFile = files[0];
+    wmImg.src = URL.createObjectURL(wmFile);
+    wmPreview.style.display = 'block';
+    buildFileInfo(wmFileInfo, wmFile);
+    wmOptions.style.display = 'block';
+    wmBtn.disabled = false;
+    wmSuccess.style.display = 'none';
+    renderWatermark();
+});
+
+wmOpacity.addEventListener('input', () => {
+    wmOpacityVal.textContent = wmOpacity.value;
+    if (wmFile) renderWatermark();
+});
+
+['wmText','wmSize','wmColor','wmPosition'].forEach(id => {
+    document.getElementById(id).addEventListener('input', () => { if (wmFile) renderWatermark(); });
+});
+
+function renderWatermark() {
+    const text     = document.getElementById('wmText').value || '© MultiMian';
+    const size     = parseInt(document.getElementById('wmSize').value) || 36;
+    const opacity  = parseInt(wmOpacity.value) / 100;
+    const color    = document.getElementById('wmColor').value;
+    const position = document.getElementById('wmPosition').value;
+
+    const img = new Image();
+    img.onload = () => {
+        wmCanvas.width  = img.naturalWidth;
+        wmCanvas.height = img.naturalHeight;
+        const ctx = wmCanvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+
+        ctx.globalAlpha = opacity;
+        ctx.fillStyle   = color;
+        ctx.font        = `bold ${size}px Segoe UI, Arial, sans-serif`;
+        ctx.textBaseline = 'middle';
+
+        const pad = size;
+        const tw  = ctx.measureText(text).width;
+        const W   = wmCanvas.width;
+        const H   = wmCanvas.height;
+
+        if (position === 'tile') {
+            const stepX = tw + size * 3;
+            const stepY = size * 3;
+            for (let y = stepY / 2; y < H; y += stepY) {
+                for (let x = pad; x < W; x += stepX) {
+                    ctx.fillText(text, x, y);
+                }
+            }
+        } else {
+            let x, y;
+            if (position === 'bottom-right') { x = W - tw - pad; y = H - pad; }
+            else if (position === 'bottom-left') { x = pad; y = H - pad; }
+            else if (position === 'top-right') { x = W - tw - pad; y = pad; }
+            else if (position === 'top-left') { x = pad; y = pad; }
+            else { x = (W - tw) / 2; y = H / 2; } // center
+            ctx.fillText(text, x, y);
+        }
+
+        ctx.globalAlpha = 1;
+        const dataUrl = wmCanvas.toDataURL('image/png');
+        wmResult.src = dataUrl;
+        wmLivePreview.style.display = 'block';
+    };
+    img.src = URL.createObjectURL(wmFile);
+}
+
+wmBtn.addEventListener('click', () => {
+    if (!wmFile) return;
+    renderWatermark();
+    // slight delay to let canvas render
+    setTimeout(() => {
+        const dataUrl = wmCanvas.toDataURL('image/png');
+        const name = wmFile.name.replace(/\.[^.]+$/, '') + '-watermarked.png';
+        triggerDownload(dataUrl, name);
+        wmSuccess.style.display = 'block';
+    }, 100);
 });

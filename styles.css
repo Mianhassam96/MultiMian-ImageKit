@@ -366,3 +366,91 @@ footer {
     .options-row { gap: 10px; }
     .dark-toggle { width: 34px; height: 34px; font-size: 1em; }
 }
+
+/* ── Watermark color input ─────────────────────────────────── */
+input[type="color"] {
+    width: 48px; height: 34px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    padding: 2px;
+    background: var(--surface2);
+}
+input[type="text"] {
+    padding: 6px 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.9em;
+    background: var(--surface2);
+    color: var(--text);
+}
+
+/* ── PDF Live Preview ──────────────────────────────────────── */
+.preview-label {
+    font-size: 0.88em;
+    color: var(--text2);
+    text-align: center;
+    margin: 10px 0 6px;
+    font-weight: 600;
+}
+.pdf-preview-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 8px;
+}
+.pdf-preview-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.75em;
+    color: var(--text2);
+}
+.pdf-preview-item img {
+    width: 80px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 5px;
+    border: 2px solid var(--border);
+    box-shadow: 0 2px 6px var(--shadow);
+}
+
+/* ── Footer Features Grid ──────────────────────────────────── */
+.footer-features {
+    background: rgba(0,0,0,0.15);
+    padding: 20px 16px 14px;
+    margin-bottom: 10px;
+}
+.feat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+    max-width: 700px;
+    margin: 0 auto 14px;
+}
+.feat-card {
+    background: rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 0.82em;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    color: rgba(255,255,255,0.9);
+}
+.feat-card strong { font-size: 0.95em; color: #fff; }
+.feat-card span { opacity: 0.8; font-size: 0.88em; }
+.browser-support {
+    text-align: center;
+    font-size: 0.8em;
+    opacity: 0.75;
+    margin-top: 4px;
+}
+.footer-copy {
+    text-align: center;
+    font-size: 0.85em;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255,255,255,0.15);
+}

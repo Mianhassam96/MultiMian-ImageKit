@@ -8,266 +8,394 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <div class="header-top">
-            <div>
+
+<header>
+    <div class="header-top">
+        <div class="logo-wrap">
+            <div class="logo-icon">🖼</div>
+            <div class="logo-text">
                 <h1>MultiMian ImageKit</h1>
                 <p class="tagline">Extract Text &bull; Convert &bull; Compress &bull; Resize &bull; Optimize</p>
             </div>
-            <button id="darkToggle" class="dark-toggle" title="Toggle dark mode">🌙</button>
         </div>
-        <nav>
-            <button class="tab-btn active" data-tab="ocr">🔤 Image → Text</button>
-            <button class="tab-btn" data-tab="pdf">📄 Image → PDF</button>
-            <button class="tab-btn" data-tab="compress">🗜 Compress</button>
-            <button class="tab-btn" data-tab="resize">✂️ Resize</button>
-            <button class="tab-btn" data-tab="convert">🔄 Convert</button>
-            <button class="tab-btn" data-tab="watermark">💧 Watermark</button>
-        </nav>
-    </header>
+        <button id="darkToggle" class="dark-toggle" title="Toggle dark mode">🌙</button>
+    </div>
+    <nav>
+        <button class="tab-btn active" data-tab="ocr">🔤 Image → Text</button>
+        <button class="tab-btn" data-tab="pdf">� Image → PDF</button>
+        <button class="tab-btn" data-tab="compress">🗜 Compress</button>
+        <button class="tab-btn" data-tab="resize">✂️ Resize</button>
+        <button class="tab-btn" data-tab="convert">🔄 Convert</button>
+        <button class="tab-btn" data-tab="watermark">💧 Watermark</button>
+    </nav>
+</header>
 
-    <main>
+<main>
 
-        <!-- ── OCR Tab ── -->
-        <section id="tab-ocr" class="tab-section active">
-            <h2>Extract Text from Image</h2>
+    <!-- ══ OCR Tab ══ -->
+    <section id="tab-ocr" class="tab-section active">
+        <div class="section-header">
+            <div class="section-icon">🔤</div>
+            <div>
+                <h2>Extract Text from Image</h2>
+                <p>Upload any image — OCR extracts the text instantly</p>
+            </div>
+        </div>
+
+        <div class="card">
             <div class="drop-zone" id="ocrDrop">
-                <div class="drop-icon">🖼️</div>
+                <span class="drop-icon">🖼️</span>
                 <p>Drop image here or <label for="ocrUpload" class="link">click to upload</label></p>
+                <p class="drop-hint">Supports JPG, PNG, WebP, BMP, GIF</p>
                 <input type="file" id="ocrUpload" accept="image/*" hidden>
             </div>
-            <div id="ocrPreview" class="preview-box" style="display:none;">
+            <div id="ocrPreview" class="preview-box" style="display:none; margin-top:14px;">
                 <img id="ocrImg" alt="Preview">
                 <div class="file-info" id="ocrFileInfo"></div>
             </div>
-            <div class="options-row" style="margin-top:14px;">
-                <label>Language:
+        </div>
+
+        <div class="card">
+            <div class="options-panel">
+                <div class="opt-group">
+                    <label>Language</label>
                     <select id="ocrLang">
-                        <option value="eng">English</option>
-                        <option value="ara">Arabic</option>
-                        <option value="fra">French</option>
-                        <option value="deu">German</option>
-                        <option value="spa">Spanish</option>
-                        <option value="chi_sim">Chinese (Simplified)</option>
-                        <option value="hin">Hindi</option>
-                        <option value="urd">Urdu</option>
-                        <option value="por">Portuguese</option>
-                        <option value="rus">Russian</option>
+                        <option value="eng">🇬🇧 English</option>
+                        <option value="ara">🇸🇦 Arabic</option>
+                        <option value="fra">🇫🇷 French</option>
+                        <option value="deu">🇩🇪 German</option>
+                        <option value="spa">🇪🇸 Spanish</option>
+                        <option value="chi_sim">🇨🇳 Chinese (Simplified)</option>
+                        <option value="hin">🇮🇳 Hindi</option>
+                        <option value="urd">🇵🇰 Urdu</option>
+                        <option value="por">🇵🇹 Portuguese</option>
+                        <option value="rus">🇷🇺 Russian</option>
                     </select>
-                </label>
+                </div>
             </div>
-            <button id="ocrBtn" class="primary-btn" disabled>Extract Text</button>            <div class="progress-bar" id="ocrProgress" style="display:none;">
-                <div class="progress-fill" id="ocrProgressFill"></div>
-                <span id="ocrProgressLabel">0%</span>
-            </div>
-            <div id="ocrResult" style="display:none;">
+        </div>
+
+        <div class="btn-row">
+            <button id="ocrBtn" class="primary-btn" disabled>🔍 Extract Text</button>
+        </div>
+
+        <div class="progress-bar" id="ocrProgress" style="display:none; margin-top:14px;">
+            <div class="progress-fill" id="ocrProgressFill"></div>
+            <span id="ocrProgressLabel">0%</span>
+        </div>
+
+        <div id="ocrResult" style="display:none;">
+            <div class="card" style="margin-top:16px;">
                 <textarea id="ocrText" rows="8" readonly placeholder="Extracted text will appear here..."></textarea>
                 <div class="action-row">
-                    <button id="ocrCopy" class="secondary-btn">📋 Copy</button>
-                    <button id="ocrDownloadTxt" class="secondary-btn">⬇ .txt</button>
-                    <button id="ocrToPdf" class="secondary-btn">📄 to PDF</button>
+                    <button id="ocrCopy" class="secondary-btn">📋 Copy Text</button>
+                    <button id="ocrDownloadTxt" class="secondary-btn">⬇ Download .txt</button>
+                    <button id="ocrToPdf" class="secondary-btn">📄 Export PDF</button>
                 </div>
-                <p class="success-msg" id="ocrSuccess" style="display:none;">✔ Text extracted successfully</p>
             </div>
-        </section>
+            <p class="success-msg" id="ocrSuccess" style="display:none;">✔ Text extracted successfully</p>
+        </div>
+    </section>
 
-        <!-- ── PDF Tab ── -->
-        <section id="tab-pdf" class="tab-section">
-            <h2>Convert Images to PDF</h2>
+    <!-- ══ PDF Tab ══ -->
+    <section id="tab-pdf" class="tab-section">
+        <div class="section-header">
+            <div class="section-icon">📄</div>
+            <div>
+                <h2>Convert Images to PDF</h2>
+                <p>Multi-image PDF with drag-to-reorder pages</p>
+            </div>
+        </div>
+
+        <div class="card">
             <div class="drop-zone" id="pdfDrop">
-                <div class="drop-icon">📁</div>
+                <span class="drop-icon">📁</span>
                 <p>Drop images here or <label for="pdfUpload" class="link">click to upload</label></p>
+                <p class="drop-hint">Select multiple images — drag to reorder pages</p>
                 <input type="file" id="pdfUpload" accept="image/jpeg,image/png,image/webp" multiple hidden>
             </div>
-            <div id="pdfImageList" class="image-list"></div>
-            <div class="options-row">
-                <label>Page Size:
+            <div id="pdfImageList" class="image-list" style="margin-top:14px;"></div>
+            <p class="drag-hint" id="pdfDragHint" style="display:none;">↔ Drag thumbnails to reorder pages</p>
+        </div>
+
+        <div class="card">
+            <div class="options-panel">
+                <div class="opt-group">
+                    <label>Page Size</label>
                     <select id="pdfPageSize">
                         <option value="a4">A4</option>
                         <option value="letter">Letter</option>
                     </select>
-                </label>
-                <label>Orientation:
+                </div>
+                <div class="opt-group">
+                    <label>Orientation</label>
                     <select id="pdfOrientation">
                         <option value="portrait">Portrait</option>
                         <option value="landscape">Landscape</option>
                     </select>
-                </label>
-                <label>Margin (px):
-                    <input type="number" id="pdfMargin" value="10" min="0" max="50" style="width:60px;">
-                </label>
+                </div>
+                <div class="opt-group" style="max-width:90px;">
+                    <label>Margin (px)</label>
+                    <input type="number" id="pdfMargin" value="10" min="0" max="50">
+                </div>
             </div>
-            <button id="pdfBtn" class="primary-btn" disabled>Convert &amp; Download PDF</button>
-            <div id="pdfPreviewBox" style="display:none;">
-                <p class="preview-label">📋 PDF Preview</p>
-                <div id="pdfPreviewList" class="pdf-preview-list"></div>
-            </div>
-            <div class="progress-bar" id="pdfProgress" style="display:none;">
-                <div class="progress-fill" id="pdfProgressFill"></div>
-                <span id="pdfProgressLabel">0%</span>
-            </div>
-            <p class="success-msg" id="pdfSuccess" style="display:none;">✔ PDF downloaded successfully</p>
-        </section>
+        </div>
 
-        <!-- ── Compress Tab ── -->
-        <section id="tab-compress" class="tab-section">
-            <h2>Compress Image</h2>
+        <div id="pdfPreviewBox" style="display:none;" class="card">
+            <p class="preview-label">📋 Page Preview</p>
+            <div id="pdfPreviewList" class="pdf-preview-list"></div>
+        </div>
+
+        <div class="btn-row">
+            <button id="pdfBtn" class="primary-btn" disabled>📄 Convert &amp; Download PDF</button>
+        </div>
+        <div class="progress-bar" id="pdfProgress" style="display:none; margin-top:14px;">
+            <div class="progress-fill" id="pdfProgressFill"></div>
+            <span id="pdfProgressLabel">0%</span>
+        </div>
+        <p class="success-msg" id="pdfSuccess" style="display:none;">✔ PDF downloaded successfully</p>
+    </section>
+
+    <!-- ══ Compress Tab ══ -->
+    <section id="tab-compress" class="tab-section">
+        <div class="section-header">
+            <div class="section-icon">🗜</div>
+            <div>
+                <h2>Compress Image</h2>
+                <p>Reduce file size while keeping quality</p>
+            </div>
+        </div>
+
+        <div class="card">
             <div class="drop-zone" id="compressDrop">
-                <div class="drop-icon">🗜️</div>
+                <span class="drop-icon">🗜️</span>
                 <p>Drop image here or <label for="compressUpload" class="link">click to upload</label></p>
+                <p class="drop-hint">Supports JPG, PNG, WebP</p>
                 <input type="file" id="compressUpload" accept="image/jpeg,image/png,image/webp" hidden>
             </div>
-            <div id="compressPreview" class="preview-box" style="display:none;">
+            <div id="compressPreview" class="preview-box" style="display:none; margin-top:14px;">
                 <img id="compressImg" alt="Preview">
                 <div class="file-info" id="compressFileInfo"></div>
             </div>
-            <div id="compressOptions" style="display:none;">
-                <label class="quality-label">Quality: <span id="qualityValue">80</span>%
-                    <input type="range" id="qualitySlider" min="1" max="100" value="80">
-                </label>
-                <div class="size-info">
-                    <span>Original: <strong id="origSize">-</strong></span>
-                    <span>Compressed: <strong id="compSize">-</strong></span>
-                    <span>Saved: <strong id="savedPct">-</strong></span>
-                </div>
-            </div>
-            <button id="compressBtn" class="primary-btn" disabled>Compress &amp; Download</button>
-            <p class="success-msg" id="compressSuccess" style="display:none;">✔ Image compressed successfully</p>
-        </section>
+        </div>
 
-        <!-- ── Resize Tab ── -->
-        <section id="tab-resize" class="tab-section">
-            <h2>Resize Image</h2>
+        <div id="compressOptions" class="card" style="display:none;">
+            <div class="slider-row">
+                <div class="slider-label">
+                    <span>Compression Quality</span>
+                    <strong><span id="qualityValue">80</span>%</strong>
+                </div>
+                <input type="range" id="qualitySlider" min="1" max="100" value="80">
+            </div>
+            <div class="divider"></div>
+            <div class="size-info">
+                <span>Original<strong id="origSize">-</strong></span>
+                <span>Compressed<strong id="compSize">-</strong></span>
+                <span>Saved<strong id="savedPct">-</strong></span>
+            </div>
+        </div>
+
+        <div class="btn-row">
+            <button id="compressBtn" class="primary-btn" disabled>🗜 Compress &amp; Download</button>
+        </div>
+        <p class="success-msg" id="compressSuccess" style="display:none;">✔ Image compressed successfully</p>
+    </section>
+
+    <!-- ══ Resize Tab ══ -->
+    <section id="tab-resize" class="tab-section">
+        <div class="section-header">
+            <div class="section-icon">✂️</div>
+            <div>
+                <h2>Resize Image</h2>
+                <p>Custom dimensions or social media presets</p>
+            </div>
+        </div>
+
+        <div class="card">
             <div class="drop-zone" id="resizeDrop">
-                <div class="drop-icon">✂️</div>
+                <span class="drop-icon">✂️</span>
                 <p>Drop image here or <label for="resizeUpload" class="link">click to upload</label></p>
+                <p class="drop-hint">Supports all image formats</p>
                 <input type="file" id="resizeUpload" accept="image/*" hidden>
             </div>
-            <div id="resizePreview" class="preview-box" style="display:none;">
+            <div id="resizePreview" class="preview-box" style="display:none; margin-top:14px;">
                 <img id="resizeImg" alt="Preview">
                 <div class="file-info" id="resizeFileInfo"></div>
             </div>
-            <div id="resizeOptions" style="display:none;">
-                <div class="options-row">
-                    <label>Width (px):
-                        <input type="number" id="resizeWidth" min="1" placeholder="e.g. 1920">
-                    </label>
-                    <label>Height (px):
-                        <input type="number" id="resizeHeight" min="1" placeholder="e.g. 1080">
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" id="resizeLock" checked> Lock ratio
-                    </label>
+        </div>
+
+        <div id="resizeOptions" class="card" style="display:none;">
+            <div class="options-panel">
+                <div class="opt-group">
+                    <label>Width (px)</label>
+                    <input type="number" id="resizeWidth" min="1" placeholder="e.g. 1920">
                 </div>
-                <div class="presets-row">
-                    <span>Presets:</span>
-                    <button class="preset-btn" data-w="1920" data-h="1080">1920×1080</button>
-                    <button class="preset-btn" data-w="1280" data-h="720">1280×720</button>
-                    <button class="preset-btn" data-w="800" data-h="600">800×600</button>
-                    <button class="preset-btn" data-w="1080" data-h="1080">1080×1080 (IG)</button>
-                    <button class="preset-btn" data-w="1200" data-h="630">1200×630 (OG)</button>
+                <div class="opt-group">
+                    <label>Height (px)</label>
+                    <input type="number" id="resizeHeight" min="1" placeholder="e.g. 1080">
+                </div>
+                <div class="opt-group" style="justify-content:flex-end;">
+                    <label class="checkbox-row">
+                        <input type="checkbox" id="resizeLock" checked> Lock aspect ratio
+                    </label>
                 </div>
             </div>
-            <button id="resizeBtn" class="primary-btn" disabled>Resize &amp; Download</button>
-            <p class="success-msg" id="resizeSuccess" style="display:none;">✔ Image resized successfully</p>
-        </section>
+            <div class="divider"></div>
+            <div class="presets-row">
+                <span class="presets-label">Social Media Presets</span>
+                <button class="preset-btn" data-w="1920" data-h="1080">1920×1080 HD</button>
+                <button class="preset-btn" data-w="1280" data-h="720">1280×720</button>
+                <button class="preset-btn" data-w="1080" data-h="1080">1080×1080 IG</button>
+                <button class="preset-btn" data-w="1200" data-h="630">1200×630 OG</button>
+                <button class="preset-btn" data-w="800" data-h="600">800×600</button>
+                <button class="preset-btn" data-w="400" data-h="400">400×400 Avatar</button>
+            </div>
+        </div>
 
-        <!-- ── Convert Tab ── -->
-        <section id="tab-convert" class="tab-section">
-            <h2>Convert Image Format</h2>
+        <div class="btn-row">
+            <button id="resizeBtn" class="primary-btn" disabled>✂️ Resize &amp; Download</button>
+        </div>
+        <p class="success-msg" id="resizeSuccess" style="display:none;">✔ Image resized successfully</p>
+    </section>
+
+    <!-- ══ Convert Tab ══ -->
+    <section id="tab-convert" class="tab-section">
+        <div class="section-header">
+            <div class="section-icon">🔄</div>
+            <div>
+                <h2>Convert Image Format</h2>
+                <p>JPG ↔ PNG ↔ WebP with quality control</p>
+            </div>
+        </div>
+
+        <div class="card">
             <div class="drop-zone" id="convertDrop">
-                <div class="drop-icon">🔄</div>
+                <span class="drop-icon">🔄</span>
                 <p>Drop image here or <label for="convertUpload" class="link">click to upload</label></p>
+                <p class="drop-hint">Supports JPG, PNG, WebP, BMP, GIF</p>
                 <input type="file" id="convertUpload" accept="image/*" hidden>
             </div>
-            <div id="convertPreview" class="preview-box" style="display:none;">
+            <div id="convertPreview" class="preview-box" style="display:none; margin-top:14px;">
                 <img id="convertImg" alt="Preview">
                 <div class="file-info" id="convertFileInfo"></div>
             </div>
-            <div id="convertOptions" style="display:none;">
-                <div class="options-row">
-                    <label>Convert to:
-                        <select id="convertFormat">
-                            <option value="image/jpeg">JPG</option>
-                            <option value="image/png">PNG</option>
-                            <option value="image/webp">WebP</option>
-                        </select>
-                    </label>
-                    <label>Quality (JPG/WebP): <span id="convertQualityVal">90</span>%
-                        <input type="range" id="convertQuality" min="1" max="100" value="90">
-                    </label>
+        </div>
+
+        <div id="convertOptions" class="card" style="display:none;">
+            <div class="options-panel">
+                <div class="opt-group">
+                    <label>Convert To</label>
+                    <select id="convertFormat">
+                        <option value="image/jpeg">JPG — Smaller size</option>
+                        <option value="image/png">PNG — Lossless</option>
+                        <option value="image/webp">WebP — Best compression</option>
+                    </select>
+                </div>
+                <div class="opt-group" style="flex:1; min-width:160px;">
+                    <div class="slider-label">
+                        <span>Quality (JPG / WebP)</span>
+                        <strong><span id="convertQualityVal">90</span>%</strong>
+                    </div>
+                    <input type="range" id="convertQuality" min="1" max="100" value="90">
                 </div>
             </div>
-            <button id="convertBtn" class="primary-btn" disabled>Convert &amp; Download</button>
-            <p class="success-msg" id="convertSuccess" style="display:none;">✔ Image converted successfully</p>
-        </section>
+        </div>
 
-        <!-- ── Watermark Tab ── -->
-        <section id="tab-watermark" class="tab-section">
-            <h2>Add Watermark to Image</h2>
+        <div class="btn-row">
+            <button id="convertBtn" class="primary-btn" disabled>🔄 Convert &amp; Download</button>
+        </div>
+        <p class="success-msg" id="convertSuccess" style="display:none;">✔ Image converted successfully</p>
+    </section>
+
+    <!-- ══ Watermark Tab ══ -->
+    <section id="tab-watermark" class="tab-section">
+        <div class="section-header">
+            <div class="section-icon">💧</div>
+            <div>
+                <h2>Add Watermark</h2>
+                <p>Text watermark with position, opacity &amp; color</p>
+            </div>
+        </div>
+
+        <div class="card">
             <div class="drop-zone" id="wmDrop">
-                <div class="drop-icon">💧</div>
+                <span class="drop-icon">💧</span>
                 <p>Drop image here or <label for="wmUpload" class="link">click to upload</label></p>
+                <p class="drop-hint">Supports all image formats</p>
                 <input type="file" id="wmUpload" accept="image/*" hidden>
             </div>
-            <div id="wmPreview" class="preview-box" style="display:none;">
+            <div id="wmPreview" class="preview-box" style="display:none; margin-top:14px;">
                 <img id="wmImg" alt="Preview">
                 <div class="file-info" id="wmFileInfo"></div>
             </div>
-            <div id="wmOptions" style="display:none;">
-                <div class="options-row">
-                    <label>Watermark Text:
-                        <input type="text" id="wmText" placeholder="e.g. © MultiMian" style="width:180px;">
-                    </label>
-                    <label>Font Size:
-                        <input type="number" id="wmSize" value="36" min="10" max="200" style="width:70px;">
-                    </label>
-                    <label>Opacity: <span id="wmOpacityVal">50</span>%
-                        <input type="range" id="wmOpacity" min="5" max="100" value="50">
-                    </label>
-                    <label>Color:
-                        <input type="color" id="wmColor" value="#ffffff">
-                    </label>
-                    <label>Position:
-                        <select id="wmPosition">
-                            <option value="bottom-right">Bottom Right</option>
-                            <option value="bottom-left">Bottom Left</option>
-                            <option value="top-right">Top Right</option>
-                            <option value="top-left">Top Left</option>
-                            <option value="center">Center</option>
-                            <option value="tile">Tile (repeat)</option>
-                        </select>
-                    </label>
-                </div>
-                <canvas id="wmCanvas" style="display:none;"></canvas>
-                <div id="wmLivePreview" class="preview-box" style="display:none; margin-top:12px;">
-                    <img id="wmResult" alt="Watermarked preview" style="max-width:100%; max-height:260px; border-radius:8px;">
-                    <p class="preview-label" style="margin-top:6px; font-size:0.82em; color:var(--text2);">Live preview</p>
-                </div>
-            </div>
-            <button id="wmBtn" class="primary-btn" disabled>Apply &amp; Download</button>
-            <p class="success-msg" id="wmSuccess" style="display:none;">✔ Watermarked image downloaded</p>
-        </section>
-
-    </main>
-
-    <footer>
-        <div class="footer-features">
-            <div class="feat-grid">
-                <div class="feat-card">🔤 <strong>OCR</strong><span>Extract text from any image. Multi-language support.</span></div>
-                <div class="feat-card">📄 <strong>Image → PDF</strong><span>Multi-image PDF with drag-to-reorder pages.</span></div>
-                <div class="feat-card">🗜 <strong>Compress</strong><span>Reduce file size with live quality preview.</span></div>
-                <div class="feat-card">✂️ <strong>Resize</strong><span>Aspect-ratio lock + social media presets.</span></div>
-                <div class="feat-card">🔄 <strong>Convert</strong><span>JPG ↔ PNG ↔ WebP with quality control.</span></div>
-                <div class="feat-card">💧 <strong>Watermark</strong><span>Add text watermark with position & opacity.</span></div>
-            </div>
-            <p class="browser-support">Chrome ✅ &nbsp; Edge ✅ &nbsp; Firefox ✅ &nbsp; Safari ✅ &nbsp; — Works on desktop &amp; mobile. No upload. No install.</p>
         </div>
-        <p class="footer-copy">&copy; 2025 MultiMian. All rights reserved.</p>
-    </footer>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-    <script src="script.js"></script>
+        <div id="wmOptions" class="card" style="display:none;">
+            <div class="options-panel">
+                <div class="opt-group" style="flex:2; min-width:180px;">
+                    <label>Watermark Text</label>
+                    <input type="text" id="wmText" placeholder="e.g. © MultiMian 2025">
+                </div>
+                <div class="opt-group" style="max-width:90px;">
+                    <label>Font Size</label>
+                    <input type="number" id="wmSize" value="36" min="10" max="200">
+                </div>
+                <div class="opt-group">
+                    <label>Color</label>
+                    <input type="color" id="wmColor" value="#ffffff">
+                </div>
+                <div class="opt-group">
+                    <label>Position</label>
+                    <select id="wmPosition">
+                        <option value="bottom-right">Bottom Right</option>
+                        <option value="bottom-left">Bottom Left</option>
+                        <option value="top-right">Top Right</option>
+                        <option value="top-left">Top Left</option>
+                        <option value="center">Center</option>
+                        <option value="tile">Tile (Repeat)</option>
+                    </select>
+                </div>
+                <div class="opt-group" style="flex:1; min-width:160px;">
+                    <div class="slider-label">
+                        <span>Opacity</span>
+                        <strong><span id="wmOpacityVal">50</span>%</strong>
+                    </div>
+                    <input type="range" id="wmOpacity" min="5" max="100" value="50">
+                </div>
+            </div>
+            <canvas id="wmCanvas" style="display:none;"></canvas>
+            <div id="wmLivePreview" style="display:none; margin-top:14px;" class="preview-box">
+                <img id="wmResult" alt="Watermarked preview" style="max-width:100%; max-height:280px; border-radius:8px;">
+                <p class="preview-label" style="margin-top:8px;">Live Preview</p>
+            </div>
+        </div>
+
+        <div class="btn-row">
+            <button id="wmBtn" class="primary-btn" disabled>💧 Apply &amp; Download</button>
+        </div>
+        <p class="success-msg" id="wmSuccess" style="display:none;">✔ Watermarked image downloaded</p>
+    </section>
+
+</main>
+
+<footer>
+    <div class="footer-features">
+        <p class="footer-title">All Features</p>
+        <div class="feat-grid">
+            <div class="feat-card">🔤 <strong>OCR — Image → Text</strong><span>Extract text from any image. 10 languages supported.</span></div>
+            <div class="feat-card">📄 <strong>Image → PDF</strong><span>Multi-image PDF with drag-to-reorder pages.</span></div>
+            <div class="feat-card">🗜 <strong>Compress</strong><span>Reduce file size with live quality preview.</span></div>
+            <div class="feat-card">✂️ <strong>Resize</strong><span>Aspect-ratio lock + social media presets.</span></div>
+            <div class="feat-card">🔄 <strong>Format Convert</strong><span>JPG ↔ PNG ↔ WebP with quality control.</span></div>
+            <div class="feat-card">💧 <strong>Watermark</strong><span>Text watermark with position, opacity &amp; color.</span></div>
+        </div>
+        <p class="browser-support">Chrome ✅ &nbsp; Edge ✅ &nbsp; Firefox ✅ &nbsp; Safari ✅ &nbsp;—&nbsp; Desktop &amp; Mobile &nbsp;·&nbsp; No upload &nbsp;·&nbsp; No install</p>
+    </div>
+    <p class="footer-copy">&copy; 2025 MultiMian ImageKit &nbsp;·&nbsp; Extract Text • Convert to PDF • Compress &amp; Optimize Images Instantly</p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<script src="script.js"></script>
 </body>
 </html>

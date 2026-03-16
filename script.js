@@ -668,37 +668,45 @@ mergeBtn.addEventListener('click', async () => {
     const ph = pdf.internal.pageSize.getHeight();
     const pad = 10;
 
-    const [url1, url2] = await Promise.all([fileToDataUrl(mergeFile1), fileToDataUrl(mergeFile2)]);
-    const [img1, img2] = await Promise.all([loadImage(url1), loadImage(url2)]);
+    // Always convert via canvas → JPEG so jsPDF gets reliable data regardless of input format
+    function toJpegDataUrl(file) {
+        return new Promise(resolve => {
+            const reader = new FileReader();
+            reader.onload = e => {
+                const img = new Image();
+                img.onload = () => {
+                    const c = document.createElement('canvas');
+                    c.width = img.naturalWidth;
+                    c.height = img.naturalHeight;
+                    c.getContext('2d').drawImage(img, 0, 0);
+                    resolve({ dataUrl: c.toDataURL('image/jpeg', 0.92), w: img.naturalWidth, h: img.naturalHeight });
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+    }
 
-    const fmt1 = mergeFile1.type === 'image/png' ? 'PNG' : 'JPEG';
-    const fmt2 = mergeFile2.type === 'image/png' ? 'PNG' : 'JPEG';
+    const [d1, d2] = await Promise.all([toJpegDataUrl(mergeFile1), toJpegDataUrl(mergeFile2)]);
 
     if (layout === 'side') {
-        // Each image gets half the page width
         const slotW = (pw - pad * 3) / 2;
         const slotH = ph - pad * 2;
-        const r1 = Math.min(slotW / img1.naturalWidth, slotH / img1.naturalHeight);
-        const r2 = Math.min(slotW / img2.naturalWidth, slotH / img2.naturalHeight);
-        const w1 = img1.naturalWidth * r1, h1 = img1.naturalHeight * r1;
-        const w2 = img2.naturalWidth * r2, h2 = img2.naturalHeight * r2;
-        // Center each image vertically in its slot
-        const y1 = pad + (slotH - h1) / 2;
-        const y2 = pad + (slotH - h2) / 2;
-        pdf.addImage(url1, fmt1, pad, y1, w1, h1);
-        pdf.addImage(url2, fmt2, pad * 2 + slotW, y2, w2, h2);
+        const r1 = Math.min(slotW / d1.w, slotH / d1.h);
+        const r2 = Math.min(slotW / d2.w, slotH / d2.h);
+        const w1 = d1.w * r1, h1 = d1.h * r1;
+        const w2 = d2.w * r2, h2 = d2.h * r2;
+        pdf.addImage(d1.dataUrl, 'JPEG', pad,            pad + (slotH - h1) / 2, w1, h1);
+        pdf.addImage(d2.dataUrl, 'JPEG', pad * 2 + slotW, pad + (slotH - h2) / 2, w2, h2);
     } else {
-        // Stacked: each image gets half the page height
         const slotW = pw - pad * 2;
         const slotH = (ph - pad * 3) / 2;
-        const r1 = Math.min(slotW / img1.naturalWidth, slotH / img1.naturalHeight);
-        const r2 = Math.min(slotW / img2.naturalWidth, slotH / img2.naturalHeight);
-        const w1 = img1.naturalWidth * r1, h1 = img1.naturalHeight * r1;
-        const w2 = img2.naturalWidth * r2, h2 = img2.naturalHeight * r2;
-        const x1 = pad + (slotW - w1) / 2;
-        const x2 = pad + (slotW - w2) / 2;
-        pdf.addImage(url1, fmt1, x1, pad, w1, h1);
-        pdf.addImage(url2, fmt2, x2, pad * 2 + slotH, w2, h2);
+        const r1 = Math.min(slotW / d1.w, slotH / d1.h);
+        const r2 = Math.min(slotW / d2.w, slotH / d2.h);
+        const w1 = d1.w * r1, h1 = d1.h * r1;
+        const w2 = d2.w * r2, h2 = d2.h * r2;
+        pdf.addImage(d1.dataUrl, 'JPEG', pad + (slotW - w1) / 2, pad,              w1, h1);
+        pdf.addImage(d2.dataUrl, 'JPEG', pad + (slotW - w2) / 2, pad * 2 + slotH, w2, h2);
     }
 
     pdf.save('merged.pdf');

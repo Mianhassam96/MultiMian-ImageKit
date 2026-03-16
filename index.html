@@ -63,108 +63,6 @@
 <main>
 
     <!-- ══ Hero / Home Section ══ -->
-    <section id="tab-home" class="tab-section home-section active-home">
-        <div class="hero">
-            <div class="hero-badge">✨ Free · In-Browser · No Upload</div>
-            <h1 class="hero-title">MultiMian <span>ImageKit</span></h1>
-            <p class="hero-sub">Extract Text &bull; Convert to PDF &bull; Compress &bull; Resize &bull; Watermark &bull; Merge</p>
-            <p class="hero-desc">A powerful all-in-one image toolkit that runs entirely in your browser. No server, no signup, no limits.</p>
-            <div class="hero-btns">
-                <button class="hero-cta" data-tab="ocr">🔤 Start with OCR</button>
-                <button class="hero-cta hero-cta-outline" data-tab="compress">🗜 Compress Image</button>
-            </div>
-        </div>
-
-        <!-- Stats bar -->
-        <div class="stats-bar">
-            <div class="stat"><span class="stat-num">7</span><span class="stat-label">Tools</span></div>
-            <div class="stat"><span class="stat-num">10+</span><span class="stat-label">Languages (OCR)</span></div>
-            <div class="stat"><span class="stat-num">100%</span><span class="stat-label">In-Browser</span></div>
-            <div class="stat"><span class="stat-num">0</span><span class="stat-label">Upload to Server</span></div>
-        </div>
-
-        <!-- Feature cards -->
-        <div class="home-grid">
-            <div class="home-card" data-tab="ocr">
-                <div class="home-card-icon">🔤</div>
-                <h3>Image → Text (OCR)</h3>
-                <p>Extract text from JPG, PNG, WebP in 10+ languages. Copy, download .txt or export as PDF.</p>
-                <span class="home-card-tag">Tesseract.js</span>
-            </div>
-            <div class="home-card" data-tab="pdf">
-                <div class="home-card-icon">📄</div>
-                <h3>Image → PDF</h3>
-                <p>Convert multiple images into a single PDF. Drag to reorder pages, choose size and orientation.</p>
-                <span class="home-card-tag">jsPDF</span>
-            </div>
-            <div class="home-card" data-tab="compress">
-                <div class="home-card-icon">🗜</div>
-                <h3>Compress Image</h3>
-                <p>Reduce file size with an adjustable quality slider. See original vs compressed size live.</p>
-                <span class="home-card-tag">Canvas API</span>
-            </div>
-            <div class="home-card" data-tab="resize">
-                <div class="home-card-icon">✂️</div>
-                <h3>Resize Image</h3>
-                <p>Resize to exact dimensions with aspect-ratio lock. Social media presets included.</p>
-                <span class="home-card-tag">Canvas API</span>
-            </div>
-            <div class="home-card" data-tab="convert">
-                <div class="home-card-icon">🔄</div>
-                <h3>Format Convert</h3>
-                <p>Convert between JPG, PNG and WebP with quality control. Instant download.</p>
-                <span class="home-card-tag">Canvas API</span>
-            </div>
-            <div class="home-card" data-tab="watermark">
-                <div class="home-card-icon">💧</div>
-                <h3>Watermark</h3>
-                <p>Add text watermarks with custom font, color, opacity and 6 position options including tile.</p>
-                <span class="home-card-tag">Canvas API</span>
-            </div>
-            <div class="home-card" data-tab="merge">
-                <div class="home-card-icon">🔗</div>
-                <h3>Merge 2 Images</h3>
-                <p>Combine two images side-by-side or stacked. Export as JPG, PNG or PDF.</p>
-                <span class="home-card-tag">New ⭐</span>
-            </div>
-        </div>
-
-        <!-- How it works -->
-        <div class="how-section">
-            <h2 class="how-title">How It Works</h2>
-            <div class="how-steps">
-                <div class="how-step">
-                    <div class="how-num">1</div>
-                    <h4>Pick a Tool</h4>
-                    <p>Click any tab in the header to open the tool you need.</p>
-                </div>
-                <div class="how-arrow">→</div>
-                <div class="how-step">
-                    <div class="how-num">2</div>
-                    <h4>Upload Image</h4>
-                    <p>Drag & drop or click to upload. Supports JPG, PNG, WebP and more.</p>
-                </div>
-                <div class="how-arrow">→</div>
-                <div class="how-step">
-                    <div class="how-num">3</div>
-                    <h4>Process & Download</h4>
-                    <p>Adjust settings, click the action button and download instantly.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tech stack -->
-        <div class="tech-section">
-            <p class="tech-title">Built With</p>
-            <div class="tech-pills">
-                <span>HTML5</span><span>CSS3</span><span>Vanilla JS</span>
-                <span>Tesseract.js</span><span>jsPDF</span><span>Canvas API</span>
-            </div>
-            <p class="tech-support">Chrome ✅ &nbsp; Edge ✅ &nbsp; Firefox ✅ &nbsp; Safari ✅ &nbsp;·&nbsp; Desktop &amp; Mobile</p>
-        </div>
-    </section>
-
-    <!-- ══ Hero / Home Section ══ -->
     <section id="tab-home" class="tab-section home-section">
 
         <!-- Animated background canvas -->
@@ -403,6 +301,9 @@
                 <img id="ocrImg" alt="Preview">
                 <div class="file-info" id="ocrFileInfo"></div>
             </div>
+            <div id="ocrClearRow" class="clear-row" style="display:none;">
+                <button id="ocrClear" class="clear-btn">✕ Clear &amp; Upload New</button>
+            </div>
         </div>
 
         <div class="card">
@@ -436,7 +337,7 @@
 
         <div id="ocrResult" style="display:none;">
             <div class="card" style="margin-top:16px;">
-                <textarea id="ocrText" rows="8" readonly placeholder="Extracted text will appear here..."></textarea>
+                <textarea id="ocrText" rows="12" placeholder="Extracted text will appear here..."></textarea>
                 <div class="action-row">
                     <button id="ocrCopy" class="secondary-btn">📋 Copy Text</button>
                     <button id="ocrDownloadTxt" class="secondary-btn">⬇ Download .txt</button>
@@ -465,6 +366,9 @@
                 <input type="file" id="pdfUpload" accept="image/jpeg,image/png,image/webp" multiple hidden>
             </div>
             <div id="pdfImageList" class="image-list" style="margin-top:14px;"></div>
+            <div id="pdfClearRow" class="clear-row" style="display:none;">
+                <button id="pdfClear" class="clear-btn">✕ Clear All Images</button>
+            </div>
             <p class="drag-hint" id="pdfDragHint" style="display:none;">↔ Drag thumbnails to reorder pages</p>
         </div>
 
@@ -527,6 +431,9 @@
                 <img id="compressImg" alt="Preview">
                 <div class="file-info" id="compressFileInfo"></div>
             </div>
+            <div id="compressClearRow" class="clear-row" style="display:none;">
+                <button id="compressClear" class="clear-btn">✕ Clear &amp; Upload New</button>
+            </div>
         </div>
 
         <div id="compressOptions" class="card" style="display:none;">
@@ -571,6 +478,9 @@
             <div id="resizePreview" class="preview-box" style="display:none; margin-top:14px;">
                 <img id="resizeImg" alt="Preview">
                 <div class="file-info" id="resizeFileInfo"></div>
+            </div>
+            <div id="resizeClearRow" class="clear-row" style="display:none;">
+                <button id="resizeClear" class="clear-btn">✕ Clear &amp; Upload New</button>
             </div>
         </div>
 
@@ -629,6 +539,9 @@
                 <img id="convertImg" alt="Preview">
                 <div class="file-info" id="convertFileInfo"></div>
             </div>
+            <div id="convertClearRow" class="clear-row" style="display:none;">
+                <button id="convertClear" class="clear-btn">✕ Clear &amp; Upload New</button>
+            </div>
         </div>
 
         <div id="convertOptions" class="card" style="display:none;">
@@ -677,6 +590,9 @@
             <div id="wmPreview" class="preview-box" style="display:none; margin-top:14px;">
                 <img id="wmImg" alt="Preview">
                 <div class="file-info" id="wmFileInfo"></div>
+            </div>
+            <div id="wmClearRow" class="clear-row" style="display:none;">
+                <button id="wmClear" class="clear-btn">✕ Clear &amp; Upload New</button>
             </div>
         </div>
 
@@ -748,6 +664,9 @@
                     <div id="mergePreview1" class="preview-box" style="display:none; margin-top:10px;">
                         <img id="mergeImg1" alt="Image 1 preview">
                     </div>
+                    <div id="merge1ClearRow" class="clear-row" style="display:none;">
+                        <button id="merge1Clear" class="clear-btn">✕ Clear Image 1</button>
+                    </div>
                 </div>
                 <div class="merge-slot">
                     <p class="merge-slot-label">Image 2</p>
@@ -758,6 +677,9 @@
                     </div>
                     <div id="mergePreview2" class="preview-box" style="display:none; margin-top:10px;">
                         <img id="mergeImg2" alt="Image 2 preview">
+                    </div>
+                    <div id="merge2ClearRow" class="clear-row" style="display:none;">
+                        <button id="merge2Clear" class="clear-btn">✕ Clear Image 2</button>
                     </div>
                 </div>
             </div>
@@ -811,10 +733,10 @@
             <span class="footer-logo">
                 <span class="fl-multi">Multi</span><span class="fl-mian">Mian</span><span class="fl-dot">.</span><span class="fl-kit">ImageKit</span>
             </span>
-            <span class="footer-tagline">7 tools. Zero uploads. Pure browser.</span>
+            <span class="footer-tagline">Extract Text • Convert to PDF • Compress Images.</span>
         </div>
         <div class="footer-center">
-            <span class="footer-copy">&copy; 2026 MultiMian &nbsp;·&nbsp; MIT License &nbsp;·&nbsp; v2.2</span>
+            <span class="footer-copy">&copy; 2026 MultiMian &nbsp;|&nbsp; Built with modern web technologies.</span>
         </div>
         <div class="footer-right">
             <a href="https://github.com/Mianhassam96/MultiMian-ImageKit" target="_blank" rel="noopener" class="footer-link">

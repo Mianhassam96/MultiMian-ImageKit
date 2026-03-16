@@ -559,6 +559,29 @@ input[type="range"] { width: 100%; accent-color: var(--accent2); height: 6px; cu
 }
 .preset-btn:hover { background: var(--accent2); color: white; border-color: var(--accent2); transform: translateY(-1px); }
 
+/* ── Clear Row ─────────────────────────────────────────────── */
+.clear-row {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+.clear-btn {
+    background: transparent;
+    border: 1.5px solid var(--danger);
+    color: var(--danger);
+    border-radius: var(--radius-sm);
+    padding: 6px 16px;
+    font-size: 0.8em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+.clear-btn:hover {
+    background: var(--danger);
+    color: #fff;
+}
+
 /* ── Notifications ─────────────────────────────────────────── */
 .success-msg {
     display: flex; align-items: center; justify-content: center; gap: 8px;

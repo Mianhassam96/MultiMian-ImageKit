@@ -275,6 +275,7 @@ setupDrop(ocrDrop, ocrUpload, files => {
     ocrResult.style.display = 'none';
     ocrSuccess.style.display = 'none';
     ocrProgress.style.display = 'none';
+    document.getElementById('ocrClearRow').style.display = 'flex';
 });
 
 ocrBtn.addEventListener('click', async () => {
@@ -291,9 +292,11 @@ ocrBtn.addEventListener('click', async () => {
                 if (m.status === 'recognizing text') {
                     setProgress(ocrFill, ocrLabel, Math.round(m.progress * 100));
                 }
-            }
+            },
+            tessedit_pageseg_mode: '1',
+            preserve_interword_spaces: '1',
         });
-        ocrText.value = result.data.text.trim();
+        ocrText.value = result.data.text;
         ocrProgress.style.display = 'none';
         ocrResult.style.display = 'block';
         ocrSuccess.style.display = 'block';
@@ -324,6 +327,19 @@ document.getElementById('ocrToPdf').addEventListener('click', () => {
     pdf.save('extracted-text.pdf');
 });
 
+document.getElementById('ocrClear').addEventListener('click', () => {
+    ocrFile = null;
+    ocrImg.src = '';
+    ocrPreview.style.display = 'none';
+    document.getElementById('ocrClearRow').style.display = 'none';
+    ocrBtn.disabled = true;
+    ocrResult.style.display = 'none';
+    ocrSuccess.style.display = 'none';
+    ocrProgress.style.display = 'none';
+    ocrText.value = '';
+    ocrUpload.value = '';
+});
+
 // ══════════════════════════════════════════════════════════════
 // 2. PDF – Images → PDF (multi-image, drag to reorder)
 // ══════════════════════════════════════════════════════════════
@@ -341,6 +357,7 @@ setupDrop(pdfDrop, pdfUpload, files => {
     pdfFiles = pdfFiles.concat(files.filter(f => f.type.startsWith('image/')));
     renderPdfThumbs();
     pdfBtn.disabled = pdfFiles.length === 0;
+    if (pdfFiles.length > 0) document.getElementById('pdfClearRow').style.display = 'flex';
     updatePdfPreview();
 });
 
@@ -440,6 +457,16 @@ pdfBtn.addEventListener('click', async () => {
     pdfBtn.disabled = false;
 });
 
+document.getElementById('pdfClear').addEventListener('click', () => {
+    pdfFiles = [];
+    renderPdfThumbs();
+    updatePdfPreview();
+    pdfBtn.disabled = true;
+    document.getElementById('pdfClearRow').style.display = 'none';
+    pdfSuccess.style.display = 'none';
+    pdfUpload.value = '';
+});
+
 // ══════════════════════════════════════════════════════════════
 // 3. Compress
 // ══════════════════════════════════════════════════════════════
@@ -470,6 +497,7 @@ setupDrop(compressDrop, compressUpload, files => {
     origSize.textContent = formatBytes(compressFile.size);
     compSize.textContent = '-';
     savedPct.textContent = '-';
+    document.getElementById('compressClearRow').style.display = 'flex';
     updateCompressPreview();
 });
 
@@ -514,6 +542,17 @@ compressBtn.addEventListener('click', () => {
     img.src = URL.createObjectURL(compressFile);
 });
 
+document.getElementById('compressClear').addEventListener('click', () => {
+    compressFile = null;
+    compressImg.src = '';
+    compressPreview.style.display = 'none';
+    compressOptions.style.display = 'none';
+    document.getElementById('compressClearRow').style.display = 'none';
+    compressBtn.disabled = true;
+    compressSuccess.style.display = 'none';
+    compressUpload.value = '';
+});
+
 // ══════════════════════════════════════════════════════════════
 // 4. Resize
 // ══════════════════════════════════════════════════════════════
@@ -542,6 +581,7 @@ setupDrop(resizeDrop, resizeUpload, files => {
     resizeOptions.style.display = 'block';
     resizeBtn.disabled = false;
     resizeSuccess.style.display = 'none';
+    document.getElementById('resizeClearRow').style.display = 'flex';
     const tmp = new Image();
     tmp.onload = () => {
         origW = tmp.naturalWidth;
@@ -597,6 +637,17 @@ resizeBtn.addEventListener('click', () => {
     img.src = URL.createObjectURL(resizeFile);
 });
 
+document.getElementById('resizeClear').addEventListener('click', () => {
+    resizeFile = null;
+    resizeImg.src = '';
+    resizePreview.style.display = 'none';
+    resizeOptions.style.display = 'none';
+    document.getElementById('resizeClearRow').style.display = 'none';
+    resizeBtn.disabled = true;
+    resizeSuccess.style.display = 'none';
+    resizeUpload.value = '';
+});
+
 // ══════════════════════════════════════════════════════════════
 // 5. Format Converter
 // ══════════════════════════════════════════════════════════════
@@ -622,6 +673,7 @@ setupDrop(convertDrop, convertUpload, files => {
     convertOptions.style.display = 'block';
     convertBtn.disabled = false;
     convertSuccess.style.display = 'none';
+    document.getElementById('convertClearRow').style.display = 'flex';
 });
 
 convertQuality.addEventListener('input', () => {
@@ -651,6 +703,17 @@ convertBtn.addEventListener('click', () => {
     img.src = URL.createObjectURL(convertFile);
 });
 
+document.getElementById('convertClear').addEventListener('click', () => {
+    convertFile = null;
+    convertImg.src = '';
+    convertPreview.style.display = 'none';
+    convertOptions.style.display = 'none';
+    document.getElementById('convertClearRow').style.display = 'none';
+    convertBtn.disabled = true;
+    convertSuccess.style.display = 'none';
+    convertUpload.value = '';
+});
+
 // ══════════════════════════════════════════════════════════════
 // 6. Watermark
 // ══════════════════════════════════════════════════════════════
@@ -678,6 +741,7 @@ setupDrop(wmDrop, wmUpload, files => {
     wmOptions.style.display = 'block';
     wmBtn.disabled = false;
     wmSuccess.style.display = 'none';
+    document.getElementById('wmClearRow').style.display = 'flex';
     renderWatermark();
 });
 
@@ -752,6 +816,18 @@ wmBtn.addEventListener('click', () => {
     }, 100);
 });
 
+document.getElementById('wmClear').addEventListener('click', () => {
+    wmFile = null;
+    wmImg.src = '';
+    wmPreview.style.display = 'none';
+    wmOptions.style.display = 'none';
+    document.getElementById('wmClearRow').style.display = 'none';
+    wmBtn.disabled = true;
+    wmSuccess.style.display = 'none';
+    wmLivePreview.style.display = 'none';
+    wmUpload.value = '';
+});
+
 // ══════════════════════════════════════════════════════════════
 // 7. Merge – 2 Images → JPG / PNG / PDF
 // ══════════════════════════════════════════════════════════════
@@ -782,6 +858,7 @@ setupDrop(mergeDrop1, mergeUpload1, files => {
     mergeFile1 = files[0];
     document.getElementById('mergeImg1').src = URL.createObjectURL(mergeFile1);
     document.getElementById('mergePreview1').style.display = 'block';
+    document.getElementById('merge1ClearRow').style.display = 'flex';
     checkMergeReady();
 });
 
@@ -790,6 +867,25 @@ setupDrop(mergeDrop2, mergeUpload2, files => {
     mergeFile2 = files[0];
     document.getElementById('mergeImg2').src = URL.createObjectURL(mergeFile2);
     document.getElementById('mergePreview2').style.display = 'block';
+    document.getElementById('merge2ClearRow').style.display = 'flex';
+    checkMergeReady();
+});
+
+document.getElementById('merge1Clear').addEventListener('click', () => {
+    mergeFile1 = null;
+    document.getElementById('mergeImg1').src = '';
+    document.getElementById('mergePreview1').style.display = 'none';
+    document.getElementById('merge1ClearRow').style.display = 'none';
+    mergeUpload1.value = '';
+    checkMergeReady();
+});
+
+document.getElementById('merge2Clear').addEventListener('click', () => {
+    mergeFile2 = null;
+    document.getElementById('mergeImg2').src = '';
+    document.getElementById('mergePreview2').style.display = 'none';
+    document.getElementById('merge2ClearRow').style.display = 'none';
+    mergeUpload2.value = '';
     checkMergeReady();
 });
 

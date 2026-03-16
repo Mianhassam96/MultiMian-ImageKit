@@ -10,25 +10,50 @@
 <body>
 
 <header>
-    <div class="header-top">
-        <div class="logo-wrap">
-            <div class="logo-icon">🖼</div>
-            <div class="logo-text">
-                <h1>MultiMian ImageKit</h1>
-                <p class="tagline">Extract Text &bull; Convert &bull; Compress &bull; Resize &bull; Optimize</p>
+    <div class="header-bar">
+        <div class="header-inner">
+            <!-- Logo -->
+            <a href="#" class="logo-wrap" aria-label="MultiMian ImageKit Home">
+                <div class="logo-icon">🖼</div>
+                <div class="logo-text">
+                    <span class="logo-name">MultiMian <span class="logo-accent">ImageKit</span></span>
+                    <span class="tagline">Extract Text &bull; Convert &bull; Compress &bull; Optimize</span>
+                </div>
+            </a>
+
+            <!-- Nav links -->
+            <nav class="header-nav" id="headerNav">
+                <a href="#" class="nav-link active-link">Home</a>
+                <a href="#features" class="nav-link">Features</a>
+                <a href="https://github.com/Mianhassam96/MultiMian-ImageKit" target="_blank" rel="noopener" class="nav-link">GitHub</a>
+                <a href="#" class="nav-cta">Try Now</a>
+            </nav>
+
+            <!-- Right controls -->
+            <div class="header-controls">
+                <button id="darkToggle" class="dark-toggle" title="Toggle dark mode" aria-label="Toggle dark mode">
+                    <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                    <span class="toggle-icon" id="toggleIcon">🌙</span>
+                </button>
+                <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+                    <span></span><span></span><span></span>
+                </button>
             </div>
         </div>
-        <button id="darkToggle" class="dark-toggle" title="Toggle dark mode">🌙</button>
     </div>
-    <nav>
-        <button class="tab-btn active" data-tab="ocr">🔤 Image → Text</button>
-        <button class="tab-btn" data-tab="pdf">� Image → PDF</button>
-        <button class="tab-btn" data-tab="compress">🗜 Compress</button>
-        <button class="tab-btn" data-tab="resize">✂️ Resize</button>
-        <button class="tab-btn" data-tab="convert">🔄 Convert</button>
-        <button class="tab-btn" data-tab="watermark">💧 Watermark</button>
-        <button class="tab-btn" data-tab="merge">🔗 Merge</button>
-    </nav>
+
+    <!-- Tool tabs -->
+    <div class="tabs-bar">
+        <div class="tabs-inner">
+            <button class="tab-btn active" data-tab="ocr">🔤 Image → Text</button>
+            <button class="tab-btn" data-tab="pdf">📄 Image → PDF</button>
+            <button class="tab-btn" data-tab="compress">🗜 Compress</button>
+            <button class="tab-btn" data-tab="resize">✂️ Resize</button>
+            <button class="tab-btn" data-tab="convert">🔄 Convert</button>
+            <button class="tab-btn" data-tab="watermark">💧 Watermark</button>
+            <button class="tab-btn" data-tab="merge">🔗 Merge</button>
+        </div>
+    </div>
 </header>
 
 <main>
@@ -448,21 +473,53 @@
 
 </main>
 
-<footer>
-    <div class="footer-features">
-        <p class="footer-title">All Features</p>
-        <div class="feat-grid">
-            <div class="feat-card">🔤 <strong>OCR — Image → Text</strong><span>Extract text from any image. 10 languages supported.</span></div>
-            <div class="feat-card">📄 <strong>Image → PDF</strong><span>Multi-image PDF with drag-to-reorder pages.</span></div>
-            <div class="feat-card">🗜 <strong>Compress</strong><span>Reduce file size with live quality preview.</span></div>
-            <div class="feat-card">✂️ <strong>Resize</strong><span>Aspect-ratio lock + social media presets.</span></div>
-            <div class="feat-card">🔄 <strong>Format Convert</strong><span>JPG ↔ PNG ↔ WebP with quality control.</span></div>
-            <div class="feat-card">💧 <strong>Watermark</strong><span>Text watermark with position, opacity &amp; color.</span></div>
-            <div class="feat-card">🔗 <strong>Merge Images</strong><span>Combine 2 images into one PDF page — side-by-side or stacked.</span></div>
+<footer id="features">
+    <div class="footer-inner">
+
+        <!-- Col 1: Brand -->
+        <div class="footer-col">
+            <div class="footer-logo">
+                <span class="footer-logo-icon">🖼</span>
+                <span class="footer-logo-name">MultiMian <span>ImageKit</span></span>
+            </div>
+            <p class="footer-about">Extract Text &bull; Convert to PDF &bull; Compress &amp; Optimize Images Instantly. Built with ❤️ by MultiMian. 100% in-browser — no upload, no install.</p>
+            <p class="footer-version">v2.1 &nbsp;·&nbsp; MIT License</p>
         </div>
-        <p class="browser-support">Chrome ✅ &nbsp; Edge ✅ &nbsp; Firefox ✅ &nbsp; Safari ✅ &nbsp;—&nbsp; Desktop &amp; Mobile &nbsp;·&nbsp; No upload &nbsp;·&nbsp; No install</p>
+
+        <!-- Col 2: Features -->
+        <div class="footer-col">
+            <p class="footer-col-title">All Features</p>
+            <ul class="footer-links">
+                <li>🔤 OCR — Image → Text</li>
+                <li>📄 Image → PDF (multi-page)</li>
+                <li>🗜 Compress Image</li>
+                <li>✂️ Resize Image</li>
+                <li>🔄 Format Convert</li>
+                <li>💧 Watermark</li>
+                <li>🔗 Merge 2 Images → PDF</li>
+            </ul>
+        </div>
+
+        <!-- Col 3: Quick Links + Connect -->
+        <div class="footer-col">
+            <p class="footer-col-title">Quick Links</p>
+            <ul class="footer-links footer-nav-links">
+                <li><a href="#">🏠 Home</a></li>
+                <li><a href="#features">⭐ Features</a></li>
+                <li><a href="https://github.com/Mianhassam96/MultiMian-ImageKit" target="_blank" rel="noopener">🐙 GitHub Repo</a></li>
+                <li><a href="https://github.com/Mianhassam96" target="_blank" rel="noopener">👤 MultiMian Profile</a></li>
+            </ul>
+            <p class="footer-col-title" style="margin-top:18px;">Browser Support</p>
+            <p class="footer-browsers">Chrome ✅ &nbsp; Edge ✅ &nbsp; Firefox ✅ &nbsp; Safari ✅</p>
+        </div>
+
     </div>
-    <p class="footer-copy">&copy; 2025 MultiMian ImageKit &nbsp;·&nbsp; Extract Text • Convert to PDF • Compress &amp; Optimize Images Instantly</p>
+
+    <!-- Bottom bar -->
+    <div class="footer-bottom">
+        <p>&copy; 2026 MultiMian ImageKit &nbsp;·&nbsp; Extract Text • Convert to PDF • Compress &amp; Optimize Images Instantly</p>
+        <a href="#" class="scroll-top" title="Back to top" aria-label="Scroll to top">↑</a>
+    </div>
 </footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>

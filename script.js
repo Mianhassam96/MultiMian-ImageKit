@@ -1,14 +1,32 @@
 // ── Dark Mode ─────────────────────────────────────────────────
 const darkToggle = document.getElementById('darkToggle');
+const toggleIcon = document.getElementById('toggleIcon');
 const html = document.documentElement;
 const savedTheme = localStorage.getItem('theme') || 'light';
 html.setAttribute('data-theme', savedTheme);
-darkToggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+toggleIcon.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
 darkToggle.addEventListener('click', () => {
     const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
     html.setAttribute('data-theme', next);
     localStorage.setItem('theme', next);
-    darkToggle.textContent = next === 'dark' ? '☀️' : '🌙';
+    toggleIcon.textContent = next === 'dark' ? '☀️' : '🌙';
+});
+
+// ── Hamburger Menu ─────────────────────────────────────────────
+const hamburger = document.getElementById('hamburger');
+const headerNav = document.getElementById('headerNav');
+hamburger.addEventListener('click', () => {
+    const open = headerNav.classList.toggle('open');
+    hamburger.classList.toggle('open', open);
+    hamburger.setAttribute('aria-expanded', open);
+});
+// Close nav when a link is clicked
+headerNav.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+        headerNav.classList.remove('open');
+        hamburger.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', false);
+    });
 });
 
 // ── Tab switching ──────────────────────────────────────────────

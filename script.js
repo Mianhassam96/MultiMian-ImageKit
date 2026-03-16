@@ -12,31 +12,31 @@ darkToggle.addEventListener('click', () => {
     toggleIcon.textContent = next === 'dark' ? '☀️' : '🌙';
 });
 
-// ── Hamburger Menu ─────────────────────────────────────────────
-const hamburger = document.getElementById('hamburger');
-const headerNav = document.getElementById('headerNav');
+// ── Hamburger / Mobile Drawer ──────────────────────────────────
+const hamburger    = document.getElementById('hamburger');
+const mobileDrawer = document.getElementById('mobileDrawer');
 hamburger.addEventListener('click', () => {
-    const open = headerNav.classList.toggle('open');
+    const open = mobileDrawer.classList.toggle('open');
     hamburger.classList.toggle('open', open);
     hamburger.setAttribute('aria-expanded', open);
 });
-// Close nav when a link is clicked
-headerNav.querySelectorAll('a').forEach(a => {
-    a.addEventListener('click', () => {
-        headerNav.classList.remove('open');
-        hamburger.classList.remove('open');
-        hamburger.setAttribute('aria-expanded', false);
-    });
-});
 
-// ── Tab switching ──────────────────────────────────────────────
-document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
-        btn.classList.add('active');
-        document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+// ── Tab switching (syncs both desktop tabs-nav + mobile drawer) ─
+function activateTab(tabId) {
+    document.querySelectorAll('.tab-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.tab === tabId);
     });
+    document.querySelectorAll('.tab-section').forEach(s => {
+        s.classList.toggle('active', s.id === 'tab-' + tabId);
+    });
+    // close drawer on mobile
+    mobileDrawer.classList.remove('open');
+    hamburger.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', false);
+}
+
+document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => activateTab(btn.dataset.tab));
 });
 
 // ── Shared Helpers ─────────────────────────────────────────────

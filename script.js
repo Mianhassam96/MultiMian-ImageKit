@@ -26,18 +26,39 @@ function activateTab(tabId) {
     document.querySelectorAll('.tab-btn').forEach(b => {
         b.classList.toggle('active', b.dataset.tab === tabId);
     });
-    document.querySelectorAll('.tab-section').forEach(s => {
-        s.classList.toggle('active', s.id === 'tab-' + tabId);
-    });
+
+    if (tabId === 'home') {
+        // Show home section, hide all tool sections
+        document.getElementById('tab-home').style.display = 'block';
+        document.querySelectorAll('.tab-section:not(#tab-home)').forEach(s => {
+            s.classList.remove('active');
+        });
+    } else {
+        // Hide home section, show the target tool section
+        document.getElementById('tab-home').style.display = 'none';
+        document.querySelectorAll('.tab-section:not(#tab-home)').forEach(s => {
+            s.classList.toggle('active', s.id === 'tab-' + tabId);
+        });
+    }
+
     // close drawer on mobile
     mobileDrawer.classList.remove('open');
     hamburger.classList.remove('open');
     hamburger.setAttribute('aria-expanded', false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', () => activateTab(btn.dataset.tab));
 });
+
+// ── Hero CTA buttons & Home cards ─────────────────────────────
+document.querySelectorAll('.hero-cta[data-tab], .home-card[data-tab]').forEach(el => {
+    el.addEventListener('click', () => activateTab(el.dataset.tab));
+});
+
+// ── Initial state: show Home tab on load ──────────────────────
+activateTab('home');
 
 // ── Shared Helpers ─────────────────────────────────────────────
 function setupDrop(zone, input, onFiles) {
@@ -624,7 +645,7 @@ wmBtn.addEventListener('click', () => {
 });
 
 // ══════════════════════════════════════════════════════════════
-// 7. Merge – 2 Images → 1 PDF page
+// 7. Merge – 2 Images → JPG / PNG / PDF
 // ══════════════════════════════════════════════════════════════
 const mergeDrop1   = document.getElementById('mergeDrop1');
 const mergeUpload1 = document.getElementById('mergeUpload1');
@@ -637,6 +658,16 @@ let mergeFile1 = null, mergeFile2 = null;
 function checkMergeReady() {
     mergeBtn.disabled = !(mergeFile1 && mergeFile2);
 }
+
+// Show/hide PDF-only options based on selected output format
+document.getElementById('mergeOutputFormat').addEventListener('change', function () {
+    const isPdf = this.value === 'pdf';
+    document.getElementById('mergePdfOpts').style.display      = isPdf ? '' : 'none';
+    document.getElementById('mergePdfOrientOpt').style.display = isPdf ? '' : 'none';
+});
+// Init: hide PDF options (default is JPG)
+document.getElementById('mergePdfOpts').style.display      = 'none';
+document.getElementById('mergePdfOrientOpt').style.display = 'none';
 
 setupDrop(mergeDrop1, mergeUpload1, files => {
     if (!files[0]) return;
@@ -654,62 +685,105 @@ setupDrop(mergeDrop2, mergeUpload2, files => {
     checkMergeReady();
 });
 
+// Helper: load a File into an Image element
+function fileToImage(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = e => {
+            const img = new Image();
+            img.onload = () => resolve(img);
+            img.onerror = reject;
+            img.src = e.target.result;
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
+}
+
 mergeBtn.addEventListener('click', async () => {
     if (!mergeFile1 || !mergeFile2) return;
     mergeBtn.disabled = true;
     mergeSuccess.style.display = 'none';
 
-    const layout      = document.getElementById('mergeLayout').value;
-    const pageSize    = document.getElementById('mergePageSize').value;
-    const orientation = document.getElementById('mergeOrientation').value;
-    const { jsPDF }   = window.jspdf;
-    const pdf         = new jsPDF({ orientation, unit: 'pt', format: pageSize });
-    const pw = pdf.internal.pageSize.getWidth();
-    const ph = pdf.internal.pageSize.getHeight();
-    const pad = 10;
+    const layout = document.getElementById('mergeLayout').value;
+    const format = document.getElementById('mergeOutputFormat').value; // 'jpg' | 'png' | 'pdf'
 
-    // Always convert via canvas → JPEG so jsPDF gets reliable data regardless of input format
-    function toJpegDataUrl(file) {
-        return new Promise(resolve => {
-            const reader = new FileReader();
-            reader.onload = e => {
-                const img = new Image();
-                img.onload = () => {
-                    const c = document.createElement('canvas');
-                    c.width = img.naturalWidth;
-                    c.height = img.naturalHeight;
-                    c.getContext('2d').drawImage(img, 0, 0);
-                    resolve({ dataUrl: c.toDataURL('image/jpeg', 0.92), w: img.naturalWidth, h: img.naturalHeight });
-                };
-                img.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        });
+    try {
+        const [img1, img2] = await Promise.all([fileToImage(mergeFile1), fileToImage(mergeFile2)]);
+
+        if (format === 'pdf') {
+            // ── PDF output ──────────────────────────────────────────
+            const pageSize    = document.getElementById('mergePageSize').value;
+            const orientation = document.getElementById('mergeOrientation').value;
+            const { jsPDF }   = window.jspdf;
+            const pdf         = new jsPDF({ orientation, unit: 'pt', format: pageSize });
+            const pw = pdf.internal.pageSize.getWidth();
+            const ph = pdf.internal.pageSize.getHeight();
+            const pad = 10;
+
+            function imgToJpeg(img) {
+                const c = document.createElement('canvas');
+                c.width = img.naturalWidth; c.height = img.naturalHeight;
+                c.getContext('2d').drawImage(img, 0, 0);
+                return c.toDataURL('image/jpeg', 0.92);
+            }
+
+            const d1 = imgToJpeg(img1), d2 = imgToJpeg(img2);
+
+            if (layout === 'side') {
+                const slotW = (pw - pad * 3) / 2, slotH = ph - pad * 2;
+                const r1 = Math.min(slotW / img1.naturalWidth, slotH / img1.naturalHeight);
+                const r2 = Math.min(slotW / img2.naturalWidth, slotH / img2.naturalHeight);
+                pdf.addImage(d1, 'JPEG', pad,              pad + (slotH - img1.naturalHeight * r1) / 2, img1.naturalWidth * r1, img1.naturalHeight * r1);
+                pdf.addImage(d2, 'JPEG', pad * 2 + slotW,  pad + (slotH - img2.naturalHeight * r2) / 2, img2.naturalWidth * r2, img2.naturalHeight * r2);
+            } else {
+                const slotW = pw - pad * 2, slotH = (ph - pad * 3) / 2;
+                const r1 = Math.min(slotW / img1.naturalWidth, slotH / img1.naturalHeight);
+                const r2 = Math.min(slotW / img2.naturalWidth, slotH / img2.naturalHeight);
+                pdf.addImage(d1, 'JPEG', pad + (slotW - img1.naturalWidth * r1) / 2, pad,              img1.naturalWidth * r1, img1.naturalHeight * r1);
+                pdf.addImage(d2, 'JPEG', pad + (slotW - img2.naturalWidth * r2) / 2, pad * 2 + slotH, img2.naturalWidth * r2, img2.naturalHeight * r2);
+            }
+            pdf.save('merged.pdf');
+
+        } else {
+            // ── JPG / PNG output ────────────────────────────────────
+            const canvas = document.createElement('canvas');
+            const ctx    = canvas.getContext('2d');
+            const gap    = 10;
+
+            if (layout === 'side') {
+                // Normalize heights to the taller image
+                const h = Math.max(img1.naturalHeight, img2.naturalHeight);
+                const w1 = Math.round(img1.naturalWidth  * (h / img1.naturalHeight));
+                const w2 = Math.round(img2.naturalWidth  * (h / img2.naturalHeight));
+                canvas.width  = w1 + gap + w2;
+                canvas.height = h;
+                ctx.drawImage(img1, 0, 0, w1, h);
+                ctx.drawImage(img2, w1 + gap, 0, w2, h);
+            } else {
+                // Normalize widths to the wider image
+                const w = Math.max(img1.naturalWidth, img2.naturalWidth);
+                const h1 = Math.round(img1.naturalHeight * (w / img1.naturalWidth));
+                const h2 = Math.round(img2.naturalHeight * (w / img2.naturalWidth));
+                canvas.width  = w;
+                canvas.height = h1 + gap + h2;
+                ctx.drawImage(img1, 0, 0, w, h1);
+                ctx.drawImage(img2, 0, h1 + gap, w, h2);
+            }
+
+            const mime = format === 'png' ? 'image/png' : 'image/jpeg';
+            const quality = format === 'png' ? 1 : 0.92;
+            canvas.toBlob(blob => {
+                triggerDownload(URL.createObjectURL(blob), `merged.${format}`);
+                mergeSuccess.style.display = 'block';
+                mergeBtn.disabled = false;
+            }, mime, quality);
+            return; // early return — blob callback handles re-enable
+        }
+
+        mergeSuccess.style.display = 'block';
+    } catch (err) {
+        alert('Merge failed: ' + err.message);
     }
-
-    const [d1, d2] = await Promise.all([toJpegDataUrl(mergeFile1), toJpegDataUrl(mergeFile2)]);
-
-    if (layout === 'side') {
-        const slotW = (pw - pad * 3) / 2;
-        const slotH = ph - pad * 2;
-        const r1 = Math.min(slotW / d1.w, slotH / d1.h);
-        const r2 = Math.min(slotW / d2.w, slotH / d2.h);
-        const w1 = d1.w * r1, h1 = d1.h * r1;
-        const w2 = d2.w * r2, h2 = d2.h * r2;
-        pdf.addImage(d1.dataUrl, 'JPEG', pad,            pad + (slotH - h1) / 2, w1, h1);
-        pdf.addImage(d2.dataUrl, 'JPEG', pad * 2 + slotW, pad + (slotH - h2) / 2, w2, h2);
-    } else {
-        const slotW = pw - pad * 2;
-        const slotH = (ph - pad * 3) / 2;
-        const r1 = Math.min(slotW / d1.w, slotH / d1.h);
-        const r2 = Math.min(slotW / d2.w, slotH / d2.h);
-        const w1 = d1.w * r1, h1 = d1.h * r1;
-        const w2 = d2.w * r2, h2 = d2.h * r2;
-        pdf.addImage(d1.dataUrl, 'JPEG', pad + (slotW - w1) / 2, pad,              w1, h1);
-        pdf.addImage(d2.dataUrl, 'JPEG', pad + (slotW - w2) / 2, pad * 2 + slotH, w2, h2);
-    }
-
-    pdf.save('merged.pdf');
-    mergeSuccess.style.display = 'block';
     mergeBtn.disabled = false;
 });

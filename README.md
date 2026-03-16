@@ -1,4 +1,4 @@
-MultiMian Image or Text to PDF Tool
+MultiMian ImageKit
 
 The MultiMian Image or Text to PDF Tool is a simple and efficient tool that allows users to convert both image files and text documents into high-quality PDF files. Whether you're a student, professional, or anyone in need of convenient document management, this tool provides a user-friendly interface for quick and reliable conversions.
 Features

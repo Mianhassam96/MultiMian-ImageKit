@@ -1,42 +1,195 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text JPG/PNG to PDF Converter</title>
+    <title>MultiMian ImageKit – Extract Text • Convert • Compress • Resize</title>
+    <meta name="description" content="Free browser-based image toolkit. OCR, PDF converter, compressor, resizer and format converter. No upload, no install.">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
-        <h1>MultiMian PDF converter</h1>
+        <div class="header-top">
+            <div>
+                <h1>MultiMian ImageKit</h1>
+                <p class="tagline">Extract Text &bull; Convert &bull; Compress &bull; Resize &bull; Optimize</p>
+            </div>
+            <button id="darkToggle" class="dark-toggle" title="Toggle dark mode">🌙</button>
+        </div>
         <nav>
-            <a href="index.html">Home</a>
-            <a href="about.html">About</a>
+            <button class="tab-btn active" data-tab="ocr">🔤 Image → Text</button>
+            <button class="tab-btn" data-tab="pdf">📄 Image → PDF</button>
+            <button class="tab-btn" data-tab="compress">🗜 Compress</button>
+            <button class="tab-btn" data-tab="resize">✂️ Resize</button>
+            <button class="tab-btn" data-tab="convert">🔄 Convert</button>
         </nav>
     </header>
 
     <main>
-        <h2>Upload Your JPG or PNG Images</h2>
-        <p>You can upload as many images as you like!</p>
-        <input type="file" id="imageUpload" accept="image/jpeg, image/png" multiple>
-        
-        <h3>Add Document Text</h3>
-        <textarea id="documentText" placeholder="Enter document text here..." rows="5" style="width: 100%; margin-top: 10px;"></textarea>
-        
-        <button id="convertButton">Convert & Download PDF</button>
-        <p class="loading" id="loadingText" style="display: none;">Converting... Please wait</p>
-        <p id="downloadLink"></p>
 
-        <div id="imagePreview" style="margin-top: 20px;"></div>
+        <!-- ── OCR Tab ── -->
+        <section id="tab-ocr" class="tab-section active">
+            <h2>Extract Text from Image</h2>
+            <div class="drop-zone" id="ocrDrop">
+                <div class="drop-icon">🖼️</div>
+                <p>Drop image here or <label for="ocrUpload" class="link">click to upload</label></p>
+                <input type="file" id="ocrUpload" accept="image/*" hidden>
+            </div>
+            <div id="ocrPreview" class="preview-box" style="display:none;">
+                <img id="ocrImg" alt="Preview">
+                <div class="file-info" id="ocrFileInfo"></div>
+            </div>
+            <button id="ocrBtn" class="primary-btn" disabled>Extract Text</button>
+            <div class="progress-bar" id="ocrProgress" style="display:none;">
+                <div class="progress-fill" id="ocrProgressFill"></div>
+                <span id="ocrProgressLabel">0%</span>
+            </div>
+            <div id="ocrResult" style="display:none;">
+                <textarea id="ocrText" rows="8" readonly placeholder="Extracted text will appear here..."></textarea>
+                <div class="action-row">
+                    <button id="ocrCopy" class="secondary-btn">📋 Copy</button>
+                    <button id="ocrDownloadTxt" class="secondary-btn">⬇ .txt</button>
+                    <button id="ocrToPdf" class="secondary-btn">📄 to PDF</button>
+                </div>
+                <p class="success-msg" id="ocrSuccess" style="display:none;">✔ Text extracted successfully</p>
+            </div>
+        </section>
 
-      
+        <!-- ── PDF Tab ── -->
+        <section id="tab-pdf" class="tab-section">
+            <h2>Convert Images to PDF</h2>
+            <div class="drop-zone" id="pdfDrop">
+                <div class="drop-icon">📁</div>
+                <p>Drop images here or <label for="pdfUpload" class="link">click to upload</label></p>
+                <input type="file" id="pdfUpload" accept="image/jpeg,image/png,image/webp" multiple hidden>
+            </div>
+            <div id="pdfImageList" class="image-list"></div>
+            <div class="options-row">
+                <label>Page Size:
+                    <select id="pdfPageSize">
+                        <option value="a4">A4</option>
+                        <option value="letter">Letter</option>
+                    </select>
+                </label>
+                <label>Orientation:
+                    <select id="pdfOrientation">
+                        <option value="portrait">Portrait</option>
+                        <option value="landscape">Landscape</option>
+                    </select>
+                </label>
+                <label>Margin (px):
+                    <input type="number" id="pdfMargin" value="10" min="0" max="50" style="width:60px;">
+                </label>
+            </div>
+            <button id="pdfBtn" class="primary-btn" disabled>Convert &amp; Download PDF</button>
+            <div class="progress-bar" id="pdfProgress" style="display:none;">
+                <div class="progress-fill" id="pdfProgressFill"></div>
+                <span id="pdfProgressLabel">0%</span>
+            </div>
+            <p class="success-msg" id="pdfSuccess" style="display:none;">✔ PDF downloaded successfully</p>
+        </section>
+
+        <!-- ── Compress Tab ── -->
+        <section id="tab-compress" class="tab-section">
+            <h2>Compress Image</h2>
+            <div class="drop-zone" id="compressDrop">
+                <div class="drop-icon">🗜️</div>
+                <p>Drop image here or <label for="compressUpload" class="link">click to upload</label></p>
+                <input type="file" id="compressUpload" accept="image/jpeg,image/png,image/webp" hidden>
+            </div>
+            <div id="compressPreview" class="preview-box" style="display:none;">
+                <img id="compressImg" alt="Preview">
+                <div class="file-info" id="compressFileInfo"></div>
+            </div>
+            <div id="compressOptions" style="display:none;">
+                <label class="quality-label">Quality: <span id="qualityValue">80</span>%
+                    <input type="range" id="qualitySlider" min="1" max="100" value="80">
+                </label>
+                <div class="size-info">
+                    <span>Original: <strong id="origSize">-</strong></span>
+                    <span>Compressed: <strong id="compSize">-</strong></span>
+                    <span>Saved: <strong id="savedPct">-</strong></span>
+                </div>
+            </div>
+            <button id="compressBtn" class="primary-btn" disabled>Compress &amp; Download</button>
+            <p class="success-msg" id="compressSuccess" style="display:none;">✔ Image compressed successfully</p>
+        </section>
+
+        <!-- ── Resize Tab ── -->
+        <section id="tab-resize" class="tab-section">
+            <h2>Resize Image</h2>
+            <div class="drop-zone" id="resizeDrop">
+                <div class="drop-icon">✂️</div>
+                <p>Drop image here or <label for="resizeUpload" class="link">click to upload</label></p>
+                <input type="file" id="resizeUpload" accept="image/*" hidden>
+            </div>
+            <div id="resizePreview" class="preview-box" style="display:none;">
+                <img id="resizeImg" alt="Preview">
+                <div class="file-info" id="resizeFileInfo"></div>
+            </div>
+            <div id="resizeOptions" style="display:none;">
+                <div class="options-row">
+                    <label>Width (px):
+                        <input type="number" id="resizeWidth" min="1" placeholder="e.g. 1920">
+                    </label>
+                    <label>Height (px):
+                        <input type="number" id="resizeHeight" min="1" placeholder="e.g. 1080">
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="resizeLock" checked> Lock ratio
+                    </label>
+                </div>
+                <div class="presets-row">
+                    <span>Presets:</span>
+                    <button class="preset-btn" data-w="1920" data-h="1080">1920×1080</button>
+                    <button class="preset-btn" data-w="1280" data-h="720">1280×720</button>
+                    <button class="preset-btn" data-w="800" data-h="600">800×600</button>
+                    <button class="preset-btn" data-w="1080" data-h="1080">1080×1080 (IG)</button>
+                    <button class="preset-btn" data-w="1200" data-h="630">1200×630 (OG)</button>
+                </div>
+            </div>
+            <button id="resizeBtn" class="primary-btn" disabled>Resize &amp; Download</button>
+            <p class="success-msg" id="resizeSuccess" style="display:none;">✔ Image resized successfully</p>
+        </section>
+
+        <!-- ── Convert Tab ── -->
+        <section id="tab-convert" class="tab-section">
+            <h2>Convert Image Format</h2>
+            <div class="drop-zone" id="convertDrop">
+                <div class="drop-icon">🔄</div>
+                <p>Drop image here or <label for="convertUpload" class="link">click to upload</label></p>
+                <input type="file" id="convertUpload" accept="image/*" hidden>
+            </div>
+            <div id="convertPreview" class="preview-box" style="display:none;">
+                <img id="convertImg" alt="Preview">
+                <div class="file-info" id="convertFileInfo"></div>
+            </div>
+            <div id="convertOptions" style="display:none;">
+                <div class="options-row">
+                    <label>Convert to:
+                        <select id="convertFormat">
+                            <option value="image/jpeg">JPG</option>
+                            <option value="image/png">PNG</option>
+                            <option value="image/webp">WebP</option>
+                        </select>
+                    </label>
+                    <label>Quality (JPG/WebP): <span id="convertQualityVal">90</span>%
+                        <input type="range" id="convertQuality" min="1" max="100" value="90">
+                    </label>
+                </div>
+            </div>
+            <button id="convertBtn" class="primary-btn" disabled>Convert &amp; Download</button>
+            <p class="success-msg" id="convertSuccess" style="display:none;">✔ Image converted successfully</p>
+        </section>
+
     </main>
- 
+
     <footer>
-<p>&copy; <span id="year"></span> <strong>MultiMian</strong> | Crafted with ❤️ and code. All rights reserved.</p>
+        <p>&copy; 2025 MultiMian. All rights reserved.</p>
     </footer>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
-    <script src="script.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

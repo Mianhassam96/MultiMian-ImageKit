@@ -1,32 +1,38 @@
-MultiMian ImageKit
+# MultiMian ImageKit
 
-The MultiMian Image or Text to PDF Tool is a simple and efficient tool that allows users to convert both image files and text documents into high-quality PDF files. Whether you're a student, professional, or anyone in need of convenient document management, this tool provides a user-friendly interface for quick and reliable conversions.
-Features
+**Extract Text • Convert • Compress • Resize • Optimize Images — All in One Smart Toolkit**
 
-    Image to PDF: Convert multiple image formats (JPG, PNG, etc.) to a single PDF.
-    Text to PDF: Convert text files or pasted text into PDF format.
-    High-quality output: Ensures that your converted files retain their clarity and quality.
-    Fast and easy to use: Upload, convert, and download your files with a few clicks.
-    Free to use: No need for expensive software or subscriptions.
+A fast, browser-based image utility tool. No installation, no backend upload — everything runs locally in your browser.
 
-How to Use
+🌐 **Live Demo:** https://mianhassam96.github.io/MultiMian-ImageKit/
 
-    Upload your image or text file:
-        For images: Select an image file from your device (JPG, PNG, etc.).
-        For text: Paste the text directly or upload a .txt file.
+---
 
-    Convert the file: Click the "Convert" button.
+## ✨ Features
 
-    Download the PDF: Once the conversion is complete, download your newly created PDF.
+| Tool | Description |
+|------|-------------|
+| 🔤 Image → Text (OCR) | Extract text from JPG, PNG, WebP. Copy, download as .txt or convert to PDF |
+| 📄 Image → PDF | Multi-image PDF with drag-to-reorder, page size, orientation & margin options |
+| 🗜 Compress | Reduce file size with quality slider. Shows original vs compressed size live |
+| ✂️ Resize | Resize by width/height with aspect ratio lock. Social media presets included |
+| 🔄 Format Convert | Convert between JPG, PNG, and WebP with quality control |
 
-Requirements
+## 🎨 UI / UX
 
-    Web browser: Any modern web browser (Chrome, Firefox, Edge, Safari).
-    Internet connection: Required to upload files and download the converted PDF.
+- Dark mode & light mode (saved to localStorage)
+- Drag & drop upload on all tools
+- File info panel: name, size, resolution, format
+- Animated progress bars
+- Mobile responsive layout
 
-License
+## 💻 Technologies
 
-This tool is open-source and free to use. Feel free to modify and improve it. Contributions are always welcome!
+- HTML5, CSS3, Vanilla JavaScript (ES6+)
+- [jsPDF](https://github.com/parallax/jsPDF) — PDF generation
+- [Tesseract.js](https://github.com/naptha/tesseract.js) — Browser OCR
+- Canvas API — Image manipulation
 
-Live perview:
-https://text-jpg-png-to-pdf-converter.vercel.app/
+## 📄 License
+
+MIT License — Free for personal and commercial use.

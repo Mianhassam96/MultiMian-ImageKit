@@ -738,3 +738,28 @@ footer {
     .tab-btn { padding: 8px 8px 10px; font-size: 0.75em; }
     .logo-icon { width: 36px; height: 36px; font-size: 1.1em; }
 }
+
+/* ── Merge Tool ────────────────────────────────────────────── */
+.merge-uploads {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+.merge-slot { display: flex; flex-direction: column; }
+.merge-slot-label {
+    font-size: 0.78em;
+    font-weight: 700;
+    color: var(--text2);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+    text-align: center;
+}
+.merge-slot .drop-zone { padding: 22px 10px; }
+.merge-slot .drop-zone .drop-icon { font-size: 1.8em; margin-bottom: 6px; }
+.merge-slot .drop-zone p { font-size: 0.82em; }
+.merge-slot .preview-box img { max-height: 140px; }
+
+@media (max-width: 500px) {
+    .merge-uploads { grid-template-columns: 1fr; }
+}

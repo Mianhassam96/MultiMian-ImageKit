@@ -604,3 +604,86 @@ wmBtn.addEventListener('click', () => {
         wmSuccess.style.display = 'block';
     }, 100);
 });
+
+// ══════════════════════════════════════════════════════════════
+// 7. Merge – 2 Images → 1 PDF page
+// ══════════════════════════════════════════════════════════════
+const mergeDrop1   = document.getElementById('mergeDrop1');
+const mergeUpload1 = document.getElementById('mergeUpload1');
+const mergeDrop2   = document.getElementById('mergeDrop2');
+const mergeUpload2 = document.getElementById('mergeUpload2');
+const mergeBtn     = document.getElementById('mergeBtn');
+const mergeSuccess = document.getElementById('mergeSuccess');
+let mergeFile1 = null, mergeFile2 = null;
+
+function checkMergeReady() {
+    mergeBtn.disabled = !(mergeFile1 && mergeFile2);
+}
+
+setupDrop(mergeDrop1, mergeUpload1, files => {
+    if (!files[0]) return;
+    mergeFile1 = files[0];
+    document.getElementById('mergeImg1').src = URL.createObjectURL(mergeFile1);
+    document.getElementById('mergePreview1').style.display = 'block';
+    checkMergeReady();
+});
+
+setupDrop(mergeDrop2, mergeUpload2, files => {
+    if (!files[0]) return;
+    mergeFile2 = files[0];
+    document.getElementById('mergeImg2').src = URL.createObjectURL(mergeFile2);
+    document.getElementById('mergePreview2').style.display = 'block';
+    checkMergeReady();
+});
+
+mergeBtn.addEventListener('click', async () => {
+    if (!mergeFile1 || !mergeFile2) return;
+    mergeBtn.disabled = true;
+    mergeSuccess.style.display = 'none';
+
+    const layout      = document.getElementById('mergeLayout').value;
+    const pageSize    = document.getElementById('mergePageSize').value;
+    const orientation = document.getElementById('mergeOrientation').value;
+    const { jsPDF }   = window.jspdf;
+    const pdf         = new jsPDF({ orientation, unit: 'pt', format: pageSize });
+    const pw = pdf.internal.pageSize.getWidth();
+    const ph = pdf.internal.pageSize.getHeight();
+    const pad = 10;
+
+    const [url1, url2] = await Promise.all([fileToDataUrl(mergeFile1), fileToDataUrl(mergeFile2)]);
+    const [img1, img2] = await Promise.all([loadImage(url1), loadImage(url2)]);
+
+    const fmt1 = mergeFile1.type === 'image/png' ? 'PNG' : 'JPEG';
+    const fmt2 = mergeFile2.type === 'image/png' ? 'PNG' : 'JPEG';
+
+    if (layout === 'side') {
+        // Each image gets half the page width
+        const slotW = (pw - pad * 3) / 2;
+        const slotH = ph - pad * 2;
+        const r1 = Math.min(slotW / img1.naturalWidth, slotH / img1.naturalHeight);
+        const r2 = Math.min(slotW / img2.naturalWidth, slotH / img2.naturalHeight);
+        const w1 = img1.naturalWidth * r1, h1 = img1.naturalHeight * r1;
+        const w2 = img2.naturalWidth * r2, h2 = img2.naturalHeight * r2;
+        // Center each image vertically in its slot
+        const y1 = pad + (slotH - h1) / 2;
+        const y2 = pad + (slotH - h2) / 2;
+        pdf.addImage(url1, fmt1, pad, y1, w1, h1);
+        pdf.addImage(url2, fmt2, pad * 2 + slotW, y2, w2, h2);
+    } else {
+        // Stacked: each image gets half the page height
+        const slotW = pw - pad * 2;
+        const slotH = (ph - pad * 3) / 2;
+        const r1 = Math.min(slotW / img1.naturalWidth, slotH / img1.naturalHeight);
+        const r2 = Math.min(slotW / img2.naturalWidth, slotH / img2.naturalHeight);
+        const w1 = img1.naturalWidth * r1, h1 = img1.naturalHeight * r1;
+        const w2 = img2.naturalWidth * r2, h2 = img2.naturalHeight * r2;
+        const x1 = pad + (slotW - w1) / 2;
+        const x2 = pad + (slotW - w2) / 2;
+        pdf.addImage(url1, fmt1, x1, pad, w1, h1);
+        pdf.addImage(url2, fmt2, x2, pad * 2 + slotH, w2, h2);
+    }
+
+    pdf.save('merged.pdf');
+    mergeSuccess.style.display = 'block';
+    mergeBtn.disabled = false;
+});

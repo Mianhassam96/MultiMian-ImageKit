@@ -27,6 +27,7 @@
         <button class="tab-btn" data-tab="resize">✂️ Resize</button>
         <button class="tab-btn" data-tab="convert">🔄 Convert</button>
         <button class="tab-btn" data-tab="watermark">💧 Watermark</button>
+        <button class="tab-btn" data-tab="merge">🔗 Merge</button>
     </nav>
 </header>
 
@@ -376,6 +377,75 @@
         <p class="success-msg" id="wmSuccess" style="display:none;">✔ Watermarked image downloaded</p>
     </section>
 
+    <!-- ══ Merge Tab ══ -->
+    <section id="tab-merge" class="tab-section">
+        <div class="section-header">
+            <div class="section-icon">🔗</div>
+            <div>
+                <h2>Merge 2 Images into PDF</h2>
+                <p>Combine two images side-by-side or stacked on one PDF page</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="merge-uploads">
+                <div class="merge-slot">
+                    <p class="merge-slot-label">Image 1</p>
+                    <div class="drop-zone" id="mergeDrop1">
+                        <span class="drop-icon">🖼️</span>
+                        <p>Drop or <label for="mergeUpload1" class="link">upload</label></p>
+                        <input type="file" id="mergeUpload1" accept="image/*" hidden>
+                    </div>
+                    <div id="mergePreview1" class="preview-box" style="display:none; margin-top:10px;">
+                        <img id="mergeImg1" alt="Image 1 preview">
+                    </div>
+                </div>
+                <div class="merge-slot">
+                    <p class="merge-slot-label">Image 2</p>
+                    <div class="drop-zone" id="mergeDrop2">
+                        <span class="drop-icon">🖼️</span>
+                        <p>Drop or <label for="mergeUpload2" class="link">upload</label></p>
+                        <input type="file" id="mergeUpload2" accept="image/*" hidden>
+                    </div>
+                    <div id="mergePreview2" class="preview-box" style="display:none; margin-top:10px;">
+                        <img id="mergeImg2" alt="Image 2 preview">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="options-panel">
+                <div class="opt-group">
+                    <label>Layout</label>
+                    <select id="mergeLayout">
+                        <option value="side">Side by Side</option>
+                        <option value="stack">Stacked</option>
+                    </select>
+                </div>
+                <div class="opt-group">
+                    <label>Page Size</label>
+                    <select id="mergePageSize">
+                        <option value="a4">A4</option>
+                        <option value="letter">Letter</option>
+                    </select>
+                </div>
+                <div class="opt-group">
+                    <label>Orientation</label>
+                    <select id="mergeOrientation">
+                        <option value="landscape">Landscape</option>
+                        <option value="portrait">Portrait</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="btn-row">
+            <button id="mergeBtn" class="primary-btn" disabled>🔗 Merge &amp; Download PDF</button>
+        </div>
+        <p class="success-msg" id="mergeSuccess" style="display:none;">✔ Merged PDF downloaded</p>
+    </section>
+
 </main>
 
 <footer>
@@ -388,6 +458,7 @@
             <div class="feat-card">✂️ <strong>Resize</strong><span>Aspect-ratio lock + social media presets.</span></div>
             <div class="feat-card">🔄 <strong>Format Convert</strong><span>JPG ↔ PNG ↔ WebP with quality control.</span></div>
             <div class="feat-card">💧 <strong>Watermark</strong><span>Text watermark with position, opacity &amp; color.</span></div>
+            <div class="feat-card">🔗 <strong>Merge Images</strong><span>Combine 2 images into one PDF page — side-by-side or stacked.</span></div>
         </div>
         <p class="browser-support">Chrome ✅ &nbsp; Edge ✅ &nbsp; Firefox ✅ &nbsp; Safari ✅ &nbsp;—&nbsp; Desktop &amp; Mobile &nbsp;·&nbsp; No upload &nbsp;·&nbsp; No install</p>
     </div>

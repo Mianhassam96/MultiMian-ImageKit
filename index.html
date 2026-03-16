@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MultiMian ImageKit – Extract Text • Convert • Compress • Resize • Optimize</title>
     <meta name="description" content="Free browser-based image toolkit. OCR, PDF converter, compressor, resizer, format converter and watermark. No upload, no install.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -12,26 +15,23 @@
 <header id="site-header">
     <div class="header-inner">
 
-        <!-- Logo -->
-        <a href="#" class="logo-wrap" aria-label="MultiMian ImageKit">
-            <div class="logo-icon">
-                <span class="logo-emoji">🖼</span>
-            </div>
-            <div class="logo-text">
-                <span class="logo-name">MultiMian <span class="logo-accent">ImageKit</span></span>
-            </div>
+        <!-- Logo — text only, no icon -->
+        <a href="#" class="logo-wrap" onclick="activateTab('home'); return false;" aria-label="MultiMian ImageKit">
+            <span class="logo-name">
+                <span class="logo-multi">Multi</span><span class="logo-mian">Mian</span><span class="logo-dot">.</span><span class="logo-kit">ImageKit</span>
+            </span>
         </a>
 
         <!-- Tabs (center) -->
         <nav class="tabs-nav" id="tabsNav" aria-label="Tools">
-            <button class="tab-btn" data-tab="home">🏠 Home</button>
-            <button class="tab-btn active" data-tab="ocr">� OCR</button>
-            <button class="tab-btn" data-tab="pdf">� PDF</button>
-            <button class="tab-btn" data-tab="compress">🗜 Compress</button>
-            <button class="tab-btn" data-tab="resize">✂️ Resize</button>
-            <button class="tab-btn" data-tab="convert">🔄 Convert</button>
-            <button class="tab-btn" data-tab="watermark">💧 Watermark</button>
-            <button class="tab-btn" data-tab="merge">🔗 Merge</button>
+            <button class="tab-btn" data-tab="home">Home</button>
+            <button class="tab-btn" data-tab="ocr">OCR</button>
+            <button class="tab-btn" data-tab="pdf">PDF</button>
+            <button class="tab-btn" data-tab="compress">Compress</button>
+            <button class="tab-btn" data-tab="resize">Resize</button>
+            <button class="tab-btn" data-tab="convert">Convert</button>
+            <button class="tab-btn" data-tab="watermark">Watermark</button>
+            <button class="tab-btn" data-tab="merge">Merge</button>
         </nav>
 
         <!-- Right: toggle + hamburger -->
@@ -50,12 +50,12 @@
     <!-- Mobile drawer -->
     <div class="mobile-drawer" id="mobileDrawer">
         <button class="tab-btn" data-tab="home">🏠 Home</button>
-        <button class="tab-btn active" data-tab="ocr">🔤 Image → Text</button>
+        <button class="tab-btn" data-tab="ocr">🔤 Image → Text</button>
         <button class="tab-btn" data-tab="pdf">📄 Image → PDF</button>
         <button class="tab-btn" data-tab="compress">🗜 Compress</button>
         <button class="tab-btn" data-tab="resize">✂️ Resize</button>
-        <button class="tab-btn" data-tab="convert">🔄 Convert</button>
-        <button class="tab-btn" data-tab="watermark">💧 Watermark</button>
+        <button class="tab-btn" data-tab="convert">� Convert</button>
+        <button class="tab-btn" data-tab="watermark">� Watermark</button>
         <button class="tab-btn" data-tab="merge">🔗 Merge</button>
     </div>
 </header>
@@ -162,6 +162,224 @@
             </div>
             <p class="tech-support">Chrome ✅ &nbsp; Edge ✅ &nbsp; Firefox ✅ &nbsp; Safari ✅ &nbsp;·&nbsp; Desktop &amp; Mobile</p>
         </div>
+    </section>
+
+    <!-- ══ Hero / Home Section ══ -->
+    <section id="tab-home" class="tab-section home-section">
+
+        <!-- Animated background canvas -->
+        <canvas id="heroCanvas" aria-hidden="true"></canvas>
+
+        <!-- Hero -->
+        <div class="hero">
+            <div class="hero-eyebrow">
+                <span class="eyebrow-dot"></span>
+                Free &nbsp;·&nbsp; In-Browser &nbsp;·&nbsp; No Upload &nbsp;·&nbsp; No Signup
+                <span class="eyebrow-dot"></span>
+            </div>
+            <h1 class="hero-title">
+                <span class="ht-line1">The Image Toolkit</span>
+                <span class="ht-line2">That <span class="ht-gradient">Works Instantly</span></span>
+            </h1>
+            <p class="hero-desc">7 powerful tools — OCR, PDF, Compress, Resize, Convert, Watermark &amp; Merge — all running 100% in your browser. Zero uploads. Zero limits.</p>
+            <div class="hero-btns">
+                <button class="hero-cta hero-cta-primary" data-tab="ocr">
+                    <span class="btn-icon">🔤</span> Extract Text (OCR)
+                    <span class="btn-arrow">→</span>
+                </button>
+                <button class="hero-cta hero-cta-ghost" data-tab="compress">
+                    <span class="btn-icon">🗜</span> Compress Image
+                </button>
+            </div>
+            <p class="hero-note">No file leaves your device &nbsp;·&nbsp; Works offline &nbsp;·&nbsp; Open source</p>
+        </div>
+
+        <!-- Floating tool chips -->
+        <div class="tool-chips" aria-hidden="true">
+            <span class="chip chip-1">🔤 OCR</span>
+            <span class="chip chip-2">📄 PDF</span>
+            <span class="chip chip-3">🗜 Compress</span>
+            <span class="chip chip-4">✂️ Resize</span>
+            <span class="chip chip-5">🔄 Convert</span>
+            <span class="chip chip-6">💧 Watermark</span>
+            <span class="chip chip-7">🔗 Merge</span>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-row">
+            <div class="stat-item">
+                <span class="stat-val" data-count="7">0</span>
+                <span class="stat-lbl">Tools</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+                <span class="stat-val" data-count="10">0</span><span class="stat-val-plus">+</span>
+                <span class="stat-lbl">OCR Languages</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+                <span class="stat-val">100%</span>
+                <span class="stat-lbl">In-Browser</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+                <span class="stat-val">0</span>
+                <span class="stat-lbl">Server Uploads</span>
+            </div>
+        </div>
+
+        <!-- Feature cards -->
+        <div class="features-section">
+            <div class="section-label">
+                <span class="sl-line"></span>
+                <span>All Tools</span>
+                <span class="sl-line"></span>
+            </div>
+            <div class="home-grid">
+                <div class="home-card" data-tab="ocr">
+                    <div class="card-glow"></div>
+                    <div class="card-top">
+                        <span class="card-icon-wrap ci-ocr">🔤</span>
+                        <span class="card-badge">Popular</span>
+                    </div>
+                    <h3>Image → Text</h3>
+                    <p>Extract text from any image in 10+ languages. Copy, download .txt or export as PDF.</p>
+                    <div class="card-footer">
+                        <span class="card-tech">Tesseract.js</span>
+                        <span class="card-arrow">→</span>
+                    </div>
+                </div>
+                <div class="home-card" data-tab="pdf">
+                    <div class="card-glow"></div>
+                    <div class="card-top">
+                        <span class="card-icon-wrap ci-pdf">📄</span>
+                    </div>
+                    <h3>Image → PDF</h3>
+                    <p>Convert multiple images into one PDF. Drag to reorder, choose page size &amp; orientation.</p>
+                    <div class="card-footer">
+                        <span class="card-tech">jsPDF</span>
+                        <span class="card-arrow">→</span>
+                    </div>
+                </div>
+                <div class="home-card" data-tab="compress">
+                    <div class="card-glow"></div>
+                    <div class="card-top">
+                        <span class="card-icon-wrap ci-compress">🗜</span>
+                    </div>
+                    <h3>Compress</h3>
+                    <p>Reduce file size with a quality slider. Live before/after size comparison.</p>
+                    <div class="card-footer">
+                        <span class="card-tech">Canvas API</span>
+                        <span class="card-arrow">→</span>
+                    </div>
+                </div>
+                <div class="home-card" data-tab="resize">
+                    <div class="card-glow"></div>
+                    <div class="card-top">
+                        <span class="card-icon-wrap ci-resize">✂️</span>
+                    </div>
+                    <h3>Resize</h3>
+                    <p>Exact dimensions with aspect-ratio lock. Social media presets built in.</p>
+                    <div class="card-footer">
+                        <span class="card-tech">Canvas API</span>
+                        <span class="card-arrow">→</span>
+                    </div>
+                </div>
+                <div class="home-card" data-tab="convert">
+                    <div class="card-glow"></div>
+                    <div class="card-top">
+                        <span class="card-icon-wrap ci-convert">🔄</span>
+                    </div>
+                    <h3>Format Convert</h3>
+                    <p>JPG ↔ PNG ↔ WebP with quality control. Instant download, no re-upload.</p>
+                    <div class="card-footer">
+                        <span class="card-tech">Canvas API</span>
+                        <span class="card-arrow">→</span>
+                    </div>
+                </div>
+                <div class="home-card" data-tab="watermark">
+                    <div class="card-glow"></div>
+                    <div class="card-top">
+                        <span class="card-icon-wrap ci-wm">💧</span>
+                    </div>
+                    <h3>Watermark</h3>
+                    <p>Text watermarks with custom font, color, opacity &amp; 6 positions including tile.</p>
+                    <div class="card-footer">
+                        <span class="card-tech">Canvas API</span>
+                        <span class="card-arrow">→</span>
+                    </div>
+                </div>
+                <div class="home-card home-card-featured" data-tab="merge">
+                    <div class="card-glow"></div>
+                    <div class="card-top">
+                        <span class="card-icon-wrap ci-merge">🔗</span>
+                        <span class="card-badge card-badge-new">New ⭐</span>
+                    </div>
+                    <h3>Merge 2 Images</h3>
+                    <p>Combine two images side-by-side or stacked. Export as JPG, PNG or PDF.</p>
+                    <div class="card-footer">
+                        <span class="card-tech">Canvas + jsPDF</span>
+                        <span class="card-arrow">→</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- How it works -->
+        <div class="how-section">
+            <div class="section-label">
+                <span class="sl-line"></span>
+                <span>How It Works</span>
+                <span class="sl-line"></span>
+            </div>
+            <div class="how-steps">
+                <div class="how-step">
+                    <div class="how-num"><span>1</span></div>
+                    <h4>Pick a Tool</h4>
+                    <p>Click any tab in the header or a card below to open the tool.</p>
+                </div>
+                <div class="how-connector"><span></span></div>
+                <div class="how-step">
+                    <div class="how-num"><span>2</span></div>
+                    <h4>Upload Image</h4>
+                    <p>Drag &amp; drop or click to upload. JPG, PNG, WebP and more.</p>
+                </div>
+                <div class="how-connector"><span></span></div>
+                <div class="how-step">
+                    <div class="how-num"><span>3</span></div>
+                    <h4>Download</h4>
+                    <p>Adjust settings, hit the action button and download instantly.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Privacy + trust -->
+        <div class="trust-section">
+            <div class="trust-item">
+                <span class="trust-icon">🔒</span>
+                <span>Your files never leave your device</span>
+            </div>
+            <div class="trust-sep"></div>
+            <div class="trust-item">
+                <span class="trust-icon">⚡</span>
+                <span>Instant processing, no waiting</span>
+            </div>
+            <div class="trust-sep"></div>
+            <div class="trust-item">
+                <span class="trust-icon">🌐</span>
+                <span>Works in Chrome, Edge, Firefox, Safari</span>
+            </div>
+        </div>
+
+        <!-- Tech pills -->
+        <div class="tech-section">
+            <p class="tech-title">Built With</p>
+            <div class="tech-pills">
+                <span>HTML5</span><span>CSS3</span><span>Vanilla JS</span>
+                <span>Tesseract.js</span><span>jsPDF</span><span>Canvas API</span>
+            </div>
+        </div>
+
     </section>
 
     <!-- ══ OCR Tab ══ -->
@@ -587,20 +805,25 @@
 
 </main>
 
-<footer id="features">
+<footer id="site-footer">
     <div class="footer-inner">
-        <div class="footer-brand">
-            <span class="footer-logo-icon">🖼</span>
-            <span class="footer-logo-name">MultiMian <span>ImageKit</span></span>
-            <span class="footer-sep">·</span>
-            <span class="footer-tagline">Extract Text • Convert • Compress • Optimize</span>
+        <div class="footer-left">
+            <span class="footer-logo">
+                <span class="fl-multi">Multi</span><span class="fl-mian">Mian</span><span class="fl-dot">.</span><span class="fl-kit">ImageKit</span>
+            </span>
+            <span class="footer-tagline">7 tools. Zero uploads. Pure browser.</span>
         </div>
-        <div class="footer-links">
-            <a href="https://github.com/Mianhassam96/MultiMian-ImageKit" target="_blank" rel="noopener">GitHub</a>
-            <a href="https://github.com/Mianhassam96" target="_blank" rel="noopener">Profile</a>
-            <span class="footer-copy">&copy; 2026 MultiMian · v2.1 · MIT</span>
+        <div class="footer-center">
+            <span class="footer-copy">&copy; 2026 MultiMian &nbsp;·&nbsp; MIT License &nbsp;·&nbsp; v2.2</span>
         </div>
-        <a href="#" class="scroll-top" aria-label="Back to top">↑</a>
+        <div class="footer-right">
+            <a href="https://github.com/Mianhassam96/MultiMian-ImageKit" target="_blank" rel="noopener" class="footer-link">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.38.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.54-1.38-1.33-1.75-1.33-1.75-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.49 1 .11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.13 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58C20.57 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                GitHub
+            </a>
+            <a href="https://github.com/Mianhassam96" target="_blank" rel="noopener" class="footer-link">Profile</a>
+            <a href="#" class="scroll-top" aria-label="Back to top">↑</a>
+        </div>
     </div>
 </footer>
 

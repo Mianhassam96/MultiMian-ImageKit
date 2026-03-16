@@ -60,6 +60,114 @@ document.querySelectorAll('.hero-cta[data-tab], .home-card[data-tab]').forEach(e
 // ── Initial state: show Home tab on load ──────────────────────
 activateTab('home');
 
+// ── Animated canvas background ────────────────────────────────
+(function initCanvas() {
+    const canvas = document.getElementById('heroCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let W, H, particles = [];
+
+    function resize() {
+        const section = document.getElementById('tab-home');
+        W = canvas.width  = section.offsetWidth;
+        H = canvas.height = section.offsetHeight || 800;
+    }
+
+    function isDark() { return document.documentElement.getAttribute('data-theme') === 'dark'; }
+
+    function makeParticle() {
+        return {
+            x: Math.random() * W,
+            y: Math.random() * H,
+            r: Math.random() * 2.5 + 0.5,
+            vx: (Math.random() - 0.5) * 0.4,
+            vy: (Math.random() - 0.5) * 0.4,
+            alpha: Math.random() * 0.5 + 0.1,
+            color: ['#6ee7b7','#60a5fa','#a78bfa','#34d399','#818cf8'][Math.floor(Math.random()*5)]
+        };
+    }
+
+    function init() {
+        resize();
+        particles = Array.from({ length: 80 }, makeParticle);
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, W, H);
+        // gradient mesh
+        const dark = isDark();
+        const grd = ctx.createRadialGradient(W*0.3, H*0.2, 0, W*0.3, H*0.2, W*0.6);
+        grd.addColorStop(0, dark ? 'rgba(22,163,74,0.08)' : 'rgba(22,163,74,0.05)');
+        grd.addColorStop(1, 'transparent');
+        ctx.fillStyle = grd;
+        ctx.fillRect(0, 0, W, H);
+
+        const grd2 = ctx.createRadialGradient(W*0.75, H*0.6, 0, W*0.75, H*0.6, W*0.5);
+        grd2.addColorStop(0, dark ? 'rgba(99,102,241,0.1)' : 'rgba(99,102,241,0.06)');
+        grd2.addColorStop(1, 'transparent');
+        ctx.fillStyle = grd2;
+        ctx.fillRect(0, 0, W, H);
+
+        // particles + connections
+        particles.forEach((p, i) => {
+            p.x += p.vx; p.y += p.vy;
+            if (p.x < 0 || p.x > W) p.vx *= -1;
+            if (p.y < 0 || p.y > H) p.vy *= -1;
+
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fillStyle = p.color;
+            ctx.globalAlpha = p.alpha;
+            ctx.fill();
+
+            for (let j = i + 1; j < particles.length; j++) {
+                const q = particles[j];
+                const dx = p.x - q.x, dy = p.y - q.y;
+                const dist = Math.sqrt(dx*dx + dy*dy);
+                if (dist < 100) {
+                    ctx.beginPath();
+                    ctx.moveTo(p.x, p.y);
+                    ctx.lineTo(q.x, q.y);
+                    ctx.strokeStyle = p.color;
+                    ctx.globalAlpha = (1 - dist/100) * 0.12;
+                    ctx.lineWidth = 0.8;
+                    ctx.stroke();
+                }
+            }
+        });
+        ctx.globalAlpha = 1;
+        requestAnimationFrame(draw);
+    }
+
+    init();
+    draw();
+    window.addEventListener('resize', init);
+    // re-init when theme changes
+    document.getElementById('darkToggle').addEventListener('click', () => setTimeout(init, 50));
+})();
+
+// ── Counter animation for stats ───────────────────────────────
+function animateCounters() {
+    document.querySelectorAll('.stat-val[data-count]').forEach(el => {
+        const target = parseInt(el.dataset.count);
+        let current = 0;
+        const step = Math.ceil(target / 30);
+        const timer = setInterval(() => {
+            current = Math.min(current + step, target);
+            el.textContent = current;
+            if (current >= target) clearInterval(timer);
+        }, 40);
+    });
+}
+// Run counters when home is shown
+const _origActivate = activateTab;
+// patch already defined — just call animateCounters on home
+document.querySelectorAll('.tab-btn[data-tab="home"]').forEach(b => {
+    b.addEventListener('click', () => setTimeout(animateCounters, 100));
+});
+// run on initial load
+setTimeout(animateCounters, 400);
+
 // ── Shared Helpers ─────────────────────────────────────────────
 function setupDrop(zone, input, onFiles) {
     // Clicking the label already opens the dialog — only trigger manually for other clicks

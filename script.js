@@ -341,16 +341,52 @@ ocrBtn.addEventListener('click', async () => {
     ocrSuccess.style.display = 'none';
     try {
         const lang = document.getElementById('ocrLang').value;
-        const result = await Tesseract.recognize(ocrFile, lang, {
+        const psm  = parseInt(document.getElementById('ocrPsm').value) || 3;
+
+        // Pre-process image on canvas for better OCR accuracy
+        const bitmap = await createImageBitmap(ocrFile);
+        const canvas = document.createElement('canvas');
+        // Scale up small images for better recognition
+        const scale = Math.max(1, Math.min(3, 1800 / Math.max(bitmap.width, bitmap.height)));
+        canvas.width  = bitmap.width  * scale;
+        canvas.height = bitmap.height * scale;
+        const ctx = canvas.getContext('2d');
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+        ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+
+        // Convert to blob for Tesseract
+        const blob = await new Promise(res => canvas.toBlob(res, 'image/png'));
+
+        // Use worker API so we can set PSM properly
+        const worker = await Tesseract.createWorker(lang, 1, {
             logger: m => {
                 if (m.status === 'recognizing text') {
                     setProgress(ocrFill, ocrLabel, Math.round(m.progress * 100));
+                } else if (m.status === 'loading tesseract core' || m.status === 'initializing tesseract') {
+                    setProgress(ocrFill, ocrLabel, 5);
+                } else if (m.status === 'loading language traineddata') {
+                    setProgress(ocrFill, ocrLabel, 15);
                 }
-            },
-            tessedit_pageseg_mode: '1',
+            }
+        });
+
+        await worker.setParameters({
+            tessedit_pageseg_mode: psm,
             preserve_interword_spaces: '1',
         });
-        ocrText.value = result.data.text;
+
+        const result = await worker.recognize(blob);
+        await worker.terminate();
+
+        // Clean up the extracted text
+        const text = result.data.text
+            .replace(/\f/g, '\n--- Page Break ---\n')
+            .replace(/[ \t]+\n/g, '\n')
+            .replace(/\n{3,}/g, '\n\n')
+            .trim();
+
+        ocrText.value = text || '(No text detected — try a clearer image or different language)';
         ocrProgress.style.display = 'none';
         ocrResult.style.display = 'block';
         ocrSuccess.style.display = 'block';
@@ -611,13 +647,88 @@ async function extractPdfText(file) {
         const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
         const total = pdf.numPages;
         let fullText = '';
+        let scannedPages = 0;
+
         for (let i = 1; i <= total; i++) {
             const page = await pdf.getPage(i);
-            // Extract text
-            const content = await page.getTextContent();
-            const pageText = content.items.map(item => item.str).join(' ');
-            fullText += `--- Page ${i} ---\n${pageText}\n\n`;
-            // Render thumbnail (max 8 pages to keep it fast)
+
+            // ── Extract text with proper line reconstruction ──
+            const content = await page.getTextContent({ includeMarkedContent: false });
+            const items = content.items;
+
+            let pageText = '';
+            if (items.length > 0) {
+                // Group items into lines by their Y position (transform[5])
+                // Items with close Y values are on the same line
+                const lines = [];
+                let currentLine = [];
+                let lastY = null;
+                const Y_THRESHOLD = 3; // px tolerance for same line
+
+                // Sort by Y descending (PDF coords: bottom=0), then X ascending
+                const sorted = [...items].sort((a, b) => {
+                    const dy = b.transform[5] - a.transform[5];
+                    if (Math.abs(dy) > Y_THRESHOLD) return dy;
+                    return a.transform[4] - b.transform[4];
+                });
+
+                for (const item of sorted) {
+                    if (!item.str) continue;
+                    const y = item.transform[5];
+                    if (lastY === null || Math.abs(y - lastY) > Y_THRESHOLD) {
+                        if (currentLine.length) lines.push(currentLine);
+                        currentLine = [item];
+                        lastY = y;
+                    } else {
+                        currentLine.push(item);
+                    }
+                }
+                if (currentLine.length) lines.push(currentLine);
+
+                // Join each line's words, detect paragraph breaks
+                let prevLineY = null;
+                for (const line of lines) {
+                    const lineY = line[0].transform[5];
+                    const lineText = line.map(it => it.str).join('').trim();
+                    if (!lineText) continue;
+
+                    // Large gap between lines = paragraph break
+                    if (prevLineY !== null && Math.abs(prevLineY - lineY) > 20) {
+                        pageText += '\n';
+                    }
+                    pageText += lineText + '\n';
+                    prevLineY = lineY;
+                }
+            }
+
+            // ── Detect scanned page (no text layer) ──
+            if (pageText.trim().length < 20) {
+                scannedPages++;
+                // Render page to canvas and OCR it
+                const viewport = page.getViewport({ scale: 2.0 }); // high res for OCR
+                const canvas = document.createElement('canvas');
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
+                await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
+
+                p2tLabel.textContent = `Page ${i} of ${total} — OCR scanning…`;
+                const blob = await new Promise(res => canvas.toBlob(res, 'image/png'));
+                const ocrWorker = await Tesseract.createWorker('eng');
+                await ocrWorker.setParameters({ tessedit_pageseg_mode: 3, preserve_interword_spaces: '1' });
+                const ocrResult = await ocrWorker.recognize(blob);
+                await ocrWorker.terminate();
+                pageText = ocrResult.data.text;
+            }
+
+            // Clean up page text
+            const cleanedPage = pageText
+                .replace(/[ \t]+\n/g, '\n')
+                .replace(/\n{3,}/g, '\n\n')
+                .trim();
+
+            fullText += `--- Page ${i} ---\n${cleanedPage}\n\n`;
+
+            // Render thumbnail (max 8 pages)
             if (i <= 8) {
                 const viewport = page.getViewport({ scale: 0.3 });
                 const canvas = document.createElement('canvas');
@@ -632,15 +743,21 @@ async function extractPdfText(file) {
                 wrap.appendChild(lbl);
                 thumbsGrid.appendChild(wrap);
             }
+
             const pct = Math.round((i / total) * 100);
             p2tFill.style.width = pct + '%';
             p2tLabel.textContent = `Page ${i} of ${total}`;
         }
+
         p2tProgress.style.display = 'none';
         p2tTextEl.value = fullText.trim();
         if (thumbsGrid.children.length) thumbsWrap.style.display = 'block';
         p2tResult.style.display = 'block';
         document.getElementById('p2tSuccess').style.display = 'block';
+
+        if (scannedPages > 0) {
+            p2tTextEl.value += `\n\n[Note: ${scannedPages} page(s) were image-based and processed via OCR]`;
+        }
     } catch (err) {
         p2tProgress.style.display = 'none';
         alert('Failed to read PDF: ' + err.message);

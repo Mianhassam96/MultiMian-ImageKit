@@ -64,32 +64,44 @@ document.querySelectorAll('.hero-cta[data-tab], .home-card[data-tab]').forEach(e
 });
 
 // ── Dropdown nav ──────────────────────────────────────────────
-document.querySelectorAll('.nav-dropdown').forEach(dropdown => {
-    const btn = dropdown.querySelector('.nav-menu-btn');
-    const panel = dropdown.querySelector('.nav-dropdown-panel');
+(function initDropdowns() {
+    document.querySelectorAll('.nav-dropdown').forEach(dropdown => {
+        const btn   = dropdown.querySelector('.nav-menu-btn');
+        const panel = dropdown.querySelector('.nav-dropdown-panel');
 
-    // Toggle on click
-    btn.addEventListener('click', e => {
-        e.stopPropagation();
-        const isOpen = dropdown.classList.contains('open');
-        // Close all others
-        document.querySelectorAll('.nav-dropdown.open').forEach(d => d.classList.remove('open'));
-        if (!isOpen) dropdown.classList.add('open');
-    });
+        // Open / close on trigger button click
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const isOpen = dropdown.classList.contains('open');
+            // Close every other open dropdown first
+            document.querySelectorAll('.nav-dropdown.open').forEach(d => {
+                if (d !== dropdown) d.classList.remove('open');
+            });
+            dropdown.classList.toggle('open', !isOpen);
+        });
 
-    // Items inside dropdown
-    panel.querySelectorAll('.ndp-item[data-tab]').forEach(item => {
-        item.addEventListener('click', () => {
-            activateTab(item.dataset.tab);
-            dropdown.classList.remove('open');
+        // Navigate when an item is clicked
+        panel.querySelectorAll('.ndp-item[data-tab]').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.stopPropagation();
+                activateTab(item.dataset.tab);
+                dropdown.classList.remove('open');
+            });
         });
     });
-});
 
-// Close dropdowns when clicking outside
-document.addEventListener('click', () => {
-    document.querySelectorAll('.nav-dropdown.open').forEach(d => d.classList.remove('open'));
-});
+    // Close all dropdowns when clicking anywhere outside
+    document.addEventListener('click', function() {
+        document.querySelectorAll('.nav-dropdown.open').forEach(d => d.classList.remove('open'));
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            document.querySelectorAll('.nav-dropdown.open').forEach(d => d.classList.remove('open'));
+        }
+    });
+})();
 
 // ── Initial state: show Home tab on load ──────────────────────
 activateTab('home');

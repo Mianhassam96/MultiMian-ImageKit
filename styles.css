@@ -113,8 +113,6 @@ header::after {
     flex-shrink: 0;
     display: flex;
     align-items: center;
-    position: relative;
-    perspective: 400px;
 }
 
 .logo-name {
@@ -126,121 +124,96 @@ header::after {
     line-height: 1;
     display: flex;
     align-items: baseline;
-    position: relative;
-    z-index: 1;
-    transition: transform 0.4s cubic-bezier(.22,1,.36,1), filter 0.3s;
+    transition: transform 0.35s cubic-bezier(.22,1,.36,1);
 }
-
-/* Hover: subtle 3D tilt */
 .logo-wrap:hover .logo-name {
-    transform: rotateX(6deg) rotateY(-4deg) scale(1.04);
-    filter: drop-shadow(0 4px 16px rgba(110,231,183,0.35));
+    transform: scale(1.05);
 }
 
-/* ── "Multi" — letter-by-letter entrance ── */
+/* ── "Multi" letters — white, staggered drop-in ── */
 .logo-multi {
     display: inline-flex;
-    color: #fff;
+    align-items: baseline;
 }
 
-/* ── "Mian" — animated gradient ── */
+/* ── "Mian" wrapper — gradient container ── */
 .logo-mian {
     display: inline-flex;
-    background: linear-gradient(135deg, #6ee7b7 0%, #60a5fa 40%, #a78bfa 80%, #6ee7b7 100%);
-    background-size: 300% 100%;
+    align-items: baseline;
+    background: linear-gradient(90deg, #6ee7b7 0%, #60a5fa 35%, #a78bfa 65%, #6ee7b7 100%);
+    background-size: 250% 100%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    animation: logoMianGrad 4s linear infinite;
+    animation: mianFlow 3s linear infinite;
 }
-@keyframes logoMianGrad {
+@keyframes mianFlow {
     0%   { background-position: 0% 50%; }
-    100% { background-position: 300% 50%; }
+    100% { background-position: 250% 50%; }
 }
 
-/* ── Individual letters — staggered drop-in ── */
+/* ── Each letter — staggered entrance ── */
 .logo-letter {
     display: inline-block;
-    animation: letterDrop 0.55s cubic-bezier(.22,1,.36,1) both;
-    animation-delay: calc(var(--i) * 0.055s);
+    animation: letterIn 0.5s cubic-bezier(.22,1,.36,1) both;
+    animation-delay: calc(var(--i) * 0.06s);
 }
-@keyframes letterDrop {
-    from { opacity: 0; transform: translateY(-14px) scale(0.8); }
-    to   { opacity: 1; transform: translateY(0) scale(1); }
+@keyframes letterIn {
+    from { opacity: 0; transform: translateY(-12px) scale(0.75); }
+    to   { opacity: 1; transform: translateY(0)     scale(1); }
 }
 
-/* ── Dot — glowing pulse ── */
+/* "Multi" letters are plain white */
+.logo-multi .logo-letter {
+    color: #ffffff;
+    -webkit-text-fill-color: #ffffff;
+}
+.logo-wrap:hover .logo-multi .logo-letter {
+    color: #e2e8f0;
+    -webkit-text-fill-color: #e2e8f0;
+}
+
+/* "Mian" letters inherit the gradient from parent */
+.logo-mian-letter {
+    /* inherits -webkit-text-fill-color: transparent from .logo-mian */
+}
+
+/* ── Dot — pulse glow ── */
 .logo-dot {
-    color: #6ee7b7;
+    display: inline-block;
     font-size: 1.3em;
     line-height: 0.8;
     margin: 0 1px 0 0;
-    display: inline-block;
-    animation: dotPulse 2.5s ease-in-out infinite, letterDrop 0.55s 0.5s cubic-bezier(.22,1,.36,1) both;
-    text-shadow: 0 0 8px rgba(110,231,183,0.8), 0 0 20px rgba(110,231,183,0.4);
+    color: #6ee7b7;
+    -webkit-text-fill-color: #6ee7b7;
+    animation: letterIn 0.5s 0.52s cubic-bezier(.22,1,.36,1) both,
+               dotGlow 2.4s 1.2s ease-in-out infinite;
 }
-@keyframes dotPulse {
-    0%, 100% { text-shadow: 0 0 6px rgba(110,231,183,0.7), 0 0 18px rgba(110,231,183,0.3); transform: scale(1); }
-    50%       { text-shadow: 0 0 14px rgba(110,231,183,1),   0 0 32px rgba(110,231,183,0.6); transform: scale(1.25); }
+@keyframes dotGlow {
+    0%, 100% { transform: scale(1);    opacity: 1; }
+    50%       { transform: scale(1.3); opacity: 0.7; }
 }
 
-/* ── "ImageKit" — fade-slide in last ── */
+/* ── "ImageKit" — slide in from right ── */
 .logo-kit {
+    display: inline-block;
     color: rgba(255,255,255,0.45);
+    -webkit-text-fill-color: rgba(255,255,255,0.45);
     font-size: 0.78em;
     font-weight: 500;
-    letter-spacing: 0.5px;
-    margin-left: 1px;
-    display: inline-block;
-    animation: kitFade 0.6s 0.65s cubic-bezier(.22,1,.36,1) both;
-    transition: color 0.3s, letter-spacing 0.3s;
-    position: relative;
+    letter-spacing: 0.4px;
+    margin-left: 2px;
+    animation: kitSlide 0.55s 0.68s cubic-bezier(.22,1,.36,1) both;
+    transition: color 0.3s, -webkit-text-fill-color 0.3s;
 }
-.logo-kit::before {
-    content: '';
-    position: absolute;
-    bottom: -1px;
-    left: 0;
-    width: 0;
-    height: 1px;
-    background: linear-gradient(90deg, #6ee7b7, #60a5fa);
-    transition: width 0.35s ease;
-    border-radius: 1px;
+@keyframes kitSlide {
+    from { opacity: 0; transform: translateX(8px); }
+    to   { opacity: 1; transform: translateX(0); }
 }
 .logo-wrap:hover .logo-kit {
     color: rgba(255,255,255,0.85);
-    letter-spacing: 0.8px;
+    -webkit-text-fill-color: rgba(255,255,255,0.85);
 }
-.logo-wrap:hover .logo-kit::before { width: 100%; }
-@keyframes kitFade {
-    from { opacity: 0; transform: translateX(10px); }
-    to   { opacity: 1; transform: translateX(0); }
-}
-
-/* ── Shimmer sweep overlay ── */
-.logo-shimmer {
-    position: absolute;
-    inset: -4px -8px;
-    border-radius: 8px;
-    background: linear-gradient(105deg,
-        transparent 30%,
-        rgba(255,255,255,0.12) 50%,
-        transparent 70%
-    );
-    background-size: 200% 100%;
-    animation: logoShimmer 3.5s ease-in-out infinite;
-    pointer-events: none;
-    z-index: 0;
-}
-@keyframes logoShimmer {
-    0%   { background-position: -100% 0; opacity: 0; }
-    20%  { opacity: 1; }
-    60%  { background-position: 200% 0; opacity: 1; }
-    80%  { opacity: 0; }
-    100% { background-position: 200% 0; opacity: 0; }
-}
-
-.logo-wrap:hover .logo-multi { color: #e2e8f0; }
 
 /* ── Tabs nav ──────────────────────────────────────────────── */
 .tabs-nav {

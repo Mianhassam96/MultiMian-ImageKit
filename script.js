@@ -1612,28 +1612,43 @@ document.getElementById('pdf2imgDownloadAll').addEventListener('click', async ()
 let gifWorkerBlobUrl = null;
 async function getGifWorkerUrl() {
     if (gifWorkerBlobUrl) return gifWorkerBlobUrl;
-    // Try fetching the worker script and wrapping it as a blob URL (bypasses CORS worker restriction)
-    try {
-        const resp = await fetch('https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.worker.js', { mode: 'cors' });
-        if (!resp.ok) throw new Error('fetch failed');
-        const text = await resp.text();
-        const blob = new Blob([text], { type: 'application/javascript' });
-        gifWorkerBlobUrl = URL.createObjectURL(blob);
-        return gifWorkerBlobUrl;
-    } catch (e) {
-        // Fallback: use jsdelivr mirror
+    const urls = [
+        'https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.worker.js',
+        'https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.worker.js',
+    ];
+    for (const url of urls) {
         try {
-            const resp2 = await fetch('https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.worker.js');
-            if (!resp2.ok) throw new Error('fetch failed');
-            const text2 = await resp2.text();
-            const blob2 = new Blob([text2], { type: 'application/javascript' });
-            gifWorkerBlobUrl = URL.createObjectURL(blob2);
+            const resp = await fetch(url);
+            if (!resp.ok) continue;
+            const text = await resp.text();
+            const blob = new Blob([text], { type: 'application/javascript' });
+            gifWorkerBlobUrl = URL.createObjectURL(blob);
             return gifWorkerBlobUrl;
-        } catch (e2) {
-            // Last resort: direct URL (may fail in some browsers)
-            return 'https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.worker.js';
-        }
+        } catch (e) { /* try next */ }
     }
+    // Absolute last resort — return direct URL
+    return urls[0];
+}
+
+// ── gifenc helper: encode frames → GIF blob ─────────────────
+function encodeGif(frames, width, height, delay) {
+    // frames: array of ImageData or canvas elements
+    const { GIFEncoder, quantize, applyPalette } = window.gifenc;
+    const encoder = GIFEncoder();
+    for (const frame of frames) {
+        let imageData;
+        if (frame instanceof HTMLCanvasElement) {
+            imageData = frame.getContext('2d').getImageData(0, 0, width, height);
+        } else {
+            imageData = frame;
+        }
+        const rgba = imageData.data;
+        const palette = quantize(rgba, 256);
+        const index = applyPalette(rgba, palette);
+        encoder.writeFrame(index, width, height, { palette, delay });
+    }
+    encoder.finish();
+    return new Blob([encoder.bytes()], { type: 'image/gif' });
 }
 
 const gifDrop   = document.getElementById('gifDrop');
@@ -1706,51 +1721,43 @@ gifBtn.addEventListener('click', async () => {
     const repeat = parseInt(document.getElementById('gifRepeat').value);
 
     try {
-        // Load all images
         const images = await Promise.all(gifFrames.map(f => loadImage(f.dataUrl)));
         const h = Math.round(images[0].naturalHeight * (targetW / images[0].naturalWidth));
 
         fill.style.width = '30%';
-        label.textContent = 'Rendering GIF…';
-
-        const workerUrl = await getGifWorkerUrl();
-        const gif = new GIF({
-            workers: 2,
-            quality: 10,
-            width: targetW,
-            height: h,
-            repeat,
-            workerScript: workerUrl
-        });
+        label.textContent = 'Encoding GIF…';
 
         const canvas = document.createElement('canvas');
         canvas.width = targetW;
         canvas.height = h;
         const ctx = canvas.getContext('2d');
 
-        images.forEach(img => {
+        const { GIFEncoder, quantize, applyPalette } = window.gifenc;
+        const encoder = GIFEncoder();
+
+        images.forEach((img, i) => {
             ctx.clearRect(0, 0, targetW, h);
             ctx.drawImage(img, 0, 0, targetW, h);
-            gif.addFrame(canvas, { delay, copy: true });
+            const { data } = ctx.getImageData(0, 0, targetW, h);
+            const palette = quantize(data, 256);
+            const index = applyPalette(data, palette);
+            encoder.writeFrame(index, targetW, h, { palette, delay, repeat });
+            fill.style.width = (30 + Math.round(((i + 1) / images.length) * 65)) + '%';
+            label.textContent = `Frame ${i + 1} / ${images.length}`;
         });
 
-        gif.on('progress', p => {
-            fill.style.width = (30 + Math.round(p * 65)) + '%';
-            label.textContent = Math.round(p * 100) + '%';
-        });
+        encoder.finish();
+        const blob = new Blob([encoder.bytes()], { type: 'image/gif' });
 
-        gif.on('finished', blob => {
-            fill.style.width = '100%';
-            label.textContent = 'Done!';
-            setTimeout(() => { progress.style.display = 'none'; }, 600);
-            gifBlobUrl = URL.createObjectURL(blob);
-            document.getElementById('gifPreviewImg').src = gifBlobUrl;
-            document.getElementById('gifResult').style.display = 'block';
-            document.getElementById('gifSuccess').style.display = 'block';
-            gifBtn.disabled = false;
-        });
+        fill.style.width = '100%';
+        label.textContent = 'Done!';
+        setTimeout(() => { progress.style.display = 'none'; }, 600);
 
-        gif.render();
+        gifBlobUrl = URL.createObjectURL(blob);
+        document.getElementById('gifPreviewImg').src = gifBlobUrl;
+        document.getElementById('gifResult').style.display = 'block';
+        document.getElementById('gifSuccess').style.display = 'block';
+        gifBtn.disabled = false;
     } catch (err) {
         progress.style.display = 'none';
         alert('GIF creation failed: ' + err.message);
@@ -1832,50 +1839,34 @@ videogifBtn.addEventListener('click', async () => {
         canvas.height = aspectH;
         const ctx = canvas.getContext('2d');
 
-        const workerUrl = await getGifWorkerUrl();
-        const gif = new GIF({
-            workers: 2,
-            quality: 10,
-            width: targetW,
-            height: aspectH,
-            repeat: 0,
-            workerScript: workerUrl
-        });
-
         const frameDelay = Math.round(1000 / fps);
+        const { GIFEncoder, quantize, applyPalette } = window.gifenc;
+        const encoder = GIFEncoder();
 
         for (let i = 0; i < totalFrames; i++) {
             const t = startTime + (i / fps);
-            await new Promise(res => {
-                video.currentTime = t;
-                video.onseeked = res;
-            });
+            await new Promise(res => { video.currentTime = t; video.onseeked = res; });
             ctx.drawImage(video, 0, 0, targetW, aspectH);
-            gif.addFrame(canvas, { delay: frameDelay, copy: true });
-            fill.style.width = Math.round((i / totalFrames) * 60) + '%';
+            const { data } = ctx.getImageData(0, 0, targetW, aspectH);
+            const palette = quantize(data, 256);
+            const index = applyPalette(data, palette);
+            encoder.writeFrame(index, targetW, aspectH, { palette, delay: frameDelay, repeat: 0 });
+            fill.style.width = Math.round(((i + 1) / totalFrames) * 90) + '%';
             label.textContent = `Frame ${i + 1} / ${totalFrames}`;
         }
 
-        label.textContent = 'Rendering GIF…';
-        fill.style.width = '65%';
+        encoder.finish();
+        const blob = new Blob([encoder.bytes()], { type: 'image/gif' });
 
-        gif.on('progress', p => {
-            fill.style.width = (65 + Math.round(p * 30)) + '%';
-            label.textContent = Math.round(p * 100) + '%';
-        });
+        fill.style.width = '100%';
+        label.textContent = 'Done!';
+        setTimeout(() => { progress.style.display = 'none'; }, 600);
 
-        gif.on('finished', blob => {
-            fill.style.width = '100%';
-            label.textContent = 'Done!';
-            setTimeout(() => { progress.style.display = 'none'; }, 600);
-            videogifBlobUrl = URL.createObjectURL(blob);
-            document.getElementById('videogifPreviewImg').src = videogifBlobUrl;
-            document.getElementById('videogifResult').style.display = 'block';
-            document.getElementById('videogifSuccess').style.display = 'block';
-            videogifBtn.disabled = false;
-        });
-
-        gif.render();
+        videogifBlobUrl = URL.createObjectURL(blob);
+        document.getElementById('videogifPreviewImg').src = videogifBlobUrl;
+        document.getElementById('videogifResult').style.display = 'block';
+        document.getElementById('videogifSuccess').style.display = 'block';
+        videogifBtn.disabled = false;
     } catch (err) {
         progress.style.display = 'none';
         alert('Conversion failed: ' + err.message);

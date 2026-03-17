@@ -1895,14 +1895,19 @@ input[type="range"] { width: 100%; accent-color: var(--accent2); height: 6px; cu
     .about-title { font-size: clamp(1.5em, 7vw, 2em); }
     .about-dev-card { flex-direction: column; align-items: center; text-align: center; padding: 22px 18px; }
     .about-dev-links { justify-content: center; }
-    .about-dev-contacts { gap: 6px; justify-content: center; }
+    .about-dev-contacts { align-items: stretch; }
     .about-dev-name-row { justify-content: center; }
     .about-tool-row { padding: 12px 14px; gap: 10px; }
     .atr-badge { display: none; }
     .contact-layout { padding: 0 12px; }
-    .contact-social-row { justify-content: center; gap: 6px; }
-    .csocial-btn { font-size: 0.76em; padding: 7px 11px; }
-    .adc-item { font-size: 0.76em; padding: 6px 10px; }
+    .contact-social-row { gap: 6px; }
+    .csocial-btn { font-size: 0.78em; padding: 7px 14px; }
+}
+@media (max-width: 400px) {
+    .contact-social-row { flex-direction: column; }
+    .csocial-btn { justify-content: center; width: 100%; }
+    .contact-info-card { padding: 12px 14px; }
+    .cic-icon { width: 36px; height: 36px; }
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -2152,25 +2157,6 @@ footer::before {
     .secondary-btn { width: 100%; justify-content: center; }
     .about-grid    { grid-template-columns: 1fr 1fr; }
     .contact-info-card { gap: 10px; }
-}
-
-/* ── Extra small (≤400px) ──────────────────────────────────── */
-@media (max-width: 400px) {
-    .logo-name     { font-size: 0.88em; }
-    .home-grid     { grid-template-columns: 1fr; }
-    .home-card p   { display: none; }
-    .stats-row     { margin: 0 10px 40px; }
-    .stat-item     { min-width: 50%; }
-    .hero-btns     { gap: 8px; }
-    .tab-section:not(.home-section) { width: 98%; margin: 12px auto 48px; }
-    .about-grid    { grid-template-columns: 1fr; }
-    .card          { padding: 12px; }
-    .drop-zone     { padding: 18px 10px; }
-    .header-inner  { padding: 0 10px; gap: 8px; }
-    .about-dev-contacts { flex-direction: column; align-items: center; }
-    .adc-item      { width: 100%; justify-content: center; }
-    .contact-social-row { flex-direction: column; align-items: stretch; }
-    .csocial-btn   { justify-content: center; }
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -2508,40 +2494,34 @@ footer::before {
    ══════════════════════════════════════════════════════════════ */
 .about-dev-contacts {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 8px;
-    margin-bottom: 16px;
+    margin-bottom: 18px;
 }
 .adc-item {
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    gap: 7px;
-    padding: 7px 13px;
+    gap: 10px;
+    padding: 9px 14px;
     border-radius: var(--radius-sm);
-    font-size: 0.8em;
-    font-weight: 600;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    transition: border-color 0.2s;
+}
+.adc-item:hover { border-color: var(--accent2); }
+.adc-icon { font-size: 1em; flex-shrink: 0; width: 20px; text-align: center; }
+.adc-text { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.adc-label { font-size: 0.68em; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: 0.5px; }
+.adc-text a {
+    font-size: 0.82em;
+    font-weight: 500;
+    color: var(--text2);
     text-decoration: none;
-    border: 1.5px solid transparent;
-    transition: all 0.2s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
-.adc-whatsapp {
-    background: rgba(37,211,102,0.1);
-    color: #16a34a;
-    border-color: rgba(37,211,102,0.25);
-}
-.adc-whatsapp:hover { background: rgba(37,211,102,0.18); color: #15803d; }
-.adc-email {
-    background: rgba(37,99,235,0.08);
-    color: var(--accent2);
-    border-color: rgba(37,99,235,0.2);
-}
-.adc-email:hover { background: rgba(37,99,235,0.15); }
-.adc-web {
-    background: rgba(99,102,241,0.08);
-    color: #6366f1;
-    border-color: rgba(99,102,241,0.2);
-}
-.adc-web:hover { background: rgba(99,102,241,0.15); }
+.adc-text a:hover { color: var(--accent2); }
 
 /* ══════════════════════════════════════════════════════════════
    CONTACT — Colored icon wrappers
@@ -2566,30 +2546,45 @@ footer::before {
     flex-wrap: wrap;
     gap: 8px;
     margin-top: 4px;
+    padding: 14px 0 4px;
+    border-top: 1px solid var(--border);
 }
 .csocial-btn {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    padding: 8px 14px;
+    justify-content: center;
+    padding: 8px 18px;
     border-radius: var(--radius-sm);
-    font-size: 0.8em;
+    font-size: 0.82em;
     font-weight: 600;
     text-decoration: none;
     border: 1.5px solid transparent;
     transition: all 0.2s;
     color: #fff;
+    letter-spacing: 0.2px;
 }
-.csocial-li  { background: #0a66c2; border-color: #0a66c2; }
-.csocial-li:hover  { background: #004182; border-color: #004182; color: #fff; }
-.csocial-ig  {
-    background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-    border-color: transparent;
-}
-.csocial-ig:hover  { opacity: 0.88; color: #fff; }
-.csocial-gh  { background: #24292e; border-color: #24292e; }
+.csocial-li  { background: #0a66c2; }
+.csocial-li:hover  { background: #004182; color: #fff; }
+.csocial-ig  { background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+.csocial-ig:hover  { opacity: 0.85; color: #fff; }
+.csocial-gh  { background: #24292e; }
 .csocial-gh:hover  { background: #1a1e22; color: #fff; }
-.csocial-web { background: #16a34a; border-color: #16a34a; }
+.csocial-web { background: #16a34a; }
 .csocial-web:hover { background: #15803d; color: #fff; }
 
 /* end of styles */
+
+/* ── Extra small (≤400px) ──────────────────────────────────── */
+@media (max-width: 400px) {
+    .logo-name     { font-size: 0.88em; }
+    .home-grid     { grid-template-columns: 1fr; }
+    .home-card p   { display: none; }
+    .stats-row     { margin: 0 10px 40px; }
+    .stat-item     { min-width: 50%; }
+    .hero-btns     { gap: 8px; }
+    .tab-section:not(.home-section) { width: 98%; margin: 12px auto 48px; }
+    .about-grid    { grid-template-columns: 1fr; }
+    .card          { padding: 12px; }
+    .drop-zone     { padding: 18px 10px; }
+    .header-inner  { padding: 0 10px; gap: 8px; }
+}

@@ -1673,9 +1673,9 @@ gifBtn.addEventListener('click', async () => {
     fill.style.width = '10%';
     label.textContent = 'Loading frames…';
 
-    const delay = parseInt(document.getElementById('gifDelay').value) || 300;
+    const delayMs = parseInt(document.getElementById('gifDelay').value) || 300;
     const targetW = parseInt(document.getElementById('gifWidth').value) || 480;
-    const repeat = parseInt(document.getElementById('gifRepeat').value);
+    const repeat  = parseInt(document.getElementById('gifRepeat').value); // 0=loop, -1=once
 
     try {
         const images = await Promise.all(gifFrames.map(f => loadImage(f.dataUrl)));
@@ -1691,6 +1691,8 @@ gifBtn.addEventListener('click', async () => {
 
         const { GIFEncoder, quantize, applyPalette } = window.gifenc;
         const encoder = GIFEncoder();
+        // gifenc delay is in centiseconds (1cs = 10ms)
+        const delayCentisec = Math.round(delayMs / 10);
 
         images.forEach((img, i) => {
             ctx.clearRect(0, 0, targetW, h);
@@ -1698,7 +1700,10 @@ gifBtn.addEventListener('click', async () => {
             const { data } = ctx.getImageData(0, 0, targetW, h);
             const palette = quantize(data, 256);
             const index = applyPalette(data, palette);
-            encoder.writeFrame(index, targetW, h, { palette, delay, repeat });
+            // repeat only on first frame
+            const opts = { palette, delay: delayCentisec };
+            if (i === 0) opts.repeat = repeat < 0 ? -1 : 0;
+            encoder.writeFrame(index, targetW, h, opts);
             fill.style.width = (30 + Math.round(((i + 1) / images.length) * 65)) + '%';
             label.textContent = `Frame ${i + 1} / ${images.length}`;
         });
@@ -1797,6 +1802,7 @@ videogifBtn.addEventListener('click', async () => {
         const ctx = canvas.getContext('2d');
 
         const frameDelay = Math.round(1000 / fps);
+        const frameDelayCentisec = Math.round(frameDelay / 10);
         const { GIFEncoder, quantize, applyPalette } = window.gifenc;
         const encoder = GIFEncoder();
 
@@ -1807,7 +1813,9 @@ videogifBtn.addEventListener('click', async () => {
             const { data } = ctx.getImageData(0, 0, targetW, aspectH);
             const palette = quantize(data, 256);
             const index = applyPalette(data, palette);
-            encoder.writeFrame(index, targetW, aspectH, { palette, delay: frameDelay, repeat: 0 });
+            const opts = { palette, delay: frameDelayCentisec };
+            if (i === 0) opts.repeat = 0; // loop forever
+            encoder.writeFrame(index, targetW, aspectH, opts);
             fill.style.width = Math.round(((i + 1) / totalFrames) * 90) + '%';
             label.textContent = `Frame ${i + 1} / ${totalFrames}`;
         }

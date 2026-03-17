@@ -1789,3 +1789,80 @@ function generateShareQR(url) {
         container.innerHTML = '<p style="font-size:0.75em;color:var(--text3);">QR unavailable</p>';
     }
 }
+
+// ── Contact Form ───────────────────────────────────────────────
+(function initContact() {
+    const form     = document.getElementById('contactForm');
+    if (!form) return;
+    const cfName   = document.getElementById('cfName');
+    const cfEmail  = document.getElementById('cfEmail');
+    const cfMsg    = document.getElementById('cfMessage');
+    const cfSuccess= document.getElementById('cfSuccess');
+
+    function showErr(id, msg) { document.getElementById(id).textContent = msg; }
+    function clearErr(id)     { document.getElementById(id).textContent = ''; }
+
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        let valid = true;
+
+        clearErr('cfNameErr'); clearErr('cfEmailErr'); clearErr('cfMessageErr');
+
+        if (!cfName.value.trim()) { showErr('cfNameErr', 'Name is required.'); valid = false; }
+        if (!cfEmail.value.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cfEmail.value)) {
+            showErr('cfEmailErr', 'Enter a valid email address.'); valid = false;
+        }
+        if (!cfMsg.value.trim() || cfMsg.value.trim().length < 10) {
+            showErr('cfMessageErr', 'Message must be at least 10 characters.'); valid = false;
+        }
+        if (!valid) return;
+
+        const btn = form.querySelector('.cf-submit');
+        btn.disabled = true;
+        btn.textContent = '⏳ Sending…';
+
+        try {
+            // Uses Formspree — replace YOUR_FORM_ID with actual ID from formspree.io
+            const res = await fetch('https://formspree.io/f/xpwzgkqv', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify({
+                    name:    cfName.value.trim(),
+                    email:   cfEmail.value.trim(),
+                    subject: document.getElementById('cfSubject').value,
+                    message: cfMsg.value.trim()
+                })
+            });
+            if (res.ok) {
+                form.reset();
+                cfSuccess.style.display = 'block';
+                setTimeout(() => { cfSuccess.style.display = 'none'; }, 6000);
+            } else {
+                alert('Failed to send. Please try emailing directly at mianhassam96@gmail.com');
+            }
+        } catch {
+            alert('Network error. Please email directly at mianhassam96@gmail.com');
+        }
+
+        btn.disabled = false;
+        btn.textContent = '✉️ Send Message';
+    });
+
+    // FAQ accordion
+    document.querySelectorAll('.faq-q').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const item    = this.closest('.faq-item');
+            const answer  = item.querySelector('.faq-a');
+            const isOpen  = item.classList.contains('open');
+            // close all
+            document.querySelectorAll('.faq-item.open').forEach(i => {
+                i.classList.remove('open');
+                i.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
+            });
+            if (!isOpen) {
+                item.classList.add('open');
+                this.setAttribute('aria-expanded', 'true');
+            }
+        });
+    });
+})();

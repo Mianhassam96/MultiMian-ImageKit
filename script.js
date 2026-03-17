@@ -991,3 +991,149 @@ mergeBtn.addEventListener('click', async () => {
     }
     mergeBtn.disabled = false;
 });
+
+// ══════════════════════════════════════════════════════════════
+// 8. Share Image — Get Public Link (ImgBB API)
+// ══════════════════════════════════════════════════════════════
+const shareDrop     = document.getElementById('shareDrop');
+const shareUpload   = document.getElementById('shareUpload');
+const shareBtn      = document.getElementById('shareBtn');
+const shareImg      = document.getElementById('shareImg');
+const sharePreview  = document.getElementById('sharePreview');
+const shareFileInfo = document.getElementById('shareFileInfo');
+const shareProgress = document.getElementById('shareProgress');
+const shareFill     = document.getElementById('shareProgressFill');
+const shareProgLabel= document.getElementById('shareProgressLabel');
+const shareResult   = document.getElementById('shareResult');
+const shareApiKey   = document.getElementById('shareApiKey');
+let shareFile = null;
+
+// Persist API key in localStorage
+shareApiKey.value = localStorage.getItem('imgbb_api_key') || '';
+shareApiKey.addEventListener('input', () => {
+    localStorage.setItem('imgbb_api_key', shareApiKey.value.trim());
+    updateShareBtn();
+});
+
+function updateShareBtn() {
+    shareBtn.disabled = !(shareFile && shareApiKey.value.trim());
+}
+
+setupDrop(shareDrop, shareUpload, files => {
+    if (!files[0]) return;
+    shareFile = files[0];
+    shareImg.src = URL.createObjectURL(shareFile);
+    sharePreview.style.display = 'block';
+    buildFileInfo(shareFileInfo, shareFile);
+    shareResult.style.display = 'none';
+    document.getElementById('shareClearRow').style.display = 'flex';
+    updateShareBtn();
+});
+
+document.getElementById('shareClear').addEventListener('click', () => {
+    shareFile = null;
+    shareImg.src = '';
+    sharePreview.style.display = 'none';
+    document.getElementById('shareClearRow').style.display = 'none';
+    shareResult.style.display = 'none';
+    shareProgress.style.display = 'none';
+    shareUpload.value = '';
+    updateShareBtn();
+});
+
+shareBtn.addEventListener('click', async () => {
+    const key = shareApiKey.value.trim();
+    if (!key) return alert('Please enter your ImgBB API key.');
+    if (!shareFile) return;
+
+    shareBtn.disabled = true;
+    shareResult.style.display = 'none';
+    shareProgress.style.display = 'block';
+    shareFill.style.width = '0%';
+    shareProgLabel.textContent = 'Uploading…';
+
+    // Animate progress bar (XHR doesn't give upload progress for small files, so fake it)
+    let fakePct = 0;
+    const fakeTimer = setInterval(() => {
+        fakePct = Math.min(fakePct + Math.random() * 18, 88);
+        shareFill.style.width = fakePct + '%';
+    }, 200);
+
+    try {
+        const expiry = document.getElementById('shareExpiry').value;
+        const formData = new FormData();
+        formData.append('image', shareFile);
+        if (expiry) formData.append('expiration', expiry);
+
+        const res = await fetch(`https://api.imgbb.com/1/upload?key=${encodeURIComponent(key)}`, {
+            method: 'POST',
+            body: formData,
+        });
+        const json = await res.json();
+
+        clearInterval(fakeTimer);
+
+        if (!json.success) {
+            throw new Error(json.error?.message || 'Upload failed. Check your API key.');
+        }
+
+        shareFill.style.width = '100%';
+        shareProgLabel.textContent = 'Done!';
+        setTimeout(() => { shareProgress.style.display = 'none'; }, 600);
+
+        const data = json.data;
+        const viewerUrl = data.url_viewer || data.url;
+        const directUrl = data.url;
+        const thumbUrl  = data.thumb?.url || data.medium?.url || data.url;
+        const deleteUrl = data.delete_url || '';
+
+        document.getElementById('shareLinkInput').value  = viewerUrl;
+        document.getElementById('shareDirectUrl').value  = directUrl;
+        document.getElementById('shareThumbUrl').value   = thumbUrl;
+        document.getElementById('shareDeleteUrl').value  = deleteUrl;
+
+        document.getElementById('shareOpenBtn').href = viewerUrl;
+
+        // Social share buttons
+        const encoded = encodeURIComponent(viewerUrl);
+        const msg = encodeURIComponent('Check out this image: ' + viewerUrl);
+        document.getElementById('shareWhatsapp').onclick  = () => window.open('https://wa.me/?text=' + msg, '_blank');
+        document.getElementById('shareTelegram').onclick  = () => window.open('https://t.me/share/url?url=' + encoded + '&text=' + encodeURIComponent('Check out this image!'), '_blank');
+        document.getElementById('shareTwitter').onclick   = () => window.open('https://twitter.com/intent/tweet?text=' + msg, '_blank');
+
+        shareResult.style.display = 'block';
+        shareResult.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+    } catch (err) {
+        clearInterval(fakeTimer);
+        shareProgress.style.display = 'none';
+        alert('Upload failed: ' + err.message);
+    }
+
+    shareBtn.disabled = false;
+    updateShareBtn();
+});
+
+// Copy button — main link
+document.getElementById('shareCopyBtn').addEventListener('click', () => {
+    const val = document.getElementById('shareLinkInput').value;
+    if (!val) return;
+    navigator.clipboard.writeText(val).then(() => {
+        const btn = document.getElementById('shareCopyBtn');
+        btn.textContent = '✅ Copied!';
+        setTimeout(() => { btn.textContent = '📋 Copy'; }, 2000);
+    });
+});
+
+// Copy buttons — extra links (direct, thumb, delete)
+document.querySelectorAll('.share-copy-btn[data-copy]').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const val = document.getElementById(btn.dataset.copy).value;
+        if (!val) return;
+        navigator.clipboard.writeText(val).then(() => {
+            const orig = btn.textContent;
+            btn.textContent = '✅';
+            setTimeout(() => { btn.textContent = orig; }, 2000);
+        });
+    });
+});

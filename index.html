@@ -32,6 +32,7 @@
             <button class="tab-btn" data-tab="convert">Convert</button>
             <button class="tab-btn" data-tab="watermark">Watermark</button>
             <button class="tab-btn" data-tab="merge">Merge</button>
+            <button class="tab-btn" data-tab="share">Share</button>
         </nav>
 
         <!-- Right: toggle + hamburger -->
@@ -57,6 +58,7 @@
         <button class="tab-btn" data-tab="convert">� Convert</button>
         <button class="tab-btn" data-tab="watermark">� Watermark</button>
         <button class="tab-btn" data-tab="merge">🔗 Merge</button>
+        <button class="tab-btn" data-tab="share">🔗 Share Link</button>
     </div>
 </header>
 
@@ -79,7 +81,7 @@
                 <span class="ht-line1">The Image Toolkit</span>
                 <span class="ht-line2">That <span class="ht-gradient">Works Instantly</span></span>
             </h1>
-            <p class="hero-desc">7 powerful tools — OCR, PDF, Compress, Resize, Convert, Watermark &amp; Merge — all running 100% in your browser. Zero uploads. Zero limits.</p>
+            <p class="hero-desc">8 powerful tools — OCR, PDF, Compress, Resize, Convert, Watermark, Merge &amp; Share — all running 100% in your browser. Zero uploads. Zero limits.</p>
             <div class="hero-btns">
                 <button class="hero-cta hero-cta-primary" data-tab="ocr">
                     <span class="btn-icon">🔤</span> Extract Text (OCR)
@@ -101,12 +103,13 @@
             <span class="chip chip-5">🔄 Convert</span>
             <span class="chip chip-6">💧 Watermark</span>
             <span class="chip chip-7">🔗 Merge</span>
+            <span class="chip chip-8">🌐 Share</span>
         </div>
 
         <!-- Stats -->
         <div class="stats-row">
             <div class="stat-item">
-                <span class="stat-val" data-count="7">0</span>
+                <span class="stat-val" data-count="8">0</span>
                 <span class="stat-lbl">Tools</span>
             </div>
             <div class="stat-divider"></div>
@@ -217,6 +220,19 @@
                     <p>Combine two images side-by-side or stacked. Export as JPG, PNG or PDF.</p>
                     <div class="card-footer">
                         <span class="card-tech">Canvas + jsPDF</span>
+                        <span class="card-arrow">→</span>
+                    </div>
+                </div>
+                <div class="home-card home-card-featured" data-tab="share">
+                    <div class="card-glow"></div>
+                    <div class="card-top">
+                        <span class="card-icon-wrap ci-share">🌐</span>
+                        <span class="card-badge card-badge-new">New ⭐</span>
+                    </div>
+                    <h3>Share Image</h3>
+                    <p>Upload and get a permanent public link. Share on WhatsApp, Telegram, Twitter and more.</p>
+                    <div class="card-footer">
+                        <span class="card-tech">ImgBB API</span>
                         <span class="card-arrow">→</span>
                     </div>
                 </div>
@@ -724,6 +740,113 @@
         </div>
         <p class="success-msg" id="mergeSuccess" style="display:none;">✔ Merged file downloaded</p>
     </section>
+
+</main>
+
+<!-- ══ Share Tab ══ -->
+<section id="tab-share" class="tab-section" style="display:none;">
+    <div class="section-header">
+        <div class="section-icon">🔗</div>
+        <div>
+            <h2>Share Image — Get Public Link</h2>
+            <p>Upload any image and get a permanent public URL you can share anywhere</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="drop-zone" id="shareDrop">
+            <span class="drop-icon">🌐</span>
+            <p>Drop image here or <label for="shareUpload" class="link">click to upload</label></p>
+            <p class="drop-hint">Supports JPG, PNG, WebP, GIF, BMP — max 32 MB</p>
+            <input type="file" id="shareUpload" accept="image/*" hidden>
+        </div>
+        <div id="sharePreview" class="preview-box" style="display:none; margin-top:14px;">
+            <img id="shareImg" alt="Preview">
+            <div class="file-info" id="shareFileInfo"></div>
+        </div>
+        <div id="shareClearRow" class="clear-row" style="display:none;">
+            <button id="shareClear" class="clear-btn">✕ Clear &amp; Upload New</button>
+        </div>
+    </div>
+
+    <div class="card" id="shareApiCard">
+        <div class="options-panel">
+            <div class="opt-group" style="flex:1; min-width:220px;">
+                <label>ImgBB API Key <a href="https://api.imgbb.com/" target="_blank" rel="noopener" class="link" style="font-size:0.85em; text-transform:none; font-weight:500;">Get free key ↗</a></label>
+                <input type="text" id="shareApiKey" placeholder="Paste your free ImgBB API key here" autocomplete="off">
+            </div>
+            <div class="opt-group" style="max-width:160px;">
+                <label>Link Expiry</label>
+                <select id="shareExpiry">
+                    <option value="">Never (permanent)</option>
+                    <option value="600">10 minutes</option>
+                    <option value="3600">1 hour</option>
+                    <option value="86400">1 day</option>
+                    <option value="604800">7 days</option>
+                </select>
+            </div>
+        </div>
+        <p class="share-api-hint">Your API key is stored locally in your browser and never sent anywhere except ImgBB.</p>
+    </div>
+
+    <div class="btn-row">
+        <button id="shareBtn" class="primary-btn" disabled>🚀 Upload &amp; Get Link</button>
+    </div>
+
+    <div class="progress-bar" id="shareProgress" style="display:none; margin-top:14px;">
+        <div class="progress-fill" id="shareProgressFill"></div>
+        <span id="shareProgressLabel">Uploading…</span>
+    </div>
+
+    <div id="shareResult" style="display:none; margin-top:16px;">
+        <div class="card share-result-card">
+            <div class="share-result-header">
+                <span class="share-result-icon">✅</span>
+                <span>Your image is live! Copy the link below.</span>
+            </div>
+
+            <div class="share-link-row">
+                <input type="text" id="shareLinkInput" class="share-link-input" readonly>
+                <button id="shareCopyBtn" class="share-copy-btn">📋 Copy</button>
+            </div>
+
+            <div class="share-actions">
+                <a id="shareOpenBtn" href="#" target="_blank" rel="noopener" class="secondary-btn">🌐 Open in Browser</a>
+                <button id="shareWhatsapp" class="share-social-btn share-wa">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+                    WhatsApp
+                </button>
+                <button id="shareTelegram" class="share-social-btn share-tg">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                    Telegram
+                </button>
+                <button id="shareTwitter" class="share-social-btn share-tw">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.259 5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    X / Twitter
+                </button>
+            </div>
+
+            <div class="share-extra-links">
+                <div class="share-extra-item">
+                    <span class="share-extra-label">Direct Image URL</span>
+                    <input type="text" id="shareDirectUrl" class="share-link-input" readonly>
+                    <button class="share-copy-btn" data-copy="shareDirectUrl">📋</button>
+                </div>
+                <div class="share-extra-item">
+                    <span class="share-extra-label">Thumbnail URL</span>
+                    <input type="text" id="shareThumbUrl" class="share-link-input" readonly>
+                    <button class="share-copy-btn" data-copy="shareThumbUrl">📋</button>
+                </div>
+                <div class="share-extra-item">
+                    <span class="share-extra-label">Delete URL (keep private)</span>
+                    <input type="text" id="shareDeleteUrl" class="share-link-input" readonly>
+                    <button class="share-copy-btn" data-copy="shareDeleteUrl">📋</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
 
 </main>
 

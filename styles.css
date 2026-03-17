@@ -808,6 +808,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent2); height: 6px; cu
 .chip-5 { animation-duration: 7.5s; animation-delay: 0.8s; }
 .chip-6 { animation-duration: 6s; animation-delay: 1.2s; }
 .chip-7 { animation-duration: 5s; animation-delay: 0.3s; }
+.chip-8 { animation-duration: 6.8s; animation-delay: 0.7s; }
 @keyframes chipFloat {
     0%, 100% { transform: translateY(0); }
     50%       { transform: translateY(-6px); }
@@ -960,6 +961,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent2); height: 6px; cu
 .ci-convert { background: linear-gradient(135deg, #ede9fe, #ddd6fe); }
 .ci-wm      { background: linear-gradient(135deg, #cffafe, #a5f3fc); }
 .ci-merge   { background: linear-gradient(135deg, #ffedd5, #fed7aa); }
+.ci-share   { background: linear-gradient(135deg, #e0f2fe, #bae6fd); }
 [data-theme="dark"] .ci-ocr     { background: rgba(22,163,74,0.15); }
 [data-theme="dark"] .ci-pdf     { background: rgba(37,99,235,0.15); }
 [data-theme="dark"] .ci-compress{ background: rgba(217,119,6,0.15); }
@@ -967,6 +969,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent2); height: 6px; cu
 [data-theme="dark"] .ci-convert { background: rgba(99,102,241,0.15); }
 [data-theme="dark"] .ci-wm      { background: rgba(6,182,212,0.15); }
 [data-theme="dark"] .ci-merge   { background: rgba(234,88,12,0.15); }
+[data-theme="dark"] .ci-share   { background: rgba(14,165,233,0.15); }
 
 .card-badge {
     font-size: 0.68em;
@@ -1161,6 +1164,89 @@ input[type="range"] { width: 100%; accent-color: var(--accent2); height: 6px; cu
     box-shadow: var(--shadow-sm);
 }
 .tech-pills span:hover { background: var(--accent2-light); color: var(--accent2); border-color: var(--accent2); transform: translateY(-2px); }
+
+/* ── Share Tool ────────────────────────────────────────────── */
+.share-api-hint {
+    font-size: 0.74em;
+    color: var(--text3);
+    margin-top: 10px;
+    text-align: center;
+}
+.share-result-card {
+    border-color: rgba(22,163,74,0.3);
+    background: var(--surface);
+}
+.share-result-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.92em;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 16px;
+}
+.share-result-icon { font-size: 1.2em; }
+.share-link-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+.share-link-input {
+    flex: 1;
+    padding: 9px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 0.85em;
+    background: var(--surface2);
+    color: var(--text);
+    font-family: 'Plus Jakarta Sans', monospace;
+    min-width: 0;
+    transition: border-color 0.2s;
+}
+.share-link-input:focus { outline: none; border-color: var(--accent2); }
+.share-copy-btn {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 9px 16px;
+    font-size: 0.85em;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: opacity 0.2s, transform 0.15s;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+.share-copy-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+.share-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+.share-social-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 0.82em;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    color: #fff;
+    transition: opacity 0.2s, transform 0.15s;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+.share-social-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+.share-wa { background: #25d366; }
+.share-tg { background: #0088cc; }
+.share-tw { background: #000; }
+.share-extra-links { display: flex; flex-direction: column; gap: 10px; border-top: 1px solid var(--border); padding-top: 14px; }
+.share-extra-item { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.share-extra-label { font-size: 0.74em; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.4px; min-width: 130px; }
+.share-extra-item .share-link-input { font-size: 0.78em; }
+.share-extra-item .share-copy-btn { padding: 7px 10px; font-size: 0.8em; }
 
 /* ══════════════════════════════════════════════════════════════
    FOOTER — Advanced compact

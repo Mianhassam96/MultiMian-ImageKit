@@ -107,56 +107,139 @@ header::after {
     gap: 16px;
 }
 
-/* ── Logo — animated text, no icon ────────────────────────── */
+/* ── Logo — fancy animated text ───────────────────────────── */
 .logo-wrap {
     text-decoration: none;
     flex-shrink: 0;
     display: flex;
     align-items: center;
-    animation: logoSlide 0.6s cubic-bezier(.22,1,.36,1) both;
+    position: relative;
+    perspective: 400px;
 }
-@keyframes logoSlide {
-    from { opacity: 0; transform: translateX(-16px); }
-    to   { opacity: 1; transform: translateX(0); }
-}
+
 .logo-name {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.18em;
-    font-weight: 700;
+    font-size: 1.22em;
+    font-weight: 800;
     letter-spacing: -0.5px;
     white-space: nowrap;
     line-height: 1;
+    display: flex;
+    align-items: baseline;
+    position: relative;
+    z-index: 1;
+    transition: transform 0.4s cubic-bezier(.22,1,.36,1), filter 0.3s;
 }
+
+/* Hover: subtle 3D tilt */
+.logo-wrap:hover .logo-name {
+    transform: rotateX(6deg) rotateY(-4deg) scale(1.04);
+    filter: drop-shadow(0 4px 16px rgba(110,231,183,0.35));
+}
+
+/* ── "Multi" — letter-by-letter entrance ── */
 .logo-multi {
+    display: inline-flex;
     color: #fff;
-    transition: color 0.3s;
 }
+
+/* ── "Mian" — animated gradient ── */
 .logo-mian {
-    background: linear-gradient(135deg, #6ee7b7, #60a5fa);
+    display: inline-flex;
+    background: linear-gradient(135deg, #6ee7b7 0%, #60a5fa 40%, #a78bfa 80%, #6ee7b7 100%);
+    background-size: 300% 100%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    animation: logoGrad 4s ease infinite alternate;
-    background-size: 200%;
+    animation: logoMianGrad 4s linear infinite;
 }
-@keyframes logoGrad {
+@keyframes logoMianGrad {
     0%   { background-position: 0% 50%; }
-    100% { background-position: 100% 50%; }
+    100% { background-position: 300% 50%; }
 }
+
+/* ── Individual letters — staggered drop-in ── */
+.logo-letter {
+    display: inline-block;
+    animation: letterDrop 0.55s cubic-bezier(.22,1,.36,1) both;
+    animation-delay: calc(var(--i) * 0.055s);
+}
+@keyframes letterDrop {
+    from { opacity: 0; transform: translateY(-14px) scale(0.8); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ── Dot — glowing pulse ── */
 .logo-dot {
     color: #6ee7b7;
-    font-size: 1.2em;
+    font-size: 1.3em;
     line-height: 0.8;
-    margin: 0 1px;
+    margin: 0 1px 0 0;
+    display: inline-block;
+    animation: dotPulse 2.5s ease-in-out infinite, letterDrop 0.55s 0.5s cubic-bezier(.22,1,.36,1) both;
+    text-shadow: 0 0 8px rgba(110,231,183,0.8), 0 0 20px rgba(110,231,183,0.4);
 }
+@keyframes dotPulse {
+    0%, 100% { text-shadow: 0 0 6px rgba(110,231,183,0.7), 0 0 18px rgba(110,231,183,0.3); transform: scale(1); }
+    50%       { text-shadow: 0 0 14px rgba(110,231,183,1),   0 0 32px rgba(110,231,183,0.6); transform: scale(1.25); }
+}
+
+/* ── "ImageKit" — fade-slide in last ── */
 .logo-kit {
-    color: rgba(255,255,255,0.55);
-    font-size: 0.82em;
+    color: rgba(255,255,255,0.45);
+    font-size: 0.78em;
     font-weight: 500;
-    letter-spacing: 0.2px;
-    transition: color 0.3s;
+    letter-spacing: 0.5px;
+    margin-left: 1px;
+    display: inline-block;
+    animation: kitFade 0.6s 0.65s cubic-bezier(.22,1,.36,1) both;
+    transition: color 0.3s, letter-spacing 0.3s;
+    position: relative;
 }
-.logo-wrap:hover .logo-kit { color: rgba(255,255,255,0.85); }
+.logo-kit::before {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: linear-gradient(90deg, #6ee7b7, #60a5fa);
+    transition: width 0.35s ease;
+    border-radius: 1px;
+}
+.logo-wrap:hover .logo-kit {
+    color: rgba(255,255,255,0.85);
+    letter-spacing: 0.8px;
+}
+.logo-wrap:hover .logo-kit::before { width: 100%; }
+@keyframes kitFade {
+    from { opacity: 0; transform: translateX(10px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ── Shimmer sweep overlay ── */
+.logo-shimmer {
+    position: absolute;
+    inset: -4px -8px;
+    border-radius: 8px;
+    background: linear-gradient(105deg,
+        transparent 30%,
+        rgba(255,255,255,0.12) 50%,
+        transparent 70%
+    );
+    background-size: 200% 100%;
+    animation: logoShimmer 3.5s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+@keyframes logoShimmer {
+    0%   { background-position: -100% 0; opacity: 0; }
+    20%  { opacity: 1; }
+    60%  { background-position: 200% 0; opacity: 1; }
+    80%  { opacity: 0; }
+    100% { background-position: 200% 0; opacity: 0; }
+}
+
 .logo-wrap:hover .logo-multi { color: #e2e8f0; }
 
 /* ── Tabs nav ──────────────────────────────────────────────── */
@@ -1571,10 +1654,12 @@ footer::before {
 }
 .fl-multi { color: rgba(255,255,255,0.85); }
 .fl-mian {
-    background: linear-gradient(135deg, #6ee7b7, #60a5fa);
+    background: linear-gradient(135deg, #6ee7b7 0%, #60a5fa 40%, #a78bfa 80%, #6ee7b7 100%);
+    background-size: 300% 100%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    animation: logoMianGrad 4s linear infinite;
 }
 .fl-dot { color: #6ee7b7; }
 .fl-kit { color: rgba(255,255,255,0.4); font-size: 0.85em; font-weight: 500; }

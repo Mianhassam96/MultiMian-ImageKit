@@ -4,17 +4,18 @@
 // ══════════════════════════════════════════════════════════════
 const GIFMaker = (() => {
 
-    // ── Median-cut: reduce RGBA pixel data to 256-color palette ─
+    // ── Median-cut: RGBA Uint8ClampedArray → 256-color palette ──
     function buildPalette(data) {
-        // Sample pixels (every 4th for speed)
+        // Sample every 4th pixel (stride 16 bytes = 4 pixels)
         const pixels = [];
         for (let i = 0; i < data.length; i += 16) {
-            pixels.push([data[i], data[i+1], data[i+2]]);
+            pixels.push([data[i] & 0xff, data[i+1] & 0xff, data[i+2] & 0xff]);
         }
-        // Split boxes until we have 256
+        if (pixels.length === 0) pixels.push([0,0,0]);
+
         let boxes = [pixels];
+
         while (boxes.length < 256) {
-            // find largest box by range
             let maxRange = -1, maxIdx = 0;
             for (let b = 0; b < boxes.length; b++) {
                 const box = boxes[b];
@@ -29,8 +30,8 @@ const GIFMaker = (() => {
                 if (range > maxRange) { maxRange = range; maxIdx = b; }
             }
             if (maxRange === 0) break;
+
             const box = boxes[maxIdx];
-            // find channel with max range
             let rMin=255,rMax=0,gMin=255,gMax=0,bMin=255,bMax=0;
             for (const p of box) {
                 if(p[0]<rMin)rMin=p[0]; if(p[0]>rMax)rMax=p[0];
@@ -39,46 +40,50 @@ const GIFMaker = (() => {
             }
             const rR=rMax-rMin, gR=gMax-gMin, bR=bMax-bMin;
             const ch = rR>=gR && rR>=bR ? 0 : gR>=bR ? 1 : 2;
-            box.sort((a,b) => a[ch]-b[ch]);
+            box.sort((a, b) => a[ch] - b[ch]);
             const mid = box.length >> 1;
             boxes.splice(maxIdx, 1, box.slice(0, mid), box.slice(mid));
         }
-        // Average each box → palette entry
-        const palette = new Uint8Array(256 * 3);
+
+        // Average each box → one palette color
         const palColors = [];
-        for (let b = 0; b < Math.min(boxes.length, 256); b++) {
+        for (let b = 0; b < boxes.length && b < 256; b++) {
             const box = boxes[b];
-            let r=0,g=0,bl=0;
+            let r=0, g=0, bl=0;
             for (const p of box) { r+=p[0]; g+=p[1]; bl+=p[2]; }
             const n = box.length || 1;
             palColors.push([r/n|0, g/n|0, bl/n|0]);
-            palette[b*3]   = r/n|0;
-            palette[b*3+1] = g/n|0;
-            palette[b*3+2] = bl/n|0;
         }
-        // fill remaining slots
-        for (let b = palColors.length; b < 256; b++) {
-            palColors.push([0,0,0]);
+        // Pad to exactly 256 entries
+        while (palColors.length < 256) palColors.push([0, 0, 0]);
+
+        // Flat Uint8Array for writing into GIF
+        const palette = new Uint8Array(256 * 3);
+        for (let i = 0; i < 256; i++) {
+            palette[i*3]   = palColors[i][0];
+            palette[i*3+1] = palColors[i][1];
+            palette[i*3+2] = palColors[i][2];
         }
         return { palette, palColors };
     }
 
-    // ── Map each pixel to nearest palette index ───────────────
+    // ── Map each pixel to nearest palette index (with cache) ──
     function mapPixels(data, palColors) {
-        const n = data.length / 4;
+        const n = data.length >> 2; // divide by 4
         const indices = new Uint8Array(n);
-        // build a simple cache
         const cache = new Map();
         for (let i = 0; i < n; i++) {
-            const r = data[i*4], g = data[i*4+1], b = data[i*4+2];
+            const r = data[i*4] & 0xff;
+            const g = data[i*4+1] & 0xff;
+            const b = data[i*4+2] & 0xff;
             const key = (r << 16) | (g << 8) | b;
             let idx = cache.get(key);
             if (idx === undefined) {
                 let best = 0, bestD = Infinity;
-                for (let j = 0; j < palColors.length; j++) {
+                for (let j = 0; j < 256; j++) {
                     const p = palColors[j];
-                    const d = (r-p[0])**2 + (g-p[1])**2 + (b-p[2])**2;
-                    if (d < bestD) { bestD = d; best = j; }
+                    const d = (r-p[0])*(r-p[0]) + (g-p[1])*(g-p[1]) + (b-p[2])*(b-p[2]);
+                    if (d < bestD) { bestD = d; best = j; if (d === 0) break; }
                 }
                 idx = best;
                 cache.set(key, idx);
@@ -88,7 +93,7 @@ const GIFMaker = (() => {
         return indices;
     }
 
-    // ── LZW compress pixel indices ────────────────────────────
+    // ── LZW compress ──────────────────────────────────────────
     function lzwEncode(indices, minCodeSize) {
         const clearCode = 1 << minCodeSize;
         const eofCode   = clearCode + 1;
@@ -110,12 +115,21 @@ const GIFMaker = (() => {
             }
         }
 
-        emit(clearCode);
+        function reset() {
+            emit(clearCode);
+            table.clear();
+            nextCode = eofCode + 1;
+            codeSize = minCodeSize + 1;
+            maxCode  = 1 << codeSize;
+        }
+
+        reset();
         let prefix = indices[0];
 
         for (let i = 1; i < indices.length; i++) {
             const c   = indices[i];
-            const key = (prefix << 12) | c;
+            // Use string key to avoid bit-collision for large codes
+            const key = prefix + ',' + c;
             if (table.has(key)) {
                 prefix = table.get(key);
             } else {
@@ -127,11 +141,7 @@ const GIFMaker = (() => {
                         maxCode <<= 1;
                     }
                 } else {
-                    emit(clearCode);
-                    table.clear();
-                    nextCode = eofCode + 1;
-                    codeSize = minCodeSize + 1;
-                    maxCode  = 1 << codeSize;
+                    reset();
                 }
                 prefix = c;
             }
@@ -140,7 +150,7 @@ const GIFMaker = (() => {
         emit(eofCode);
         if (bufBits > 0) bytes.push(buf & 0xff);
 
-        // pack into sub-blocks of max 255 bytes
+        // Pack into GIF sub-blocks (max 255 bytes each)
         const out = [];
         for (let i = 0; i < bytes.length; ) {
             const len = Math.min(255, bytes.length - i);
@@ -151,48 +161,52 @@ const GIFMaker = (() => {
         return out;
     }
 
-    // ── Assemble GIF89a binary ────────────────────────────────
+    // ── Assemble GIF89a ───────────────────────────────────────
     function encode(frames, { loop = 0, width, height } = {}) {
+        if (!frames || frames.length === 0) throw new Error('No frames provided');
         const out = [];
         const w16 = v => { out.push(v & 0xff, (v >> 8) & 0xff); };
 
-        // Header + Logical Screen Descriptor
-        out.push(0x47,0x49,0x46,0x38,0x39,0x61); // GIF89a
-        w16(width); w16(height);
-        out.push(0xf7, 0x00, 0x00); // global color table, 256 colors, bg=0, aspect=0
+        // GIF89a header
+        out.push(0x47, 0x49, 0x46, 0x38, 0x39, 0x61); // "GIF89a"
+        w16(width);
+        w16(height);
+        // 0xf7 = global color table present, color resolution 8, sorted=0, size=7 (2^(7+1)=256)
+        out.push(0xf7, 0x00, 0x00);
 
-        // Build global palette from first frame
+        // Global color table (256 × 3 bytes) — built from first frame
         const { palette, palColors } = buildPalette(frames[0].data);
-        for (let i = 0; i < palette.length; i++) out.push(palette[i]);
+        for (let i = 0; i < 768; i++) out.push(palette[i]);
 
-        // Netscape Application Extension (looping)
+        // Netscape looping extension
+        const loopCount = loop === 0 ? 0 : loop < 0 ? 1 : loop;
         out.push(0x21, 0xff, 0x0b,
-            0x4e,0x45,0x54,0x53,0x43,0x41,0x50,0x45,0x32,0x2e,0x30, // NETSCAPE2.0
+            0x4e,0x45,0x54,0x53,0x43,0x41,0x50,0x45,0x32,0x2e,0x30, // "NETSCAPE2.0"
             0x03, 0x01);
-        w16(loop === 0 ? 0 : loop < 0 ? 1 : loop);
+        w16(loopCount);
         out.push(0x00);
 
         for (const f of frames) {
-            const delay = Math.max(2, Math.round((f.delay || 100) / 10));
+            const delay = Math.max(2, Math.round((f.delay || 100) / 10)); // centiseconds
 
             // Graphic Control Extension
             out.push(0x21, 0xf9, 0x04, 0x00);
             w16(delay);
             out.push(0x00, 0x00);
 
-            // Image Descriptor (no local color table)
+            // Image Descriptor — no local color table
             out.push(0x2c);
             w16(0); w16(0); w16(width); w16(height);
             out.push(0x00);
 
-            // Quantize + encode
+            // LZW min code size + compressed data
+            out.push(0x08);
             const indices = mapPixels(f.data, palColors);
-            out.push(0x08); // LZW min code size = 8
             const lzw = lzwEncode(indices, 8);
             for (let i = 0; i < lzw.length; i++) out.push(lzw[i]);
         }
 
-        out.push(0x3b); // GIF Trailer
+        out.push(0x3b); // GIF trailer
         return new Uint8Array(out);
     }
 
@@ -1956,7 +1970,7 @@ gifBtn.addEventListener('click', async () => {
             ctx.clearRect(0, 0, targetW, h);
             ctx.drawImage(img, 0, 0, targetW, h);
             const imageData = ctx.getImageData(0, 0, targetW, h);
-            gifFrameData.push({ data: imageData.data, delay: frameDelay });
+            gifFrameData.push({ data: imageData.data.slice(), delay: frameDelay });
             fill.style.width = (30 + Math.round(((i + 1) / images.length) * 50)) + '%';
             label.textContent = `Processing frame ${i + 1} / ${images.length}`;
         });

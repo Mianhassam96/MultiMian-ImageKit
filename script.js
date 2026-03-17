@@ -387,6 +387,14 @@ ocrBtn.addEventListener('click', async () => {
             .trim();
 
         ocrText.value = text || '(No text detected — try a clearer image or different language)';
+
+        // Show stats
+        const words = text ? text.trim().split(/\s+/).filter(Boolean).length : 0;
+        const chars = text ? text.length : 0;
+        const lines = text ? text.split('\n').filter(l => l.trim()).length : 0;
+        document.getElementById('ocrStats').innerHTML =
+            `<span><strong>${words}</strong> words</span><span><strong>${chars}</strong> chars</span><span><strong>${lines}</strong> lines</span>`;
+
         ocrProgress.style.display = 'none';
         ocrResult.style.display = 'block';
         ocrSuccess.style.display = 'block';
@@ -398,18 +406,22 @@ ocrBtn.addEventListener('click', async () => {
 });
 
 document.getElementById('ocrCopy').addEventListener('click', () => {
-    if (!ocrText.value) return alert('No text to copy.');
-    navigator.clipboard.writeText(ocrText.value).then(() => alert('Copied to clipboard!'));
+    if (!ocrText.value) return;
+    navigator.clipboard.writeText(ocrText.value).then(() => {
+        const btn = document.getElementById('ocrCopy');
+        btn.textContent = '✅ Copied!';
+        setTimeout(() => { btn.textContent = '📋 Copy Text'; }, 2000);
+    });
 });
 
 document.getElementById('ocrDownloadTxt').addEventListener('click', () => {
-    if (!ocrText.value) return alert('No text to download.');
+    if (!ocrText.value) return;
     const blob = new Blob([ocrText.value], { type: 'text/plain' });
     triggerDownload(URL.createObjectURL(blob), 'extracted-text.txt');
 });
 
 document.getElementById('ocrToPdf').addEventListener('click', () => {
-    if (!ocrText.value) return alert('No text to convert.');
+    if (!ocrText.value) return;
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF();
     const lines = pdf.splitTextToSize(ocrText.value, 180);
@@ -751,6 +763,13 @@ async function extractPdfText(file) {
 
         p2tProgress.style.display = 'none';
         p2tTextEl.value = fullText.trim();
+
+        // Show stats
+        const words = fullText.trim().split(/\s+/).filter(Boolean).length;
+        const chars = fullText.trim().length;
+        document.getElementById('p2tStats').innerHTML =
+            `<span><strong>${total}</strong> page${total !== 1 ? 's' : ''}</span><span><strong>${words}</strong> words</span><span><strong>${chars}</strong> chars</span>`;
+
         if (thumbsGrid.children.length) thumbsWrap.style.display = 'block';
         p2tResult.style.display = 'block';
         document.getElementById('p2tSuccess').style.display = 'block';
@@ -770,6 +789,7 @@ document.getElementById('p2tClear').addEventListener('click', () => {
     document.getElementById('p2tClearRow').style.display = 'none';
     document.getElementById('p2tThumbsWrap').style.display = 'none';
     document.getElementById('p2tThumbs').innerHTML = '';
+    document.getElementById('p2tStats').innerHTML = '';
     p2tResult.style.display = 'none';
     p2tProgress.style.display = 'none';
     p2tTextEl.value = '';

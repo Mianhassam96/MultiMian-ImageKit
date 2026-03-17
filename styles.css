@@ -503,14 +503,33 @@ input[type="range"] { width: 100%; accent-color: var(--accent2); height: 6px; cu
 
 /* ── OCR Textarea ──────────────────────────────────────────── */
 #ocrText {
-    width: 100%; margin-top: 14px; padding: 12px;
-    border: 1.5px solid var(--border); border-radius: var(--radius-sm);
-    font-size: 0.92em; resize: vertical;
+    width: 100%; margin-top: 14px; padding: 14px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    font-size: 0.9em; resize: vertical;
     background: var(--surface2); color: var(--text);
-    line-height: 1.6; transition: border-color 0.2s; min-height: 140px;
+    line-height: 1.75; transition: border-color 0.2s, box-shadow 0.2s;
+    min-height: 200px;
     font-family: 'Plus Jakarta Sans', sans-serif;
 }
-#ocrText:focus { outline: none; border-color: var(--accent2); }
+#ocrText:focus { outline: none; border-color: var(--accent2); box-shadow: 0 0 0 3px var(--accent2-light); }
+
+/* ── Result stats bar ──────────────────────────────────────── */
+.result-stats {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding: 8px 14px;
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-top: none;
+    border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+    font-size: 0.72em;
+    color: var(--text3);
+    font-weight: 500;
+}
+.result-stats strong { color: var(--accent2); }
+.result-stats:empty { display: none; }
 
 /* ── Size Info ─────────────────────────────────────────────── */
 .size-info {
@@ -787,15 +806,15 @@ input[type="range"] { width: 100%; accent-color: var(--accent2); height: 6px; cu
     width: 100%;
     padding: 14px;
     border: 1.5px solid var(--border);
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
     font-size: 0.9em;
     background: var(--surface2);
     color: var(--text);
-    line-height: 1.7;
+    line-height: 1.75;
     resize: vertical;
-    min-height: 160px;
+    min-height: 200px;
     font-family: 'Plus Jakarta Sans', sans-serif;
-    transition: border-color 0.2s;
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
 .ts-plain-textarea:focus { outline: none; border-color: var(--accent2); box-shadow: 0 0 0 3px var(--accent2-light); }
 
@@ -1731,7 +1750,13 @@ input[type="range"] { width: 100%; accent-color: var(--accent2); height: 6px; cu
     border: none;
     cursor: pointer;
     font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.78em;
+    color: rgba(255,255,255,0.5);
+    font-weight: 500;
+    padding: 0;
+    transition: color 0.2s;
 }
+.footer-link-btn:hover { color: #6ee7b7; }
 
 /* ══════════════════════════════════════════════════════════════
    CONTACT PAGE
@@ -1920,14 +1945,11 @@ footer::before {
 }
 .fl-multi { color: rgba(255,255,255,0.85); }
 .fl-mian {
-    background: linear-gradient(135deg, #6ee7b7 0%, #60a5fa 40%, #a78bfa 80%, #6ee7b7 100%);
-    background-size: 300% 100%;
+    background: linear-gradient(90deg, #6ee7b7 0%, #60a5fa 50%, #a78bfa 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    animation: logoMianGrad 4s linear infinite;
 }
-.fl-dot { color: #6ee7b7; }
 .fl-kit { color: rgba(255,255,255,0.4); font-size: 0.85em; font-weight: 500; }
 
 .footer-tagline {

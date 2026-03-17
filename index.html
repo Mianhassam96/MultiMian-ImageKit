@@ -534,8 +534,9 @@
 
         <div id="ocrResult" style="display:none;">
             <div class="card" style="margin-top:16px;">
-                <textarea id="ocrText" rows="12" placeholder="Extracted text will appear here..."></textarea>
-                <div class="action-row">
+                <textarea id="ocrText" rows="14" placeholder="Extracted text will appear here..."></textarea>
+                <div class="result-stats" id="ocrStats"></div>
+                <div class="action-row" style="margin-top:12px;">
                     <button id="ocrCopy" class="secondary-btn">📋 Copy Text</button>
                     <button id="ocrDownloadTxt" class="secondary-btn">⬇ Download .txt</button>
                     <button id="ocrToPdf" class="secondary-btn">📄 Export PDF</button>
@@ -728,7 +729,8 @@
 
             <div id="p2tResult" style="display:none;">
                 <div class="card" style="margin-top:16px;">
-                    <textarea id="p2tText" class="ts-plain-textarea" rows="12" readonly placeholder="Extracted text will appear here…"></textarea>
+                    <textarea id="p2tText" class="ts-plain-textarea" rows="16" placeholder="Extracted text will appear here…"></textarea>
+                    <div class="result-stats" id="p2tStats"></div>
                     <div class="action-row" style="margin-top:12px;">
                         <button id="p2tCopy" class="secondary-btn">📋 Copy</button>
                         <button id="p2tDownloadTxt" class="secondary-btn">⬇ Download .txt</button>

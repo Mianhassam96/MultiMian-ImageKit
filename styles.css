@@ -1908,6 +1908,17 @@ input[type="range"] { width: 100%; accent-color: var(--accent2); height: 6px; cu
     .csocial-btn { justify-content: center; width: 100%; }
     .contact-info-card { padding: 12px 14px; }
     .cic-icon { width: 36px; height: 36px; }
+    .logo-name     { font-size: 0.88em; }
+    .home-grid     { grid-template-columns: 1fr; }
+    .home-card p   { display: none; }
+    .stats-row     { margin: 0 10px 40px; }
+    .stat-item     { min-width: 50%; }
+    .hero-btns     { gap: 8px; }
+    .tab-section:not(.home-section) { width: 98%; margin: 12px auto 48px; }
+    .about-grid    { grid-template-columns: 1fr; }
+    .card          { padding: 12px; }
+    .drop-zone     { padding: 18px 10px; }
+    .header-inner  { padding: 0 10px; gap: 8px; }
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -2572,19 +2583,4 @@ footer::before {
 .csocial-web { background: #16a34a; }
 .csocial-web:hover { background: #15803d; color: #fff; }
 
-/* end of styles */
-
-/* ── Extra small (≤400px) ──────────────────────────────────── */
-@media (max-width: 400px) {
-    .logo-name     { font-size: 0.88em; }
-    .home-grid     { grid-template-columns: 1fr; }
-    .home-card p   { display: none; }
-    .stats-row     { margin: 0 10px 40px; }
-    .stat-item     { min-width: 50%; }
-    .hero-btns     { gap: 8px; }
-    .tab-section:not(.home-section) { width: 98%; margin: 12px auto 48px; }
-    .about-grid    { grid-template-columns: 1fr; }
-    .card          { padding: 12px; }
-    .drop-zone     { padding: 18px 10px; }
-    .header-inner  { padding: 0 10px; gap: 8px; }
-}
+/* end */

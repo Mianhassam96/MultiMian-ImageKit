@@ -1608,49 +1608,6 @@ document.getElementById('pdf2imgDownloadAll').addEventListener('click', async ()
 // 10. Image → GIF
 // ══════════════════════════════════════════════════════════════
 
-// Fetch gif.js worker and create a same-origin blob URL to avoid CORS issues
-let gifWorkerBlobUrl = null;
-async function getGifWorkerUrl() {
-    if (gifWorkerBlobUrl) return gifWorkerBlobUrl;
-    const urls = [
-        'https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.worker.js',
-        'https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.worker.js',
-    ];
-    for (const url of urls) {
-        try {
-            const resp = await fetch(url);
-            if (!resp.ok) continue;
-            const text = await resp.text();
-            const blob = new Blob([text], { type: 'application/javascript' });
-            gifWorkerBlobUrl = URL.createObjectURL(blob);
-            return gifWorkerBlobUrl;
-        } catch (e) { /* try next */ }
-    }
-    // Absolute last resort — return direct URL
-    return urls[0];
-}
-
-// ── gifenc helper: encode frames → GIF blob ─────────────────
-function encodeGif(frames, width, height, delay) {
-    // frames: array of ImageData or canvas elements
-    const { GIFEncoder, quantize, applyPalette } = window.gifenc;
-    const encoder = GIFEncoder();
-    for (const frame of frames) {
-        let imageData;
-        if (frame instanceof HTMLCanvasElement) {
-            imageData = frame.getContext('2d').getImageData(0, 0, width, height);
-        } else {
-            imageData = frame;
-        }
-        const rgba = imageData.data;
-        const palette = quantize(rgba, 256);
-        const index = applyPalette(rgba, palette);
-        encoder.writeFrame(index, width, height, { palette, delay });
-    }
-    encoder.finish();
-    return new Blob([encoder.bytes()], { type: 'image/gif' });
-}
-
 const gifDrop   = document.getElementById('gifDrop');
 const gifUpload = document.getElementById('gifUpload');
 const gifBtn    = document.getElementById('gifBtn');

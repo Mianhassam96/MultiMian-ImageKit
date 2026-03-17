@@ -1008,15 +1008,16 @@ const shareResult   = document.getElementById('shareResult');
 const shareApiKey   = document.getElementById('shareApiKey');
 let shareFile = null;
 
-// Persist API key in localStorage
-shareApiKey.value = localStorage.getItem('imgbb_api_key') || '';
+// Default API key — user can override with their own
+const IMGBB_DEFAULT_KEY = '363b8401f6cbb242ae50857f270ec6f7';
+shareApiKey.value = localStorage.getItem('imgbb_api_key') || IMGBB_DEFAULT_KEY;
 shareApiKey.addEventListener('input', () => {
     localStorage.setItem('imgbb_api_key', shareApiKey.value.trim());
     updateShareBtn();
 });
 
 function updateShareBtn() {
-    shareBtn.disabled = !(shareFile && shareApiKey.value.trim());
+    shareBtn.disabled = !shareFile;
 }
 
 setupDrop(shareDrop, shareUpload, files => {

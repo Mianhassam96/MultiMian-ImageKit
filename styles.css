@@ -1888,15 +1888,21 @@ input[type="range"] { width: 100%; accent-color: var(--accent2); height: 6px; cu
     .about-grid { padding: 0 14px; }
     .about-tools-section, .about-dev-card { padding-left: 14px; padding-right: 14px; }
     .contact-layout { padding: 0 14px; }
+    .about-dev-card { gap: 18px; }
 }
 @media (max-width: 640px) {
     .about-hero, .contact-hero { padding: 36px 16px 28px; }
     .about-title { font-size: clamp(1.5em, 7vw, 2em); }
     .about-dev-card { flex-direction: column; align-items: center; text-align: center; padding: 22px 18px; }
     .about-dev-links { justify-content: center; }
+    .about-dev-contacts { gap: 6px; justify-content: center; }
+    .about-dev-name-row { justify-content: center; }
     .about-tool-row { padding: 12px 14px; gap: 10px; }
     .atr-badge { display: none; }
     .contact-layout { padding: 0 12px; }
+    .contact-social-row { justify-content: center; gap: 6px; }
+    .csocial-btn { font-size: 0.76em; padding: 7px 11px; }
+    .adc-item { font-size: 0.76em; padding: 6px 10px; }
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -2075,13 +2081,29 @@ footer::before {
     .section-header h2 { font-size: 1.05em; }
     .section-icon  { width: 38px; height: 38px; font-size: 1.1em; border-radius: 10px; }
     .card          { padding: 16px; }
-    .options-panel { padding: 12px; gap: 10px; }
-    .opt-group     { min-width: 100px; }
+    .options-panel { padding: 12px; gap: 10px; flex-wrap: wrap; }
+    .opt-group     { min-width: calc(50% - 5px); flex: 1 1 calc(50% - 5px); }
+    .file-info-row { flex-wrap: wrap; gap: 6px; }
+
+    /* Merge tool */
+    .merge-uploads { grid-template-columns: 1fr; }
+
+    /* GIF frames */
+    .gif-frame-list { gap: 8px; }
+    .thumb          { width: 80px; }
+    .thumb img      { height: 60px; }
+
+    /* PDF thumbnails */
+    .p2t-thumb-grid { gap: 8px; }
+    .p2t-thumb canvas { max-width: 80px; }
+
+    /* Result stats */
+    .result-stats  { flex-wrap: wrap; gap: 8px; font-size: 0.78em; }
 
     /* Buttons */
     .primary-btn   { width: 100%; min-width: unset; padding: 12px 20px; }
     .secondary-btn { flex: 1; font-size: 0.82em; padding: 8px 12px; }
-    .action-row    { gap: 6px; }
+    .action-row    { gap: 6px; flex-wrap: wrap; }
     .btn-row       { gap: 8px; }
 
     /* Size info */
@@ -2125,6 +2147,11 @@ footer::before {
     .drop-zone     { padding: 24px 14px; }
     .drop-icon     { font-size: 2em; }
     .how-step      { min-width: 120px; padding: 16px 12px; }
+    .opt-group     { min-width: 100%; flex: 1 1 100%; }
+    .action-row    { flex-direction: column; }
+    .secondary-btn { width: 100%; justify-content: center; }
+    .about-grid    { grid-template-columns: 1fr 1fr; }
+    .contact-info-card { gap: 10px; }
 }
 
 /* ── Extra small (≤400px) ──────────────────────────────────── */
@@ -2136,6 +2163,14 @@ footer::before {
     .stat-item     { min-width: 50%; }
     .hero-btns     { gap: 8px; }
     .tab-section:not(.home-section) { width: 98%; margin: 12px auto 48px; }
+    .about-grid    { grid-template-columns: 1fr; }
+    .card          { padding: 12px; }
+    .drop-zone     { padding: 18px 10px; }
+    .header-inner  { padding: 0 10px; gap: 8px; }
+    .about-dev-contacts { flex-direction: column; align-items: center; }
+    .adc-item      { width: 100%; justify-content: center; }
+    .contact-social-row { flex-direction: column; align-items: stretch; }
+    .csocial-btn   { justify-content: center; }
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -2557,16 +2592,4 @@ footer::before {
 .csocial-web { background: #16a34a; border-color: #16a34a; }
 .csocial-web:hover { background: #15803d; color: #fff; }
 
-/* Responsive tweaks for new elements */
-@media (max-width: 640px) {
-    .about-dev-contacts { gap: 6px; }
-    .adc-item { font-size: 0.76em; padding: 6px 10px; }
-    .contact-social-row { gap: 6px; }
-    .csocial-btn { font-size: 0.76em; padding: 7px 11px; }
-    .about-dev-name-row { flex-direction: column; align-items: flex-start; gap: 6px; }
-}
-@media (max-width: 640px) {
-    .about-dev-card { flex-direction: column; align-items: center; text-align: center; }
-    .about-dev-contacts { justify-content: center; }
-    .contact-social-row { justify-content: center; }
-}
+/* end of styles */

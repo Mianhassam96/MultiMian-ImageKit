@@ -341,130 +341,268 @@ document.getElementById('ocrClear').addEventListener('click', () => {
 });
 
 // ══════════════════════════════════════════════════════════════
-// 2. PDF – Images → PDF (multi-image, drag to reorder)
+// 2. Text Studio — Write / Text→PDF / PDF→Text
 // ══════════════════════════════════════════════════════════════
-const pdfDrop      = document.getElementById('pdfDrop');
-const pdfUpload    = document.getElementById('pdfUpload');
-const pdfBtn       = document.getElementById('pdfBtn');
-const pdfList      = document.getElementById('pdfImageList');
-const pdfProgress  = document.getElementById('pdfProgress');
-const pdfFill      = document.getElementById('pdfProgressFill');
-const pdfProgLabel = document.getElementById('pdfProgressLabel');
-const pdfSuccess   = document.getElementById('pdfSuccess');
-let pdfFiles = [];
 
-setupDrop(pdfDrop, pdfUpload, files => {
-    pdfFiles = pdfFiles.concat(files.filter(f => f.type.startsWith('image/')));
-    renderPdfThumbs();
-    pdfBtn.disabled = pdfFiles.length === 0;
-    if (pdfFiles.length > 0) document.getElementById('pdfClearRow').style.display = 'flex';
-    updatePdfPreview();
+// ── Mode switching ─────────────────────────────────────────
+document.querySelectorAll('.ts-mode-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.ts-mode-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.ts-panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('ts-' + btn.dataset.mode).classList.add('active');
+    });
 });
 
-function renderPdfThumbs() {
-    pdfList.innerHTML = '';
-    pdfFiles.forEach((file, i) => {
-        const div = document.createElement('div');
-        div.className = 'thumb';
-        div.draggable = true;
+// ── Write Mode ─────────────────────────────────────────────
+const tsEditor   = document.getElementById('tsEditor');
+const tsWordCount= document.getElementById('tsWordCount');
+const tsCharCount= document.getElementById('tsCharCount');
 
-        const img = document.createElement('img');
-        img.src = URL.createObjectURL(file);
-        img.alt = file.name;
+function updateTsStats() {
+    const text = tsEditor.innerText || '';
+    const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+    tsWordCount.textContent = words + ' word' + (words !== 1 ? 's' : '');
+    tsCharCount.textContent = text.length + ' char' + (text.length !== 1 ? 's' : '');
+}
+tsEditor.addEventListener('input', updateTsStats);
 
-        const name = document.createElement('p');
-        name.textContent = file.name;
-
-        const rm = document.createElement('button');
-        rm.className = 'remove-btn';
-        rm.textContent = '×';
-        rm.addEventListener('click', e => {
-            e.stopPropagation();
-            pdfFiles.splice(i, 1);
-            renderPdfThumbs();
-            pdfBtn.disabled = pdfFiles.length === 0;
-        });
-
-        div.appendChild(rm);
-        div.appendChild(img);
-        div.appendChild(name);
-        pdfList.appendChild(div);
-
-        div.addEventListener('dragstart', e => e.dataTransfer.setData('text/plain', String(i)));
-        div.addEventListener('dragover', e => e.preventDefault());
-        div.addEventListener('drop', e => {
-            e.preventDefault();
-            const from = parseInt(e.dataTransfer.getData('text/plain'));
-            if (from === i) return;
-            const moved = pdfFiles.splice(from, 1)[0];
-            pdfFiles.splice(i, 0, moved);
-            renderPdfThumbs();
-            updatePdfPreview();
-        });
+// Toolbar commands
+document.querySelectorAll('.ts-tb-btn[data-cmd]').forEach(btn => {
+    btn.addEventListener('mousedown', e => {
+        e.preventDefault();
+        document.execCommand(btn.dataset.cmd, false, null);
+        tsEditor.focus();
     });
+});
+
+// Font family
+document.getElementById('tsFontFamily').addEventListener('change', function () {
+    document.execCommand('fontName', false, this.value);
+    tsEditor.focus();
+});
+
+// Font size (execCommand fontSize uses 1-7, so we use a workaround)
+document.getElementById('tsFontSize').addEventListener('change', function () {
+    document.execCommand('fontSize', false, '7');
+    tsEditor.querySelectorAll('font[size="7"]').forEach(el => {
+        el.removeAttribute('size');
+        el.style.fontSize = this.value + 'px';
+    });
+    tsEditor.focus();
+});
+
+// Font color
+document.getElementById('tsFontColor').addEventListener('input', function () {
+    document.execCommand('foreColor', false, this.value);
+    tsEditor.focus();
+});
+
+// Clear editor
+document.getElementById('tsClearEditor').addEventListener('click', () => {
+    if (tsEditor.innerText.trim() && !confirm('Clear all content?')) return;
+    tsEditor.innerHTML = '';
+    updateTsStats();
+});
+
+// ── Export helpers ─────────────────────────────────────────
+function getTsPlainText() {
+    return tsEditor.innerText || '';
+}
+function getTsHtml() {
+    return tsEditor.innerHTML || '';
 }
 
-function updatePdfPreview() {
-    const box = document.getElementById('pdfPreviewBox');
-    const list = document.getElementById('pdfPreviewList');
-    if (!pdfFiles.length) { box.style.display = 'none'; return; }
-    box.style.display = 'block';
-    list.innerHTML = '';
-    pdfFiles.forEach((file, i) => {
-        const wrap = document.createElement('div');
-        wrap.className = 'pdf-preview-item';
-        const img = document.createElement('img');
-        img.src = URL.createObjectURL(file);
-        img.alt = 'Page ' + (i + 1);
-        const lbl = document.createElement('span');
-        lbl.textContent = 'Page ' + (i + 1);
-        wrap.appendChild(img);
-        wrap.appendChild(lbl);
-        list.appendChild(wrap);
+// Export TXT
+document.getElementById('tsExportTxt').addEventListener('click', () => {
+    const text = getTsPlainText();
+    if (!text.trim()) return alert('Nothing to export.');
+    const blob = new Blob([text], { type: 'text/plain' });
+    triggerDownload(URL.createObjectURL(blob), 'document.txt');
+    document.getElementById('tsWriteSuccess').style.display = 'block';
+});
+
+// Export RTF
+document.getElementById('tsExportRtf').addEventListener('click', () => {
+    const text = getTsPlainText();
+    if (!text.trim()) return alert('Nothing to export.');
+    const rtf = '{\\rtf1\\ansi\\deff0\n' +
+        '{\\fonttbl{\\f0 Plus Jakarta Sans;}}\n' +
+        '\\f0\\fs24 ' +
+        text.replace(/\\/g, '\\\\').replace(/\{/g, '\\{').replace(/\}/g, '\\}')
+            .split('\n').join('\\par\n') +
+        '\n}';
+    const blob = new Blob([rtf], { type: 'application/rtf' });
+    triggerDownload(URL.createObjectURL(blob), 'document.rtf');
+    document.getElementById('tsWriteSuccess').style.display = 'block';
+});
+
+// Export DOCX (minimal — uses HTML blob with .docx mime, opens in Word)
+document.getElementById('tsExportDocx').addEventListener('click', () => {
+    const html = getTsHtml();
+    if (!tsEditor.innerText.trim()) return alert('Nothing to export.');
+    const docx = `<html xmlns:o='urn:schemas-microsoft-com:office:office'
+        xmlns:w='urn:schemas-microsoft-com:office:word'
+        xmlns='http://www.w3.org/TR/REC-html40'>
+        <head><meta charset='utf-8'><title>Document</title></head>
+        <body style="font-family:Calibri,sans-serif;font-size:12pt;">${html}</body></html>`;
+    const blob = new Blob(['\ufeff', docx], { type: 'application/msword' });
+    triggerDownload(URL.createObjectURL(blob), 'document.doc');
+    document.getElementById('tsWriteSuccess').style.display = 'block';
+});
+
+// Export PDF
+document.getElementById('tsExportPdf').addEventListener('click', () => {
+    const text = getTsPlainText();
+    if (!text.trim()) return alert('Nothing to export.');
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({ unit: 'mm', format: 'a4' });
+    pdf.setFont('helvetica');
+    pdf.setFontSize(12);
+    const lines = pdf.splitTextToSize(text, 180);
+    let y = 15;
+    lines.forEach(line => {
+        if (y > 280) { pdf.addPage(); y = 15; }
+        pdf.text(line, 15, y);
+        y += 7;
     });
-}
+    pdf.save('document.pdf');
+    document.getElementById('tsWriteSuccess').style.display = 'block';
+});
 
-pdfBtn.addEventListener('click', async () => {
-    if (!pdfFiles.length) return;
-    pdfBtn.disabled = true;
-    pdfProgress.style.display = 'block';
-    pdfSuccess.style.display = 'none';
-    setProgress(pdfFill, pdfProgLabel, 0);
+// ── Text → PDF Mode ────────────────────────────────────────
+const t2pText = document.getElementById('t2pText');
 
-    const pageSize    = document.getElementById('pdfPageSize').value;
-    const orientation = document.getElementById('pdfOrientation').value;
-    const margin      = parseInt(document.getElementById('pdfMargin').value) || 0;
-    const { jsPDF }   = window.jspdf;
-    const pdf         = new jsPDF({ orientation, unit: 'pt', format: pageSize });
-    const pw = pdf.internal.pageSize.getWidth();
-    const ph = pdf.internal.pageSize.getHeight();
+setupDrop(document.getElementById('txtDrop'), document.getElementById('txtUpload'), files => {
+    const file = files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+        t2pText.value = e.target.result;
+        document.getElementById('t2pClearRow').style.display = 'flex';
+    };
+    reader.readAsText(file);
+});
 
-    for (let i = 0; i < pdfFiles.length; i++) {
-        const dataUrl = await fileToDataUrl(pdfFiles[i]);
-        const imgEl   = await loadImage(dataUrl);
-        const iw = imgEl.naturalWidth;
-        const ih = imgEl.naturalHeight;
-        const ratio = Math.min((pw - margin * 2) / iw, (ph - margin * 2) / ih);
-        if (i > 0) pdf.addPage();
-        const fmt = pdfFiles[i].type === 'image/png' ? 'PNG' : 'JPEG';
-        pdf.addImage(dataUrl, fmt, margin, margin, iw * ratio, ih * ratio);
-        setProgress(pdfFill, pdfProgLabel, Math.round(((i + 1) / pdfFiles.length) * 100));
+t2pText.addEventListener('input', () => {
+    document.getElementById('t2pClearRow').style.display = t2pText.value.trim() ? 'flex' : 'none';
+});
+
+document.getElementById('t2pClear').addEventListener('click', () => {
+    t2pText.value = '';
+    document.getElementById('t2pClearRow').style.display = 'none';
+    document.getElementById('t2pSuccess').style.display = 'none';
+    document.getElementById('txtUpload').value = '';
+});
+
+document.getElementById('t2pBtn').addEventListener('click', () => {
+    const text = t2pText.value.trim();
+    if (!text) return alert('Please enter or upload some text first.');
+    const { jsPDF } = window.jspdf;
+    const pageSize = document.getElementById('t2pPageSize').value;
+    const fontSize = parseInt(document.getElementById('t2pFontSize').value);
+    const margin   = parseInt(document.getElementById('t2pMargin').value) || 15;
+    const pdf = new jsPDF({ unit: 'mm', format: pageSize });
+    pdf.setFont('helvetica');
+    pdf.setFontSize(fontSize);
+    const pageW = pdf.internal.pageSize.getWidth();
+    const usableW = pageW - margin * 2;
+    const lineH = fontSize * 0.45;
+    const lines = pdf.splitTextToSize(text, usableW);
+    let y = margin;
+    lines.forEach(line => {
+        if (y + lineH > pdf.internal.pageSize.getHeight() - margin) {
+            pdf.addPage();
+            y = margin;
+        }
+        pdf.text(line, margin, y);
+        y += lineH;
+    });
+    pdf.save('text-document.pdf');
+    document.getElementById('t2pSuccess').style.display = 'block';
+});
+
+// ── PDF → Text Mode ────────────────────────────────────────
+const p2tDrop     = document.getElementById('p2tDrop');
+const p2tUpload   = document.getElementById('p2tUpload');
+const p2tProgress = document.getElementById('p2tProgress');
+const p2tFill     = document.getElementById('p2tProgressFill');
+const p2tLabel    = document.getElementById('p2tProgressLabel');
+const p2tResult   = document.getElementById('p2tResult');
+const p2tTextEl   = document.getElementById('p2tText');
+let p2tFile = null;
+
+setupDrop(p2tDrop, p2tUpload, files => {
+    const file = files.find(f => f.type === 'application/pdf' || f.name.endsWith('.pdf'));
+    if (!file) return alert('Please upload a PDF file.');
+    p2tFile = file;
+    const info = document.getElementById('p2tFileInfo');
+    info.innerHTML = `<span>📄 <strong>${file.name}</strong></span><span>📦 <strong>${formatBytes(file.size)}</strong></span>`;
+    document.getElementById('p2tClearRow').style.display = 'flex';
+    p2tResult.style.display = 'none';
+    extractPdfText(file);
+});
+
+async function extractPdfText(file) {
+    p2tProgress.style.display = 'block';
+    p2tFill.style.width = '0%';
+    p2tLabel.textContent = 'Loading PDF…';
+    try {
+        const arrayBuffer = await file.arrayBuffer();
+        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+        const total = pdf.numPages;
+        let fullText = '';
+        for (let i = 1; i <= total; i++) {
+            const page = await pdf.getPage(i);
+            const content = await page.getTextContent();
+            const pageText = content.items.map(item => item.str).join(' ');
+            fullText += `--- Page ${i} ---\n${pageText}\n\n`;
+            const pct = Math.round((i / total) * 100);
+            p2tFill.style.width = pct + '%';
+            p2tLabel.textContent = `Page ${i} of ${total}`;
+        }
+        p2tProgress.style.display = 'none';
+        p2tTextEl.value = fullText.trim();
+        p2tResult.style.display = 'block';
+        document.getElementById('p2tSuccess').style.display = 'block';
+    } catch (err) {
+        p2tProgress.style.display = 'none';
+        alert('Failed to read PDF: ' + err.message);
     }
+}
 
-    pdf.save('images.pdf');
-    pdfProgress.style.display = 'none';
-    pdfSuccess.style.display = 'block';
-    pdfBtn.disabled = false;
+document.getElementById('p2tClear').addEventListener('click', () => {
+    p2tFile = null;
+    document.getElementById('p2tFileInfo').innerHTML = '';
+    document.getElementById('p2tClearRow').style.display = 'none';
+    p2tResult.style.display = 'none';
+    p2tProgress.style.display = 'none';
+    p2tTextEl.value = '';
+    p2tUpload.value = '';
 });
 
-document.getElementById('pdfClear').addEventListener('click', () => {
-    pdfFiles = [];
-    renderPdfThumbs();
-    updatePdfPreview();
-    pdfBtn.disabled = true;
-    document.getElementById('pdfClearRow').style.display = 'none';
-    pdfSuccess.style.display = 'none';
-    pdfUpload.value = '';
+document.getElementById('p2tCopy').addEventListener('click', () => {
+    if (!p2tTextEl.value) return;
+    navigator.clipboard.writeText(p2tTextEl.value).then(() => {
+        const btn = document.getElementById('p2tCopy');
+        btn.textContent = '✅ Copied!';
+        setTimeout(() => { btn.textContent = '📋 Copy'; }, 2000);
+    });
+});
+
+document.getElementById('p2tDownloadTxt').addEventListener('click', () => {
+    if (!p2tTextEl.value) return;
+    const blob = new Blob([p2tTextEl.value], { type: 'text/plain' });
+    triggerDownload(URL.createObjectURL(blob), 'extracted-text.txt');
+});
+
+document.getElementById('p2tDownloadRtf').addEventListener('click', () => {
+    if (!p2tTextEl.value) return;
+    const rtf = '{\\rtf1\\ansi\\deff0\n{\\fonttbl{\\f0 Arial;}}\n\\f0\\fs24 ' +
+        p2tTextEl.value.replace(/\\/g,'\\\\').replace(/\{/g,'\\{').replace(/\}/g,'\\}')
+            .split('\n').join('\\par\n') + '\n}';
+    const blob = new Blob([rtf], { type: 'application/rtf' });
+    triggerDownload(URL.createObjectURL(blob), 'extracted-text.rtf');
 });
 
 // ══════════════════════════════════════════════════════════════

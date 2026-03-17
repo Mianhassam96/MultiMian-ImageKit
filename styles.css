@@ -519,6 +519,283 @@ input[type="range"] { width: 100%; accent-color: var(--accent2); height: 6px; cu
 .size-info span:last-child { border-right: none; }
 .size-info strong { display: block; font-size: 1.05em; color: var(--accent); margin-top: 2px; }
 
+/* ══════════════════════════════════════════════════════════════
+   TEXT STUDIO
+   ══════════════════════════════════════════════════════════════ */
+
+/* Header */
+.ts-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 22px;
+    padding-bottom: 18px;
+    border-bottom: 2px solid var(--border);
+    flex-wrap: wrap;
+}
+.ts-header-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+.ts-icon-wrap {
+    width: 46px; height: 46px;
+    background: linear-gradient(135deg, #ede9fe, #ddd6fe);
+    border-radius: 13px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.35em;
+    flex-shrink: 0;
+}
+[data-theme="dark"] .ts-icon-wrap { background: rgba(99,102,241,0.18); }
+.ts-header h2 { font-size: 1.3em; font-weight: 700; color: var(--text); line-height: 1.2; }
+.ts-header p  { font-size: 0.82em; color: var(--text2); margin-top: 2px; }
+
+/* Mode tabs */
+.ts-mode-tabs {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+.ts-mode-btn {
+    padding: 8px 16px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    background: var(--surface2);
+    color: var(--text2);
+    font-size: 0.82em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    white-space: nowrap;
+}
+.ts-mode-btn:hover { border-color: var(--accent2); color: var(--accent2); background: var(--accent2-light); }
+.ts-mode-btn.active {
+    background: linear-gradient(135deg, var(--accent2), var(--accent2-dark));
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 4px 14px rgba(37,99,235,0.3);
+}
+
+/* Panels */
+.ts-panel { display: none; }
+.ts-panel.active { display: block; animation: fadeUp 0.25s ease; }
+
+/* Editor card */
+.ts-editor-wrap {
+    padding: 0;
+    overflow: hidden;
+    border: 1.5px solid var(--border);
+}
+
+/* Toolbar */
+.ts-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+    padding: 10px 14px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+}
+.ts-toolbar-group {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+.ts-toolbar-sep {
+    width: 1px;
+    height: 22px;
+    background: var(--border);
+    margin: 0 4px;
+    flex-shrink: 0;
+}
+.ts-select {
+    padding: 5px 8px;
+    border: 1.5px solid var(--border);
+    border-radius: 7px;
+    font-size: 0.78em;
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    transition: border-color 0.2s;
+}
+.ts-select:focus { outline: none; border-color: var(--accent2); }
+.ts-select-sm { width: 58px; }
+.ts-tb-btn {
+    padding: 5px 9px;
+    border: 1.5px solid var(--border);
+    border-radius: 7px;
+    background: var(--surface);
+    color: var(--text2);
+    font-size: 0.82em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    line-height: 1.2;
+}
+.ts-tb-btn:hover { background: var(--accent2-light); border-color: var(--accent2); color: var(--accent2); }
+.ts-tb-btn.active { background: var(--accent2); color: #fff; border-color: var(--accent2); }
+.ts-tb-danger:hover { background: var(--danger); border-color: var(--danger); color: #fff; }
+.ts-color-wrap {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    border: 1.5px solid var(--border);
+    border-radius: 7px;
+    background: var(--surface);
+    cursor: pointer;
+    font-size: 0.82em;
+    font-weight: 700;
+    color: var(--text2);
+    transition: border-color 0.2s;
+}
+.ts-color-wrap:hover { border-color: var(--accent2); }
+.ts-color-wrap input[type="color"] {
+    width: 20px; height: 20px;
+    border: none; padding: 0;
+    background: none; cursor: pointer;
+    border-radius: 4px;
+}
+
+/* Editor area */
+.ts-editor {
+    min-height: 320px;
+    max-height: 520px;
+    overflow-y: auto;
+    padding: 20px 22px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.95em;
+    line-height: 1.75;
+    color: var(--text);
+    background: var(--surface);
+    outline: none;
+    caret-color: var(--accent2);
+}
+.ts-editor:empty::before {
+    content: attr(data-placeholder);
+    color: var(--text3);
+    pointer-events: none;
+}
+.ts-editor:focus { background: var(--surface); }
+
+/* Status bar */
+.ts-statusbar {
+    display: flex;
+    gap: 16px;
+    padding: 8px 16px;
+    background: var(--surface2);
+    border-top: 1px solid var(--border);
+    font-size: 0.72em;
+    color: var(--text3);
+    font-weight: 500;
+}
+
+/* Export bar */
+.ts-export-bar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding: 16px 20px;
+}
+.ts-export-label {
+    font-size: 0.75em;
+    font-weight: 700;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    white-space: nowrap;
+}
+.ts-export-btns {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    flex: 1;
+}
+.ts-export-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 12px 18px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface2);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    min-width: 72px;
+    flex: 1;
+}
+.ts-export-btn:hover {
+    border-color: var(--accent2);
+    background: var(--accent2-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+.ts-export-btn-primary {
+    background: linear-gradient(135deg, #fee2e2, #fecaca);
+    border-color: #fca5a5;
+}
+[data-theme="dark"] .ts-export-btn-primary { background: rgba(220,38,38,0.12); border-color: rgba(220,38,38,0.3); }
+.ts-export-btn-primary:hover { background: linear-gradient(135deg, #dc2626, #b91c1c); border-color: transparent; }
+.ts-export-btn-primary:hover .ts-exp-name,
+.ts-export-btn-primary:hover .ts-exp-desc { color: #fff; }
+.ts-exp-icon { font-size: 1.3em; }
+.ts-exp-name { font-size: 0.82em; font-weight: 700; color: var(--text); }
+.ts-exp-desc { font-size: 0.68em; color: var(--text3); }
+
+/* Upload-or-paste layout */
+.ts-upload-or-paste {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 14px;
+    align-items: center;
+}
+.ts-or-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+}
+.ts-or-divider span {
+    font-size: 0.72em;
+    font-weight: 700;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    background: var(--surface);
+    padding: 4px 6px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+}
+@media (max-width: 560px) {
+    .ts-upload-or-paste { grid-template-columns: 1fr; }
+    .ts-or-divider { width: 100%; }
+}
+
+/* Plain textarea (shared) */
+.ts-plain-textarea {
+    width: 100%;
+    padding: 14px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 0.9em;
+    background: var(--surface2);
+    color: var(--text);
+    line-height: 1.7;
+    resize: vertical;
+    min-height: 160px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    transition: border-color 0.2s;
+}
+.ts-plain-textarea:focus { outline: none; border-color: var(--accent2); box-shadow: 0 0 0 3px var(--accent2-light); }
+
 /* ── PDF Thumbnails ────────────────────────────────────────── */
 .image-list { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; padding: 4px 0; }
 .image-list .thumb {

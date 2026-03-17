@@ -1605,23 +1605,28 @@ document.getElementById('pdf2imgDownloadAll').addEventListener('click', async ()
 });
 
 // ══════════════════════════════════════════════════════════════
-// 10. Image → GIF
+// 10. Image → GIF  (enhanced)
 // ══════════════════════════════════════════════════════════════
 
 const gifDrop   = document.getElementById('gifDrop');
 const gifUpload = document.getElementById('gifUpload');
 const gifBtn    = document.getElementById('gifBtn');
-let gifFrames = []; // array of { file, dataUrl }
+let gifFrames  = []; // { file, dataUrl, delay }
 let gifBlobUrl = null;
+
+// drag-reorder state
+let gifDragSrc = null;
 
 setupDrop(gifDrop, gifUpload, files => {
     const imgs = files.filter(f => f.type.startsWith('image/'));
     if (!imgs.length) return alert('Please upload image files.');
+    let loaded = 0;
     imgs.forEach(file => {
         const reader = new FileReader();
         reader.onload = e => {
-            gifFrames.push({ file, dataUrl: e.target.result });
-            renderGifFrameList();
+            gifFrames.push({ file, dataUrl: e.target.result, delay: null }); // null = use global
+            loaded++;
+            if (loaded === imgs.length) renderGifFrameList();
         };
         reader.readAsDataURL(file);
     });
@@ -1630,30 +1635,78 @@ setupDrop(gifDrop, gifUpload, files => {
 function renderGifFrameList() {
     const list = document.getElementById('gifFrameList');
     list.innerHTML = '';
+
     gifFrames.forEach((frame, i) => {
         const thumb = document.createElement('div');
-        thumb.className = 'thumb';
+        thumb.className = 'gif-thumb';
         thumb.draggable = true;
         thumb.dataset.index = i;
-        const img = document.createElement('img');
-        img.src = frame.dataUrl;
-        const removeBtn = document.createElement('button');
-        removeBtn.className = 'remove-btn';
-        removeBtn.textContent = '×';
-        removeBtn.addEventListener('click', () => {
-            gifFrames.splice(i, 1);
+
+        // drag events
+        thumb.addEventListener('dragstart', e => {
+            gifDragSrc = i;
+            thumb.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+        });
+        thumb.addEventListener('dragend', () => thumb.classList.remove('dragging'));
+        thumb.addEventListener('dragover', e => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; thumb.classList.add('drag-over'); });
+        thumb.addEventListener('dragleave', () => thumb.classList.remove('drag-over'));
+        thumb.addEventListener('drop', e => {
+            e.preventDefault();
+            thumb.classList.remove('drag-over');
+            if (gifDragSrc === null || gifDragSrc === i) return;
+            const moved = gifFrames.splice(gifDragSrc, 1)[0];
+            gifFrames.splice(i, 0, moved);
             renderGifFrameList();
         });
+
+        const img = document.createElement('img');
+        img.src = frame.dataUrl;
+
+        const removeBtn = document.createElement('button');
+        removeBtn.className = 'gif-thumb-remove';
+        removeBtn.textContent = '×';
+        removeBtn.title = 'Remove frame';
+        removeBtn.addEventListener('click', () => { gifFrames.splice(i, 1); renderGifFrameList(); });
+
         const lbl = document.createElement('p');
-        lbl.textContent = `Frame ${i + 1}`;
+        lbl.textContent = `#${i + 1}`;
+
+        // per-frame delay input
+        const delayWrap = document.createElement('div');
+        delayWrap.className = 'gif-thumb-delay';
+        const delayInput = document.createElement('input');
+        delayInput.type = 'number';
+        delayInput.min = 20;
+        delayInput.max = 9999;
+        delayInput.step = 10;
+        delayInput.placeholder = 'ms';
+        delayInput.title = 'Per-frame delay (ms) — leave blank to use global';
+        if (frame.delay !== null) delayInput.value = frame.delay;
+        delayInput.addEventListener('change', () => {
+            gifFrames[i].delay = delayInput.value ? parseInt(delayInput.value) : null;
+        });
+        delayWrap.appendChild(delayInput);
+
         thumb.appendChild(img);
         thumb.appendChild(removeBtn);
         thumb.appendChild(lbl);
+        thumb.appendChild(delayWrap);
         list.appendChild(thumb);
     });
-    document.getElementById('gifOptions').style.display = gifFrames.length ? 'block' : 'none';
-    document.getElementById('gifClearRow').style.display = gifFrames.length ? 'flex' : 'none';
+
+    const hasFrames = gifFrames.length > 0;
+    document.getElementById('gifOptions').style.display  = hasFrames ? 'block' : 'none';
+    document.getElementById('gifClearRow').style.display = hasFrames ? 'flex'  : 'none';
     gifBtn.disabled = gifFrames.length < 2;
+
+    const stats = document.getElementById('gifFrameStats');
+    if (hasFrames) {
+        stats.style.display = 'flex';
+        stats.innerHTML = `<span>🖼 <strong>${gifFrames.length}</strong> frame${gifFrames.length !== 1 ? 's' : ''}</span><span class="gif-drag-hint">↔ Drag to reorder</span>`;
+    } else {
+        stats.style.display = 'none';
+    }
 }
 
 document.getElementById('gifClear').addEventListener('click', () => {
@@ -1666,46 +1719,52 @@ document.getElementById('gifClear').addEventListener('click', () => {
 gifBtn.addEventListener('click', async () => {
     if (gifFrames.length < 2) return alert('Add at least 2 frames.');
     gifBtn.disabled = true;
+
     const progress = document.getElementById('gifProgress');
-    const fill = document.getElementById('gifProgressFill');
-    const label = document.getElementById('gifProgressLabel');
+    const fill     = document.getElementById('gifProgressFill');
+    const label    = document.getElementById('gifProgressLabel');
     progress.style.display = 'block';
     fill.style.width = '10%';
     label.textContent = 'Loading frames…';
 
-    const delayMs = parseInt(document.getElementById('gifDelay').value) || 300;
-    const targetW = parseInt(document.getElementById('gifWidth').value) || 480;
-    const repeat  = parseInt(document.getElementById('gifRepeat').value); // 0=loop, -1=once
+    const globalDelay = parseInt(document.getElementById('gifDelay').value) || 300;
+    const targetW     = parseInt(document.getElementById('gifWidth').value) || 480;
+    const repeat      = parseInt(document.getElementById('gifRepeat').value);
+    const colors      = parseInt(document.getElementById('gifQuality').value) || 128;
+    const reverseMode = parseInt(document.getElementById('gifReverse').value);
 
     try {
-        const images = await Promise.all(gifFrames.map(f => loadImage(f.dataUrl)));
+        let frames = [...gifFrames];
+        if (reverseMode === 1) frames = frames.reverse();
+        if (reverseMode === 2) frames = [...frames, ...[...frames].reverse()];
+
+        const images = await Promise.all(frames.map(f => loadImage(f.dataUrl)));
         const h = Math.round(images[0].naturalHeight * (targetW / images[0].naturalWidth));
 
         fill.style.width = '30%';
         label.textContent = 'Encoding GIF…';
 
         const canvas = document.createElement('canvas');
-        canvas.width = targetW;
+        canvas.width  = targetW;
         canvas.height = h;
         const ctx = canvas.getContext('2d');
 
         const { GIFEncoder, quantize, applyPalette } = window.gifenc;
         const encoder = GIFEncoder();
-        // gifenc delay is in centiseconds (1cs = 10ms)
-        const delayCentisec = Math.round(delayMs / 10);
 
         images.forEach((img, i) => {
+            const frameDelay = (frames[i].delay !== null ? frames[i].delay : globalDelay);
+            const delayCentisec = Math.max(2, Math.round(frameDelay / 10));
             ctx.clearRect(0, 0, targetW, h);
             ctx.drawImage(img, 0, 0, targetW, h);
             const { data } = ctx.getImageData(0, 0, targetW, h);
-            const palette = quantize(data, 256);
-            const index = applyPalette(data, palette);
-            // repeat only on first frame
-            const opts = { palette, delay: delayCentisec };
-            if (i === 0) opts.repeat = repeat < 0 ? -1 : 0;
+            const palette = quantize(data, colors);
+            const index   = applyPalette(data, palette);
+            const opts    = { palette, delay: delayCentisec };
+            if (i === 0) opts.repeat = repeat < 0 ? -1 : (repeat === 0 ? 0 : repeat);
             encoder.writeFrame(index, targetW, h, opts);
             fill.style.width = (30 + Math.round(((i + 1) / images.length) * 65)) + '%';
-            label.textContent = `Frame ${i + 1} / ${images.length}`;
+            label.textContent = `Encoding frame ${i + 1} / ${images.length}`;
         });
 
         encoder.finish();
@@ -1717,7 +1776,9 @@ gifBtn.addEventListener('click', async () => {
 
         gifBlobUrl = URL.createObjectURL(blob);
         document.getElementById('gifPreviewImg').src = gifBlobUrl;
-        document.getElementById('gifResult').style.display = 'block';
+        document.getElementById('gifResultStats').innerHTML =
+            `<span>🖼 ${images.length} frames</span><span>📦 ${formatBytes(blob.size)}</span><span>📐 ${targetW}×${h}px</span>`;
+        document.getElementById('gifResult').style.display  = 'block';
         document.getElementById('gifSuccess').style.display = 'block';
         gifBtn.disabled = false;
     } catch (err) {
@@ -1731,94 +1792,231 @@ document.getElementById('gifDownload').addEventListener('click', () => {
     if (gifBlobUrl) triggerDownload(gifBlobUrl, 'animated.gif');
 });
 
+document.getElementById('gifCopyClipboard').addEventListener('click', async () => {
+    if (!gifBlobUrl) return;
+    try {
+        const res  = await fetch(gifBlobUrl);
+        const blob = await res.blob();
+        await navigator.clipboard.write([new ClipboardItem({ 'image/gif': blob })]);
+        const btn = document.getElementById('gifCopyClipboard');
+        btn.textContent = '✅ Copied!';
+        setTimeout(() => { btn.textContent = '📋 Copy to Clipboard'; }, 2000);
+    } catch {
+        alert('Copy not supported in this browser. Use Download instead.');
+    }
+});
+
 // ══════════════════════════════════════════════════════════════
-// 11. Video → GIF
+// 11. Video → GIF  (enhanced)
 // ══════════════════════════════════════════════════════════════
 const videogifDrop   = document.getElementById('videogifDrop');
 const videogifUpload = document.getElementById('videogifUpload');
 const videogifBtn    = document.getElementById('videogifBtn');
 const videogifVideo  = document.getElementById('videogifVideo');
-let videogifFile = null;
+let videogifFile    = null;
 let videogifBlobUrl = null;
+let videogifDuration = 0;
 
+// ── helpers ──────────────────────────────────────────────────
+function vgUpdateTrimInfo() {
+    const s = parseFloat(document.getElementById('videogifStart').value) || 0;
+    const e = parseFloat(document.getElementById('videogifEnd').value)   || 0;
+    const dur = Math.max(0, e - s);
+    const fps = parseInt(document.getElementById('videogifFps').value) || 10;
+    const frames = Math.round(dur * fps);
+    document.getElementById('videogifTrimInfo').textContent =
+        `${dur.toFixed(1)}s · ~${frames} frames`;
+    document.getElementById('videogifDurBadge').textContent =
+        `${dur.toFixed(1)}s selected`;
+    // warn if too many frames
+    const est = document.getElementById('videogifEstimate');
+    if (frames > 300) {
+        est.textContent = `⚠️ ${frames} frames is a lot — reduce duration or fps for a smaller GIF.`;
+        est.className = 'vg-estimate vg-estimate-warn';
+    } else if (frames > 0) {
+        est.textContent = `✔ ~${frames} frames will be captured.`;
+        est.className = 'vg-estimate vg-estimate-ok';
+    } else {
+        est.textContent = '';
+    }
+}
+
+function vgSyncRangeFromInputs() {
+    if (!videogifDuration) return;
+    const s = parseFloat(document.getElementById('videogifStart').value) || 0;
+    const e = parseFloat(document.getElementById('videogifEnd').value)   || videogifDuration;
+    document.getElementById('videogifStartRange').value = (s / videogifDuration * 100).toFixed(1);
+    document.getElementById('videogifEndRange').value   = (e / videogifDuration * 100).toFixed(1);
+    vgUpdateTrimInfo();
+}
+
+function vgSyncInputsFromRange() {
+    if (!videogifDuration) return;
+    const sR = parseFloat(document.getElementById('videogifStartRange').value);
+    const eR = parseFloat(document.getElementById('videogifEndRange').value);
+    let s = parseFloat((sR / 100 * videogifDuration).toFixed(2));
+    let e = parseFloat((eR / 100 * videogifDuration).toFixed(2));
+    if (e <= s) e = Math.min(videogifDuration, s + 0.1);
+    document.getElementById('videogifStart').value = s;
+    document.getElementById('videogifEnd').value   = e;
+    vgUpdateTrimInfo();
+}
+
+// range sliders
+document.getElementById('videogifStartRange').addEventListener('input', () => {
+    const sR = parseFloat(document.getElementById('videogifStartRange').value);
+    const eR = parseFloat(document.getElementById('videogifEndRange').value);
+    if (sR >= eR) document.getElementById('videogifStartRange').value = eR - 0.1;
+    vgSyncInputsFromRange();
+});
+document.getElementById('videogifEndRange').addEventListener('input', () => {
+    const sR = parseFloat(document.getElementById('videogifStartRange').value);
+    const eR = parseFloat(document.getElementById('videogifEndRange').value);
+    if (eR <= sR) document.getElementById('videogifEndRange').value = sR + 0.1;
+    vgSyncInputsFromRange();
+});
+
+// number inputs → sync range
+['videogifStart', 'videogifEnd'].forEach(id => {
+    document.getElementById(id).addEventListener('input', vgSyncRangeFromInputs);
+});
+
+// fps change → update estimate
+document.getElementById('videogifFps').addEventListener('change', vgUpdateTrimInfo);
+
+// ── upload ────────────────────────────────────────────────────
 setupDrop(videogifDrop, videogifUpload, files => {
     const file = files.find(f => f.type.startsWith('video/'));
-    if (!file) return alert('Please upload a video file.');
+    if (!file) return alert('Please upload a video file (MP4, WebM, MOV, AVI).');
     videogifFile = file;
     videogifVideo.src = URL.createObjectURL(file);
     document.getElementById('videogifPreview').style.display = 'block';
     document.getElementById('videogifFileInfo').innerHTML =
         `<span>📄 <strong>${file.name}</strong></span><span>📦 <strong>${formatBytes(file.size)}</strong></span>`;
     document.getElementById('videogifClearRow').style.display = 'flex';
-    document.getElementById('videogifOptions').style.display = 'block';
-    videogifBtn.disabled = false;
-    // Set end time to video duration once loaded
+
     videogifVideo.addEventListener('loadedmetadata', () => {
-        document.getElementById('videogifEnd').value = Math.min(5, videogifVideo.duration).toFixed(1);
+        videogifDuration = videogifVideo.duration;
+        const defaultEnd = Math.min(5, videogifDuration);
+        document.getElementById('videogifStart').value = 0;
+        document.getElementById('videogifEnd').value   = defaultEnd.toFixed(1);
+        document.getElementById('videogifStartRange').max = 100;
+        document.getElementById('videogifEndRange').max   = 100;
+        document.getElementById('videogifStartRange').value = 0;
+        document.getElementById('videogifEndRange').value   = (defaultEnd / videogifDuration * 100).toFixed(1);
+        document.getElementById('videogifTimeline').style.display = 'block';
+        document.getElementById('videogifOptions').style.display  = 'block';
+        videogifBtn.disabled = false;
+        vgUpdateTrimInfo();
+        // render strip thumbnails
+        vgRenderStrip();
     }, { once: true });
 });
 
+async function vgRenderStrip() {
+    const strip = document.getElementById('videogifStrip');
+    strip.innerHTML = '';
+    const thumbCount = 8;
+    const v = document.createElement('video');
+    v.src = URL.createObjectURL(videogifFile);
+    v.muted = true;
+    await new Promise(res => { v.onloadedmetadata = res; v.load(); });
+    const c = document.createElement('canvas');
+    c.width = 80; c.height = 45;
+    const ctx = c.getContext('2d');
+    for (let i = 0; i < thumbCount; i++) {
+        const t = (i / (thumbCount - 1)) * videogifDuration;
+        await new Promise(res => { v.currentTime = t; v.onseeked = res; });
+        ctx.drawImage(v, 0, 0, 80, 45);
+        const img = document.createElement('img');
+        img.src = c.toDataURL('image/jpeg', 0.5);
+        strip.appendChild(img);
+    }
+}
+
 document.getElementById('videogifClear').addEventListener('click', () => {
     videogifFile = null;
+    videogifDuration = 0;
     videogifVideo.src = '';
-    document.getElementById('videogifPreview').style.display = 'none';
+    document.getElementById('videogifPreview').style.display  = 'none';
     document.getElementById('videogifClearRow').style.display = 'none';
-    document.getElementById('videogifOptions').style.display = 'none';
-    document.getElementById('videogifResult').style.display = 'none';
+    document.getElementById('videogifTimeline').style.display = 'none';
+    document.getElementById('videogifOptions').style.display  = 'none';
+    document.getElementById('videogifResult').style.display   = 'none';
+    document.getElementById('videogifStrip').innerHTML = '';
     videogifBtn.disabled = true;
     videogifUpload.value = '';
 });
 
+// ── convert ───────────────────────────────────────────────────
 videogifBtn.addEventListener('click', async () => {
     if (!videogifFile) return;
-    const startTime = parseFloat(document.getElementById('videogifStart').value) || 0;
-    const endTime   = parseFloat(document.getElementById('videogifEnd').value) || 5;
-    const fps       = parseInt(document.getElementById('videogifFps').value) || 10;
-    const targetW   = parseInt(document.getElementById('videogifWidth').value) || 480;
+    const startTime  = parseFloat(document.getElementById('videogifStart').value) || 0;
+    const endTime    = parseFloat(document.getElementById('videogifEnd').value)   || 5;
+    const fps        = parseInt(document.getElementById('videogifFps').value)     || 10;
+    const targetW    = parseInt(document.getElementById('videogifWidth').value)   || 480;
+    const colors     = parseInt(document.getElementById('videogifQuality').value) || 128;
+    const loopVal    = parseInt(document.getElementById('videogifLoop').value);
+    const reverseMode= parseInt(document.getElementById('videogifReverse').value);
 
     if (endTime <= startTime) return alert('End time must be greater than start time.');
-    const duration = endTime - startTime;
+    const duration    = endTime - startTime;
     const totalFrames = Math.round(duration * fps);
-    if (totalFrames > 200) return alert('Too many frames. Reduce duration or frame rate.');
+    if (totalFrames > 400) return alert(`Too many frames (${totalFrames}). Reduce duration or fps.`);
+    if (totalFrames < 1)   return alert('Selection too short. Increase duration or fps.');
 
     videogifBtn.disabled = true;
     const progress = document.getElementById('videogifProgress');
-    const fill = document.getElementById('videogifProgressFill');
-    const label = document.getElementById('videogifProgressLabel');
+    const fill     = document.getElementById('videogifProgressFill');
+    const label    = document.getElementById('videogifProgressLabel');
     progress.style.display = 'block';
-    fill.style.width = '5%';
-    label.textContent = 'Capturing frames…';
+    fill.style.width = '3%';
+    label.textContent = 'Loading video…';
 
     try {
         const video = document.createElement('video');
-        video.src = URL.createObjectURL(videogifFile);
+        video.src   = URL.createObjectURL(videogifFile);
         video.muted = true;
+        video.preload = 'auto';
         await new Promise(res => { video.onloadedmetadata = res; video.load(); });
 
         const aspectH = Math.round(video.videoHeight * (targetW / video.videoWidth));
-        const canvas = document.createElement('canvas');
-        canvas.width = targetW;
+        const canvas  = document.createElement('canvas');
+        canvas.width  = targetW;
         canvas.height = aspectH;
         const ctx = canvas.getContext('2d');
 
-        const frameDelay = Math.round(1000 / fps);
-        const frameDelayCentisec = Math.round(frameDelay / 10);
+        const frameDelayCentisec = Math.max(2, Math.round(100 / fps));
         const { GIFEncoder, quantize, applyPalette } = window.gifenc;
         const encoder = GIFEncoder();
 
+        // capture frames
+        const frameData = [];
         for (let i = 0; i < totalFrames; i++) {
             const t = startTime + (i / fps);
             await new Promise(res => { video.currentTime = t; video.onseeked = res; });
             ctx.drawImage(video, 0, 0, targetW, aspectH);
-            const { data } = ctx.getImageData(0, 0, targetW, aspectH);
-            const palette = quantize(data, 256);
-            const index = applyPalette(data, palette);
-            const opts = { palette, delay: frameDelayCentisec };
-            if (i === 0) opts.repeat = 0; // loop forever
-            encoder.writeFrame(index, targetW, aspectH, opts);
-            fill.style.width = Math.round(((i + 1) / totalFrames) * 90) + '%';
-            label.textContent = `Frame ${i + 1} / ${totalFrames}`;
+            frameData.push(ctx.getImageData(0, 0, targetW, aspectH).data.slice());
+            fill.style.width = Math.round(((i + 1) / totalFrames) * 70) + '%';
+            label.textContent = `Capturing frame ${i + 1} / ${totalFrames}`;
         }
+
+        // apply reverse / ping-pong
+        let orderedFrames = [...frameData];
+        if (reverseMode === 1) orderedFrames = orderedFrames.reverse();
+        if (reverseMode === 2) orderedFrames = [...orderedFrames, ...[...orderedFrames].reverse()];
+
+        fill.style.width = '75%';
+        label.textContent = 'Encoding GIF…';
+
+        orderedFrames.forEach((data, i) => {
+            const palette = quantize(data, colors);
+            const index   = applyPalette(data, palette);
+            const opts    = { palette, delay: frameDelayCentisec };
+            if (i === 0) opts.repeat = loopVal < 0 ? -1 : (loopVal === 0 ? 0 : loopVal);
+            encoder.writeFrame(index, targetW, aspectH, opts);
+            fill.style.width = (75 + Math.round(((i + 1) / orderedFrames.length) * 22)) + '%';
+        });
 
         encoder.finish();
         const blob = new Blob([encoder.bytes()], { type: 'image/gif' });
@@ -1829,7 +2027,9 @@ videogifBtn.addEventListener('click', async () => {
 
         videogifBlobUrl = URL.createObjectURL(blob);
         document.getElementById('videogifPreviewImg').src = videogifBlobUrl;
-        document.getElementById('videogifResult').style.display = 'block';
+        document.getElementById('videogifResultStats').innerHTML =
+            `<span>🎞 ${orderedFrames.length} frames</span><span>📦 ${formatBytes(blob.size)}</span><span>📐 ${targetW}×${aspectH}px</span><span>⏱ ${fps}fps</span>`;
+        document.getElementById('videogifResult').style.display  = 'block';
         document.getElementById('videogifSuccess').style.display = 'block';
         videogifBtn.disabled = false;
     } catch (err) {
@@ -1841,6 +2041,20 @@ videogifBtn.addEventListener('click', async () => {
 
 document.getElementById('videogifDownload').addEventListener('click', () => {
     if (videogifBlobUrl) triggerDownload(videogifBlobUrl, 'video-to-gif.gif');
+});
+
+document.getElementById('videogifCopyClipboard').addEventListener('click', async () => {
+    if (!videogifBlobUrl) return;
+    try {
+        const res  = await fetch(videogifBlobUrl);
+        const blob = await res.blob();
+        await navigator.clipboard.write([new ClipboardItem({ 'image/gif': blob })]);
+        const btn = document.getElementById('videogifCopyClipboard');
+        btn.textContent = '✅ Copied!';
+        setTimeout(() => { btn.textContent = '📋 Copy to Clipboard'; }, 2000);
+    } catch {
+        alert('Copy not supported in this browser. Use Download instead.');
+    }
 });
 
 // ══════════════════════════════════════════════════════════════

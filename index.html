@@ -1235,38 +1235,59 @@
             <div class="section-icon">🎞</div>
             <div>
                 <h2>Image → GIF</h2>
-                <p>Upload multiple images and create an animated GIF</p>
+                <p>Upload images, reorder frames, set per-frame delay and export an animated GIF</p>
             </div>
         </div>
 
+        <!-- Upload -->
         <div class="card">
             <div class="drop-zone" id="gifDrop">
                 <span class="drop-icon">🎞</span>
                 <p>Drop images here or <label for="gifUpload" class="link">click to upload</label></p>
-                <p class="drop-hint">JPG, PNG, WebP — upload multiple files</p>
+                <p class="drop-hint">JPG, PNG, WebP — select multiple files · drag to reorder</p>
                 <input type="file" id="gifUpload" accept="image/*" multiple hidden>
             </div>
-            <div id="gifFrameList" class="image-list" style="margin-top:14px;"></div>
+            <div id="gifFrameList" class="gif-frame-list" style="margin-top:14px;"></div>
+            <div id="gifFrameStats" class="gif-frame-stats" style="display:none;"></div>
             <div id="gifClearRow" class="clear-row" style="display:none;">
                 <button id="gifClear" class="clear-btn">✕ Clear All Frames</button>
             </div>
         </div>
 
+        <!-- Options -->
         <div id="gifOptions" class="card" style="display:none;">
             <div class="options-panel">
                 <div class="opt-group">
-                    <label>Frame Delay (ms)</label>
-                    <input type="number" id="gifDelay" value="300" min="50" max="5000" step="50">
+                    <label>Default Delay (ms)</label>
+                    <input type="number" id="gifDelay" value="300" min="20" max="5000" step="10">
                 </div>
                 <div class="opt-group">
-                    <label>Width (px)</label>
+                    <label>Output Width (px)</label>
                     <input type="number" id="gifWidth" value="480" min="50" max="1920">
                 </div>
                 <div class="opt-group">
-                    <label>Repeat</label>
+                    <label>Loop</label>
                     <select id="gifRepeat">
                         <option value="0">Loop forever</option>
                         <option value="-1">Play once</option>
+                        <option value="2">2×</option>
+                        <option value="5">5×</option>
+                    </select>
+                </div>
+                <div class="opt-group">
+                    <label>Quality</label>
+                    <select id="gifQuality">
+                        <option value="256">High (256 colors)</option>
+                        <option value="128" selected>Medium (128 colors)</option>
+                        <option value="64">Low (64 colors)</option>
+                    </select>
+                </div>
+                <div class="opt-group">
+                    <label>Reverse Frames</label>
+                    <select id="gifReverse">
+                        <option value="0">Normal order</option>
+                        <option value="1">Reversed</option>
+                        <option value="2">Ping-pong (forward + back)</option>
                     </select>
                 </div>
             </div>
@@ -1283,9 +1304,11 @@
 
         <div id="gifResult" style="display:none; margin-top:16px;">
             <div class="card" style="text-align:center;">
-                <img id="gifPreviewImg" alt="GIF preview" style="max-width:100%; max-height:320px; border-radius:8px; margin-bottom:14px;">
-                <div class="action-row">
+                <img id="gifPreviewImg" alt="GIF preview" style="max-width:100%; max-height:340px; border-radius:8px; margin-bottom:10px;">
+                <div id="gifResultStats" class="gif-result-stats"></div>
+                <div class="action-row" style="margin-top:12px;">
                     <button id="gifDownload" class="primary-btn">⬇ Download GIF</button>
+                    <button id="gifCopyClipboard" class="secondary-btn">📋 Copy to Clipboard</button>
                 </div>
             </div>
             <p class="success-msg" id="gifSuccess" style="display:none;">✔ GIF created successfully</p>
@@ -1298,19 +1321,29 @@
             <div class="section-icon">🎬</div>
             <div>
                 <h2>Video → GIF</h2>
-                <p>Convert a short video clip to an animated GIF</p>
+                <p>Upload a video, set trim range, pick fps &amp; quality — export animated GIF</p>
             </div>
         </div>
 
+        <!-- Upload card -->
         <div class="card">
             <div class="drop-zone" id="videogifDrop">
                 <span class="drop-icon">🎬</span>
                 <p>Drop a video here or <label for="videogifUpload" class="link">click to upload</label></p>
-                <p class="drop-hint">MP4, WebM, MOV — keep clips short for best results</p>
+                <p class="drop-hint">MP4, WebM, MOV, AVI — processed 100% in your browser</p>
                 <input type="file" id="videogifUpload" accept="video/*" hidden>
             </div>
+
+            <!-- YouTube notice -->
+            <div class="vg-yt-notice">
+                <span>📺</span>
+                <span>Want to convert a <strong>YouTube video</strong>? Browsers can't fetch YouTube directly.
+                Use <a href="https://ezgif.com/video-to-gif" target="_blank" rel="noopener">EZGIF</a> or
+                <a href="https://giphy.com/create/gifmaker" target="_blank" rel="noopener">Giphy</a> — they support YouTube URLs.</span>
+            </div>
+
             <div id="videogifPreview" style="display:none; margin-top:14px; text-align:center;">
-                <video id="videogifVideo" controls style="max-width:100%; max-height:260px; border-radius:8px;"></video>
+                <video id="videogifVideo" controls muted style="max-width:100%; max-height:260px; border-radius:8px;"></video>
                 <div class="file-info" id="videogifFileInfo" style="margin-top:10px;"></div>
             </div>
             <div id="videogifClearRow" class="clear-row" style="display:none;">
@@ -1318,30 +1351,87 @@
             </div>
         </div>
 
-        <div id="videogifOptions" class="card" style="display:none;">
-            <div class="options-panel">
+        <!-- Timeline scrubber -->
+        <div id="videogifTimeline" class="card vg-timeline-card" style="display:none;">
+            <div class="vg-timeline-label">
+                <span>✂️ Trim Clip</span>
+                <span id="videogifTrimInfo" class="vg-trim-info"></span>
+            </div>
+            <div class="vg-timeline-wrap">
+                <div id="videogifStrip" class="vg-strip"></div>
+                <div class="vg-range-wrap">
+                    <input type="range" id="videogifStartRange" class="vg-range vg-range-start" min="0" max="100" value="0" step="0.1">
+                    <input type="range" id="videogifEndRange"   class="vg-range vg-range-end"   min="0" max="100" value="100" step="0.1">
+                </div>
+            </div>
+            <div class="vg-time-inputs">
                 <div class="opt-group">
-                    <label>Start Time (s)</label>
+                    <label>Start (s)</label>
                     <input type="number" id="videogifStart" value="0" min="0" step="0.1">
                 </div>
                 <div class="opt-group">
-                    <label>End Time (s)</label>
+                    <label>End (s)</label>
                     <input type="number" id="videogifEnd" value="5" min="0.1" step="0.1">
                 </div>
+                <div class="vg-duration-badge" id="videogifDurBadge">0.0s selected</div>
+            </div>
+        </div>
+
+        <!-- Options -->
+        <div id="videogifOptions" class="card" style="display:none;">
+            <div class="options-panel">
                 <div class="opt-group">
                     <label>Frame Rate (fps)</label>
                     <select id="videogifFps">
+                        <option value="1">1 fps</option>
+                        <option value="3">3 fps</option>
                         <option value="5">5 fps</option>
+                        <option value="8">8 fps</option>
                         <option value="10" selected>10 fps</option>
+                        <option value="12">12 fps</option>
                         <option value="15">15 fps</option>
                         <option value="20">20 fps</option>
+                        <option value="24">24 fps</option>
+                        <option value="30">30 fps</option>
                     </select>
                 </div>
                 <div class="opt-group">
-                    <label>Width (px)</label>
-                    <input type="number" id="videogifWidth" value="480" min="50" max="1280">
+                    <label>Output Width (px)</label>
+                    <select id="videogifWidth">
+                        <option value="240">240px (tiny)</option>
+                        <option value="320">320px (small)</option>
+                        <option value="480" selected>480px (medium)</option>
+                        <option value="640">640px (large)</option>
+                        <option value="800">800px (HD)</option>
+                    </select>
+                </div>
+                <div class="opt-group">
+                    <label>Quality</label>
+                    <select id="videogifQuality">
+                        <option value="256">High (256 colors)</option>
+                        <option value="128" selected>Medium (128 colors)</option>
+                        <option value="64">Low (64 colors, smaller)</option>
+                    </select>
+                </div>
+                <div class="opt-group">
+                    <label>Loop</label>
+                    <select id="videogifLoop">
+                        <option value="0">Loop forever</option>
+                        <option value="-1">Play once</option>
+                        <option value="2">2×</option>
+                        <option value="5">5×</option>
+                    </select>
+                </div>
+                <div class="opt-group">
+                    <label>Direction</label>
+                    <select id="videogifReverse">
+                        <option value="0">Normal</option>
+                        <option value="1">Reversed</option>
+                        <option value="2">Ping-pong</option>
+                    </select>
                 </div>
             </div>
+            <div id="videogifEstimate" class="vg-estimate"></div>
         </div>
 
         <div class="btn-row">
@@ -1355,9 +1445,11 @@
 
         <div id="videogifResult" style="display:none; margin-top:16px;">
             <div class="card" style="text-align:center;">
-                <img id="videogifPreviewImg" alt="GIF preview" style="max-width:100%; max-height:320px; border-radius:8px; margin-bottom:14px;">
-                <div class="action-row">
+                <img id="videogifPreviewImg" alt="GIF preview" style="max-width:100%; max-height:340px; border-radius:8px; margin-bottom:10px;">
+                <div id="videogifResultStats" class="gif-result-stats"></div>
+                <div class="action-row" style="margin-top:12px;">
                     <button id="videogifDownload" class="primary-btn">⬇ Download GIF</button>
+                    <button id="videogifCopyClipboard" class="secondary-btn">📋 Copy to Clipboard</button>
                 </div>
             </div>
             <p class="success-msg" id="videogifSuccess" style="display:none;">✔ GIF created successfully</p>

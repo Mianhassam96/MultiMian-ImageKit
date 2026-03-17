@@ -27,6 +27,12 @@ function activateTab(tabId) {
         b.classList.toggle('active', b.dataset.tab === tabId);
     });
 
+    // Highlight the parent dropdown menu button if one of its children is active
+    document.querySelectorAll('.nav-dropdown').forEach(dropdown => {
+        const hasActive = !!dropdown.querySelector(`.ndp-item[data-tab="${tabId}"]`);
+        dropdown.querySelector('.nav-menu-btn').classList.toggle('active', hasActive);
+    });
+
     if (tabId === 'home') {
         // Show home section, hide all tool sections
         document.getElementById('tab-home').style.display = 'block';
@@ -55,6 +61,34 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
 // ── Hero CTA buttons & Home cards ─────────────────────────────
 document.querySelectorAll('.hero-cta[data-tab], .home-card[data-tab]').forEach(el => {
     el.addEventListener('click', () => activateTab(el.dataset.tab));
+});
+
+// ── Dropdown nav ──────────────────────────────────────────────
+document.querySelectorAll('.nav-dropdown').forEach(dropdown => {
+    const btn = dropdown.querySelector('.nav-menu-btn');
+    const panel = dropdown.querySelector('.nav-dropdown-panel');
+
+    // Toggle on click
+    btn.addEventListener('click', e => {
+        e.stopPropagation();
+        const isOpen = dropdown.classList.contains('open');
+        // Close all others
+        document.querySelectorAll('.nav-dropdown.open').forEach(d => d.classList.remove('open'));
+        if (!isOpen) dropdown.classList.add('open');
+    });
+
+    // Items inside dropdown
+    panel.querySelectorAll('.ndp-item[data-tab]').forEach(item => {
+        item.addEventListener('click', () => {
+            activateTab(item.dataset.tab);
+            dropdown.classList.remove('open');
+        });
+    });
+});
+
+// Close dropdowns when clicking outside
+document.addEventListener('click', () => {
+    document.querySelectorAll('.nav-dropdown.open').forEach(d => d.classList.remove('open'));
 });
 
 // ── Initial state: show Home tab on load ──────────────────────

@@ -22,24 +22,87 @@
             </span>
         </a>
 
-        <!-- Tabs (center) -->
+        <!-- Dropdown Nav -->
         <nav class="tabs-nav" id="tabsNav" aria-label="Tools">
             <button class="tab-btn" data-tab="home">Home</button>
-            <span class="nav-sep">|</span>
-            <button class="tab-btn" data-tab="ocr">OCR</button>
-            <button class="tab-btn" data-tab="compress">Compress</button>
-            <button class="tab-btn" data-tab="resize">Resize</button>
-            <button class="tab-btn" data-tab="convert">Convert</button>
-            <button class="tab-btn" data-tab="watermark">Watermark</button>
-            <button class="tab-btn" data-tab="merge">Merge</button>
-            <button class="tab-btn" data-tab="share">Share</button>
-            <span class="nav-sep">|</span>
-            <button class="tab-btn" data-tab="pdf">Text</button>
-            <button class="tab-btn" data-tab="pdf2img">PDF→Img</button>
-            <span class="nav-sep">|</span>
-            <button class="tab-btn" data-tab="gif">→GIF</button>
-            <button class="tab-btn" data-tab="videogif">Video→GIF</button>
-            <button class="tab-btn" data-tab="sticker">Sticker</button>
+
+            <!-- 🖼 Image Tools -->
+            <div class="nav-dropdown">
+                <button class="nav-menu-btn" data-group="image">
+                    🖼 Image Tools <span class="nav-chevron">▾</span>
+                </button>
+                <div class="nav-dropdown-panel">
+                    <div class="ndp-header">🖼 Image Tools</div>
+                    <button class="ndp-item" data-tab="ocr">
+                        <span class="ndp-icon">🔤</span>
+                        <span class="ndp-text"><strong>Image → Text</strong><small>OCR extraction</small></span>
+                    </button>
+                    <button class="ndp-item" data-tab="compress">
+                        <span class="ndp-icon">🗜</span>
+                        <span class="ndp-text"><strong>Compress</strong><small>Reduce file size</small></span>
+                    </button>
+                    <button class="ndp-item" data-tab="resize">
+                        <span class="ndp-icon">✂️</span>
+                        <span class="ndp-text"><strong>Resize</strong><small>Custom &amp; social presets</small></span>
+                    </button>
+                    <button class="ndp-item" data-tab="convert">
+                        <span class="ndp-icon">🔄</span>
+                        <span class="ndp-text"><strong>Format Convert</strong><small>JPG ↔ PNG ↔ WebP</small></span>
+                    </button>
+                    <button class="ndp-item" data-tab="watermark">
+                        <span class="ndp-icon">💧</span>
+                        <span class="ndp-text"><strong>Watermark</strong><small>Text overlay &amp; tile</small></span>
+                    </button>
+                    <button class="ndp-item" data-tab="merge">
+                        <span class="ndp-icon">🔗</span>
+                        <span class="ndp-text"><strong>Merge Images</strong><small>Side-by-side or stacked</small></span>
+                    </button>
+                    <button class="ndp-item" data-tab="share">
+                        <span class="ndp-icon">🌐</span>
+                        <span class="ndp-text"><strong>Share Image</strong><small>Get public link + QR</small></span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 📄 PDF Tools -->
+            <div class="nav-dropdown">
+                <button class="nav-menu-btn" data-group="pdf">
+                    📄 PDF Tools <span class="nav-chevron">▾</span>
+                </button>
+                <div class="nav-dropdown-panel">
+                    <div class="ndp-header">📄 PDF Tools</div>
+                    <button class="ndp-item" data-tab="pdf">
+                        <span class="ndp-icon">📝</span>
+                        <span class="ndp-text"><strong>Text Studio</strong><small>Write, Text↔PDF, export</small></span>
+                    </button>
+                    <button class="ndp-item" data-tab="pdf2img">
+                        <span class="ndp-icon">🖼</span>
+                        <span class="ndp-text"><strong>PDF → Image</strong><small>Pages to PNG / JPG + ZIP</small></span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 🎬 Media Tools -->
+            <div class="nav-dropdown">
+                <button class="nav-menu-btn" data-group="media">
+                    🎬 Media Tools <span class="nav-chevron">▾</span>
+                </button>
+                <div class="nav-dropdown-panel">
+                    <div class="ndp-header">🎬 Media Converter Tools</div>
+                    <button class="ndp-item" data-tab="gif">
+                        <span class="ndp-icon">🎞</span>
+                        <span class="ndp-text"><strong>Image → GIF</strong><small>Multi-frame animated GIF</small></span>
+                    </button>
+                    <button class="ndp-item" data-tab="videogif">
+                        <span class="ndp-icon">🎬</span>
+                        <span class="ndp-text"><strong>Video → GIF</strong><small>Clip to GIF converter</small></span>
+                    </button>
+                    <button class="ndp-item" data-tab="sticker">
+                        <span class="ndp-icon">🎨</span>
+                        <span class="ndp-text"><strong>Image → Sticker</strong><small>512×512 PNG / WebP</small></span>
+                    </button>
+                </div>
+            </div>
         </nav>
 
         <!-- Right: toggle + hamburger -->

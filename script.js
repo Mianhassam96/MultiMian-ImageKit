@@ -69,8 +69,9 @@ document.querySelectorAll('.hero-cta[data-tab], .home-card[data-tab]').forEach(e
         const btn   = dropdown.querySelector('.nav-menu-btn');
         const panel = dropdown.querySelector('.nav-dropdown-panel');
 
-        // Open / close on trigger button click
+        // Toggle open on button click
         btn.addEventListener('click', function(e) {
+            e.preventDefault();
             e.stopPropagation();
             const isOpen = dropdown.classList.contains('open');
             // Close every other open dropdown first
@@ -78,6 +79,11 @@ document.querySelectorAll('.hero-cta[data-tab], .home-card[data-tab]').forEach(e
                 if (d !== dropdown) d.classList.remove('open');
             });
             dropdown.classList.toggle('open', !isOpen);
+        });
+
+        // Keep open while hovering the panel
+        panel.addEventListener('click', function(e) {
+            e.stopPropagation();
         });
 
         // Navigate when an item is clicked
@@ -91,8 +97,10 @@ document.querySelectorAll('.hero-cta[data-tab], .home-card[data-tab]').forEach(e
     });
 
     // Close all dropdowns when clicking anywhere outside
-    document.addEventListener('click', function() {
-        document.querySelectorAll('.nav-dropdown.open').forEach(d => d.classList.remove('open'));
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.nav-dropdown')) {
+            document.querySelectorAll('.nav-dropdown.open').forEach(d => d.classList.remove('open'));
+        }
     });
 
     // Close on Escape key

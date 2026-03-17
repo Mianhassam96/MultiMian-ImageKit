@@ -107,7 +107,7 @@ header::after {
     gap: 16px;
 }
 
-/* ── Logo — fancy animated text ───────────────────────────── */
+/* ── Logo — clean static text ─────────────────────────────── */
 .logo-wrap {
     text-decoration: none;
     flex-shrink: 0;
@@ -124,93 +124,42 @@ header::after {
     line-height: 1;
     display: flex;
     align-items: baseline;
-    transition: transform 0.35s cubic-bezier(.22,1,.36,1);
+    gap: 0;
+    transition: transform 0.3s cubic-bezier(.22,1,.36,1);
 }
 .logo-wrap:hover .logo-name {
-    transform: scale(1.05);
+    transform: scale(1.04);
 }
 
-/* ── "Multi" letters — white, staggered drop-in ── */
+/* "Multi" — solid white */
 .logo-multi {
-    display: inline-flex;
-    align-items: baseline;
-}
-
-/* ── "Mian" wrapper — gradient container ── */
-.logo-mian {
-    display: inline-flex;
-    align-items: baseline;
-    background: linear-gradient(90deg, #6ee7b7 0%, #60a5fa 35%, #a78bfa 65%, #6ee7b7 100%);
-    background-size: 250% 100%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: mianFlow 3s linear infinite;
-}
-@keyframes mianFlow {
-    0%   { background-position: 0% 50%; }
-    100% { background-position: 250% 50%; }
-}
-
-/* ── Each letter — staggered entrance ── */
-.logo-letter {
-    display: inline-block;
-    animation: letterIn 0.5s cubic-bezier(.22,1,.36,1) both;
-    animation-delay: calc(var(--i) * 0.06s);
-}
-@keyframes letterIn {
-    from { opacity: 0; transform: translateY(-12px) scale(0.75); }
-    to   { opacity: 1; transform: translateY(0)     scale(1); }
-}
-
-/* "Multi" letters are plain white */
-.logo-multi .logo-letter {
     color: #ffffff;
     -webkit-text-fill-color: #ffffff;
     font-weight: 800;
 }
-.logo-wrap:hover .logo-multi .logo-letter {
-    color: #ffffff;
-    -webkit-text-fill-color: #ffffff;
+
+/* "Mian" — gradient */
+.logo-mian {
+    background: linear-gradient(90deg, #6ee7b7 0%, #60a5fa 50%, #a78bfa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 800;
 }
 
-/* "Mian" letters inherit the gradient from parent */
-
-/* ── Dot — pulse glow ── */
-.logo-dot {
-    display: inline-block;
-    font-size: 1.3em;
-    line-height: 0.8;
-    margin: 0 1px 0 0;
-    color: #6ee7b7;
-    -webkit-text-fill-color: #6ee7b7;
-    animation: letterIn 0.5s 0.52s cubic-bezier(.22,1,.36,1) both,
-               dotGlow 2.4s 1.2s ease-in-out infinite;
-}
-@keyframes dotGlow {
-    0%, 100% { transform: scale(1);    opacity: 1; }
-    50%       { transform: scale(1.3); opacity: 0.7; }
-}
-
-/* ── "ImageKit" — slide in from right ── */
+/* "ImageKit" — subtle */
 .logo-kit {
-    display: inline-block;
-    color: rgba(255,255,255,0.72);
-    -webkit-text-fill-color: rgba(255,255,255,0.72);
-    font-size: 0.78em;
-    font-weight: 600;
-    letter-spacing: 0.4px;
-    margin-left: 2px;
-    animation: kitSlide 0.55s 0.68s cubic-bezier(.22,1,.36,1) both;
-    transition: color 0.3s, -webkit-text-fill-color 0.3s;
-}
-@keyframes kitSlide {
-    from { opacity: 0; transform: translateX(8px); }
-    to   { opacity: 1; transform: translateX(0); }
+    color: rgba(255,255,255,0.55);
+    -webkit-text-fill-color: rgba(255,255,255,0.55);
+    font-size: 0.76em;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    margin-left: 5px;
+    transition: color 0.2s, -webkit-text-fill-color 0.2s;
 }
 .logo-wrap:hover .logo-kit {
-    color: rgba(255,255,255,0.95);
-    -webkit-text-fill-color: rgba(255,255,255,0.95);
+    color: rgba(255,255,255,0.85);
+    -webkit-text-fill-color: rgba(255,255,255,0.85);
 }
 
 /* ── Tabs nav ──────────────────────────────────────────────── */
@@ -878,6 +827,35 @@ input[type="range"] { width: 100%; accent-color: var(--accent2); height: 6px; cu
 .pdf-preview-list { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
 .pdf-preview-item { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 0.72em; color: var(--text3); font-weight: 500; }
 .pdf-preview-item img { width: 72px; height: 90px; object-fit: cover; border-radius: 5px; border: 2px solid var(--border); box-shadow: var(--shadow-sm); }
+
+/* ── PDF→Text thumbnail grid ───────────────────────────────── */
+.p2t-thumb-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    padding: 4px 0;
+}
+.p2t-thumb {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+.p2t-thumb canvas {
+    width: 80px;
+    height: 104px;
+    border-radius: 6px;
+    border: 1.5px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    object-fit: contain;
+    background: #fff;
+}
+.p2t-thumb span {
+    font-size: 0.68em;
+    color: var(--text3);
+    font-weight: 500;
+}
 
 /* ── Presets ───────────────────────────────────────────────── */
 .presets-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; justify-content: center; padding: 4px 0; }
@@ -2320,20 +2298,35 @@ footer::before {
     opacity: 0;
     pointer-events: none;
     position: absolute;
-    top: calc(100% + 8px);
+    top: calc(100% + 10px);
     left: 50%;
-    transform: translateX(-50%) translateY(-6px);
-    min-width: 240px;
-    background: rgba(8, 12, 22, 0.98);
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
-    border: 1px solid rgba(110,231,183,0.18);
-    border-radius: 14px;
-    box-shadow: 0 24px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(110,231,183,0.06);
+    transform: translateX(-50%) translateY(-8px);
+    min-width: 260px;
+    background: #0d1424;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.06);
     z-index: 9999;
     overflow: hidden;
-    transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s;
+    transition: opacity 0.2s ease, transform 0.2s cubic-bezier(.22,1,.36,1), visibility 0.2s;
 }
+
+/* Top caret arrow */
+.nav-dropdown-panel::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 12px;
+    height: 12px;
+    background: #0d1424;
+    border-left: 1px solid rgba(255,255,255,0.1);
+    border-top: 1px solid rgba(255,255,255,0.1);
+    transform: translateX(-50%) rotate(45deg);
+    border-radius: 2px 0 0 0;
+}
+
 .nav-dropdown.open .nav-dropdown-panel {
     visibility: visible;
     opacity: 1;
@@ -2357,13 +2350,14 @@ footer::before {
 
 /* Panel header */
 .ndp-header {
-    padding: 10px 16px 8px;
-    font-size: 0.68em;
+    padding: 12px 16px 10px;
+    font-size: 0.67em;
     font-weight: 700;
-    color: rgba(255,255,255,0.3);
+    color: rgba(255,255,255,0.28);
     text-transform: uppercase;
-    letter-spacing: 1.5px;
+    letter-spacing: 1.8px;
     border-bottom: 1px solid rgba(255,255,255,0.07);
+    background: rgba(255,255,255,0.02);
 }
 
 /* Each item in the dropdown */
@@ -2372,50 +2366,57 @@ footer::before {
     align-items: center;
     gap: 12px;
     width: 100%;
-    padding: 10px 16px;
+    padding: 11px 16px;
     background: transparent;
     border: none;
+    border-left: 3px solid transparent;
     cursor: pointer;
     text-align: left;
-    transition: background 0.15s;
+    transition: background 0.15s, border-color 0.15s;
     font-family: 'Plus Jakarta Sans', sans-serif;
     border-bottom: 1px solid rgba(255,255,255,0.04);
+    position: relative;
 }
 .ndp-item:last-child { border-bottom: none; }
 .ndp-item:hover {
-    background: rgba(110,231,183,0.08);
+    background: rgba(110,231,183,0.07);
+    border-left-color: #6ee7b7;
 }
 .ndp-item:hover .ndp-text strong {
     color: #6ee7b7;
 }
+.ndp-item:hover .ndp-icon {
+    background: rgba(110,231,183,0.15);
+}
 
 .ndp-icon {
-    font-size: 1.3em;
-    width: 32px;
-    height: 32px;
+    font-size: 1.1em;
+    width: 34px;
+    height: 34px;
     display: flex;
     align-items: center;
     justify-content: center;
     background: rgba(255,255,255,0.06);
-    border-radius: 8px;
+    border-radius: 9px;
     flex-shrink: 0;
+    transition: background 0.15s;
 }
 
 .ndp-text {
     display: flex;
     flex-direction: column;
-    gap: 1px;
+    gap: 2px;
 }
 .ndp-text strong {
-    font-size: 0.85em;
+    font-size: 0.84em;
     font-weight: 600;
-    color: rgba(255,255,255,0.85);
+    color: rgba(255,255,255,0.88);
     transition: color 0.15s;
     line-height: 1.2;
 }
 .ndp-text small {
-    font-size: 0.72em;
-    color: rgba(255,255,255,0.35);
+    font-size: 0.71em;
+    color: rgba(255,255,255,0.32);
     line-height: 1.3;
 }
 

@@ -601,6 +601,11 @@ async function extractPdfText(file) {
     p2tProgress.style.display = 'block';
     p2tFill.style.width = '0%';
     p2tLabel.textContent = 'Loading PDF…';
+    // Clear previous thumbnails
+    const thumbsWrap = document.getElementById('p2tThumbsWrap');
+    const thumbsGrid = document.getElementById('p2tThumbs');
+    thumbsWrap.style.display = 'none';
+    thumbsGrid.innerHTML = '';
     try {
         const arrayBuffer = await file.arrayBuffer();
         const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
@@ -608,15 +613,32 @@ async function extractPdfText(file) {
         let fullText = '';
         for (let i = 1; i <= total; i++) {
             const page = await pdf.getPage(i);
+            // Extract text
             const content = await page.getTextContent();
             const pageText = content.items.map(item => item.str).join(' ');
             fullText += `--- Page ${i} ---\n${pageText}\n\n`;
+            // Render thumbnail (max 8 pages to keep it fast)
+            if (i <= 8) {
+                const viewport = page.getViewport({ scale: 0.3 });
+                const canvas = document.createElement('canvas');
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
+                await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
+                const wrap = document.createElement('div');
+                wrap.className = 'p2t-thumb';
+                const lbl = document.createElement('span');
+                lbl.textContent = `Page ${i}`;
+                wrap.appendChild(canvas);
+                wrap.appendChild(lbl);
+                thumbsGrid.appendChild(wrap);
+            }
             const pct = Math.round((i / total) * 100);
             p2tFill.style.width = pct + '%';
             p2tLabel.textContent = `Page ${i} of ${total}`;
         }
         p2tProgress.style.display = 'none';
         p2tTextEl.value = fullText.trim();
+        if (thumbsGrid.children.length) thumbsWrap.style.display = 'block';
         p2tResult.style.display = 'block';
         document.getElementById('p2tSuccess').style.display = 'block';
     } catch (err) {
@@ -629,6 +651,8 @@ document.getElementById('p2tClear').addEventListener('click', () => {
     p2tFile = null;
     document.getElementById('p2tFileInfo').innerHTML = '';
     document.getElementById('p2tClearRow').style.display = 'none';
+    document.getElementById('p2tThumbsWrap').style.display = 'none';
+    document.getElementById('p2tThumbs').innerHTML = '';
     p2tResult.style.display = 'none';
     p2tProgress.style.display = 'none';
     p2tTextEl.value = '';
@@ -1446,6 +1470,22 @@ document.getElementById('pdf2imgDownloadAll').addEventListener('click', async ()
 // ══════════════════════════════════════════════════════════════
 // 10. Image → GIF
 // ══════════════════════════════════════════════════════════════
+
+// Fetch gif.js worker and create a same-origin blob URL to avoid CORS issues
+let gifWorkerBlobUrl = null;
+async function getGifWorkerUrl() {
+    if (gifWorkerBlobUrl) return gifWorkerBlobUrl;
+    try {
+        const resp = await fetch('https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.worker.js');
+        const text = await resp.text();
+        const blob = new Blob([text], { type: 'application/javascript' });
+        gifWorkerBlobUrl = URL.createObjectURL(blob);
+    } catch (e) {
+        gifWorkerBlobUrl = 'https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.worker.js';
+    }
+    return gifWorkerBlobUrl;
+}
+
 const gifDrop   = document.getElementById('gifDrop');
 const gifUpload = document.getElementById('gifUpload');
 const gifBtn    = document.getElementById('gifBtn');
@@ -1523,13 +1563,14 @@ gifBtn.addEventListener('click', async () => {
         fill.style.width = '30%';
         label.textContent = 'Rendering GIF…';
 
+        const workerUrl = await getGifWorkerUrl();
         const gif = new GIF({
             workers: 2,
             quality: 10,
             width: targetW,
             height: h,
             repeat,
-            workerScript: 'https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.worker.js'
+            workerScript: workerUrl
         });
 
         const canvas = document.createElement('canvas');
@@ -1641,13 +1682,14 @@ videogifBtn.addEventListener('click', async () => {
         canvas.height = aspectH;
         const ctx = canvas.getContext('2d');
 
+        const workerUrl = await getGifWorkerUrl();
         const gif = new GIF({
             workers: 2,
             quality: 10,
             width: targetW,
             height: aspectH,
             repeat: 0,
-            workerScript: 'https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.worker.js'
+            workerScript: workerUrl
         });
 
         const frameDelay = Math.round(1000 / fps);

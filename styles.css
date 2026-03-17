@@ -2443,3 +2443,130 @@ footer::before {
 }
 
 /* Keep hamburger breakpoint in main responsive section above */
+
+/* ══════════════════════════════════════════════════════════════
+   ABOUT — Developer name row + role badge
+   ══════════════════════════════════════════════════════════════ */
+.about-dev-name-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+}
+.about-dev-name-row h3 { margin-bottom: 0; }
+.about-dev-role {
+    display: inline-block;
+    background: linear-gradient(135deg, rgba(22,163,74,0.15), rgba(14,165,233,0.15));
+    color: var(--accent2);
+    border: 1px solid rgba(37,99,235,0.2);
+    border-radius: 20px;
+    padding: 3px 12px;
+    font-size: 0.72em;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   ABOUT — Developer contact details
+   ══════════════════════════════════════════════════════════════ */
+.about-dev-contacts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+.adc-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 13px;
+    border-radius: var(--radius-sm);
+    font-size: 0.8em;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1.5px solid transparent;
+    transition: all 0.2s;
+}
+.adc-whatsapp {
+    background: rgba(37,211,102,0.1);
+    color: #16a34a;
+    border-color: rgba(37,211,102,0.25);
+}
+.adc-whatsapp:hover { background: rgba(37,211,102,0.18); color: #15803d; }
+.adc-email {
+    background: rgba(37,99,235,0.08);
+    color: var(--accent2);
+    border-color: rgba(37,99,235,0.2);
+}
+.adc-email:hover { background: rgba(37,99,235,0.15); }
+.adc-web {
+    background: rgba(99,102,241,0.08);
+    color: #6366f1;
+    border-color: rgba(99,102,241,0.2);
+}
+.adc-web:hover { background: rgba(99,102,241,0.15); }
+
+/* ══════════════════════════════════════════════════════════════
+   CONTACT — Colored icon wrappers
+   ══════════════════════════════════════════════════════════════ */
+.cic-icon {
+    width: 42px; height: 42px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+}
+.cic-wa    { background: rgba(37,211,102,0.12); color: #16a34a; }
+.cic-email { background: rgba(37,99,235,0.1);   color: var(--accent2); }
+.cic-web   { background: rgba(99,102,241,0.1);  color: #6366f1; }
+.cic-gh    { background: rgba(255,255,255,0.06); color: var(--text); border: 1px solid var(--border); }
+[data-theme="dark"] .cic-gh { background: rgba(255,255,255,0.08); }
+
+/* ══════════════════════════════════════════════════════════════
+   CONTACT — Social row buttons
+   ══════════════════════════════════════════════════════════════ */
+.contact-social-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+}
+.csocial-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 0.8em;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1.5px solid transparent;
+    transition: all 0.2s;
+    color: #fff;
+}
+.csocial-li  { background: #0a66c2; border-color: #0a66c2; }
+.csocial-li:hover  { background: #004182; border-color: #004182; color: #fff; }
+.csocial-ig  {
+    background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    border-color: transparent;
+}
+.csocial-ig:hover  { opacity: 0.88; color: #fff; }
+.csocial-gh  { background: #24292e; border-color: #24292e; }
+.csocial-gh:hover  { background: #1a1e22; color: #fff; }
+.csocial-web { background: #16a34a; border-color: #16a34a; }
+.csocial-web:hover { background: #15803d; color: #fff; }
+
+/* Responsive tweaks for new elements */
+@media (max-width: 640px) {
+    .about-dev-contacts { gap: 6px; }
+    .adc-item { font-size: 0.76em; padding: 6px 10px; }
+    .contact-social-row { gap: 6px; }
+    .csocial-btn { font-size: 0.76em; padding: 7px 11px; }
+    .about-dev-name-row { flex-direction: column; align-items: flex-start; gap: 6px; }
+}
+@media (max-width: 640px) {
+    .about-dev-card { flex-direction: column; align-items: center; text-align: center; }
+    .about-dev-contacts { justify-content: center; }
+    .contact-social-row { justify-content: center; }
+}

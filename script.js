@@ -1612,15 +1612,28 @@ document.getElementById('pdf2imgDownloadAll').addEventListener('click', async ()
 let gifWorkerBlobUrl = null;
 async function getGifWorkerUrl() {
     if (gifWorkerBlobUrl) return gifWorkerBlobUrl;
+    // Try fetching the worker script and wrapping it as a blob URL (bypasses CORS worker restriction)
     try {
-        const resp = await fetch('https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.worker.js');
+        const resp = await fetch('https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.worker.js', { mode: 'cors' });
+        if (!resp.ok) throw new Error('fetch failed');
         const text = await resp.text();
         const blob = new Blob([text], { type: 'application/javascript' });
         gifWorkerBlobUrl = URL.createObjectURL(blob);
+        return gifWorkerBlobUrl;
     } catch (e) {
-        gifWorkerBlobUrl = 'https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.worker.js';
+        // Fallback: use jsdelivr mirror
+        try {
+            const resp2 = await fetch('https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.worker.js');
+            if (!resp2.ok) throw new Error('fetch failed');
+            const text2 = await resp2.text();
+            const blob2 = new Blob([text2], { type: 'application/javascript' });
+            gifWorkerBlobUrl = URL.createObjectURL(blob2);
+            return gifWorkerBlobUrl;
+        } catch (e2) {
+            // Last resort: direct URL (may fail in some browsers)
+            return 'https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.worker.js';
+        }
     }
-    return gifWorkerBlobUrl;
 }
 
 const gifDrop   = document.getElementById('gifDrop');

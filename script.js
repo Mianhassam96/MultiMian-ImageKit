@@ -1,210 +1,198 @@
 // ══════════════════════════════════════════════════════════════
-// Self-contained GIF89a Encoder (no external dependency)
-// Based on Jnordberg/gif.js NeuQuant + LZW — MIT licence
+// Self-contained GIF89a Encoder — zero dependencies
+// Median-cut quantizer + LZW compression
 // ══════════════════════════════════════════════════════════════
 const GIFMaker = (() => {
-    // ── NeuQuant color quantizer ──────────────────────────────
-    function NeuQuant(pixels, samplefac) {
-        const netsize = 256;
-        const prime1=499,prime2=491,prime3=487,prime4=503;
-        const minpicturebytes = 3*prime4;
-        samplefac = Math.max(1, Math.min(30, samplefac|0));
-        const network = [];
-        const netindex = new Int32Array(256);
-        const bias = new Int32Array(netsize);
-        const freq  = new Int32Array(netsize);
-        const radpower = new Int32Array(netsize >> 3);
-        const initrad = netsize >> 3;
-        const radiusbias = 1 << 6;
-        const alpharadbias = 1 << 14;
-        const initalpha = 1 << 10;
-        const alphabiasshift = 10;
-        const betashift = 10;
-        const beta = 1 << betashift >> 10;
-        const betagamma = beta * 1024;
-        const gamma = 1024;
-        for (let i=0;i<netsize;i++) {
-            const v = (i<<(8+8+8))/netsize|0;
-            network[i] = [v,v,v,0];
-            freq[i] = (1<<10)/netsize|0;
-            bias[i] = 0;
-        }
-        let rad = initrad;
-        let alpha = initalpha;
-        let step;
-        const lengthcount = pixels.length / 4 | 0;
-        const samplepixels = Math.max(1, lengthcount / samplefac | 0);
-        if (lengthcount < minpicturebytes) step = 3;
-        else if ((lengthcount % prime1) !== 0) step = prime1;
-        else if ((lengthcount % prime2) !== 0) step = prime2;
-        else if ((lengthcount % prime3) !== 0) step = prime3;
-        else step = prime4;
 
-        function radAdjust(rad) {
-            let r = rad;
-            for (let i=0;i<r;i++) radpower[i] = alpha*(((r*r-i*i)*radiusbias)/(r*r));
+    // ── Median-cut: reduce RGBA pixel data to 256-color palette ─
+    function buildPalette(data) {
+        // Sample pixels (every 4th for speed)
+        const pixels = [];
+        for (let i = 0; i < data.length; i += 16) {
+            pixels.push([data[i], data[i+1], data[i+2]]);
         }
-        function contest(b,g,r) {
-            let bestd=~(1<<31),bestbiasd=bestd,bestpos=-1,bestbiaspos=0;
-            for (let i=0;i<netsize;i++) {
-                const n=network[i];
-                let dist=Math.abs(n[0]-b)+Math.abs(n[1]-g)+Math.abs(n[2]-r);
-                if (dist<bestd){bestd=dist;bestpos=i;}
-                const biasdist=dist-(bias[i]>>10);
-                if (biasdist<bestbiasd){bestbiasd=biasdist;bestbiaspos=i;}
-                freq[i]-=freq[i]>>5;
-                bias[i]+=freq[i]<<5;
+        // Split boxes until we have 256
+        let boxes = [pixels];
+        while (boxes.length < 256) {
+            // find largest box by range
+            let maxRange = -1, maxIdx = 0;
+            for (let b = 0; b < boxes.length; b++) {
+                const box = boxes[b];
+                if (box.length < 2) continue;
+                let rMin=255,rMax=0,gMin=255,gMax=0,bMin=255,bMax=0;
+                for (const p of box) {
+                    if(p[0]<rMin)rMin=p[0]; if(p[0]>rMax)rMax=p[0];
+                    if(p[1]<gMin)gMin=p[1]; if(p[1]>gMax)gMax=p[1];
+                    if(p[2]<bMin)bMin=p[2]; if(p[2]>bMax)bMax=p[2];
+                }
+                const range = Math.max(rMax-rMin, gMax-gMin, bMax-bMin);
+                if (range > maxRange) { maxRange = range; maxIdx = b; }
             }
-            freq[bestpos]+=1<<10;
-            bias[bestpos]-=1<<20;
-            return bestbiaspos;
-        }
-        function altersingle(alpha,i,b,g,r) {
-            network[i][0]-=(alpha*(network[i][0]-b)/initalpha)|0;
-            network[i][1]-=(alpha*(network[i][1]-g)/initalpha)|0;
-            network[i][2]-=(alpha*(network[i][2]-r)/initalpha)|0;
-        }
-        function alterneigh(rad,i,b,g,r) {
-            const lo=Math.max(i-rad,0),hi=Math.min(i+rad,netsize-1);
-            let j=i+1,k=i-1,m=1;
-            while(j<=hi||k>=lo){
-                const a=radpower[m++];
-                if(j<=hi){const n=network[j++];n[0]-=(a*(n[0]-b)/alpharadbias)|0;n[1]-=(a*(n[1]-g)/alpharadbias)|0;n[2]-=(a*(n[2]-r)/alpharadbias)|0;}
-                if(k>=lo){const n=network[k--];n[0]-=(a*(n[0]-b)/alpharadbias)|0;n[1]-=(a*(n[1]-g)/alpharadbias)|0;n[2]-=(a*(n[2]-r)/alpharadbias)|0;}
+            if (maxRange === 0) break;
+            const box = boxes[maxIdx];
+            // find channel with max range
+            let rMin=255,rMax=0,gMin=255,gMax=0,bMin=255,bMax=0;
+            for (const p of box) {
+                if(p[0]<rMin)rMin=p[0]; if(p[0]>rMax)rMax=p[0];
+                if(p[1]<gMin)gMin=p[1]; if(p[1]>gMax)gMax=p[1];
+                if(p[2]<bMin)bMin=p[2]; if(p[2]>bMax)bMax=p[2];
             }
+            const rR=rMax-rMin, gR=gMax-gMin, bR=bMax-bMin;
+            const ch = rR>=gR && rR>=bR ? 0 : gR>=bR ? 1 : 2;
+            box.sort((a,b) => a[ch]-b[ch]);
+            const mid = box.length >> 1;
+            boxes.splice(maxIdx, 1, box.slice(0, mid), box.slice(mid));
         }
-        let pix = 0;
-        radAdjust(rad);
-        for (let i=0;i<samplepixels;i++) {
-            const b=pixels[pix*4]&0xff,g=pixels[pix*4+1]&0xff,r=pixels[pix*4+2]&0xff;
-            const j=contest(b,g,r);
-            altersingle(alpha,j,b,g,r);
-            if(rad>0) alterneigh(rad,j,b,g,r);
-            pix+=step;
-            if(pix>=lengthcount) pix-=lengthcount;
-            if(i%10000===0){alpha-=alpha/30;rad=Math.max(1,rad-1);radAdjust(rad);}
+        // Average each box → palette entry
+        const palette = new Uint8Array(256 * 3);
+        const palColors = [];
+        for (let b = 0; b < Math.min(boxes.length, 256); b++) {
+            const box = boxes[b];
+            let r=0,g=0,bl=0;
+            for (const p of box) { r+=p[0]; g+=p[1]; bl+=p[2]; }
+            const n = box.length || 1;
+            palColors.push([r/n|0, g/n|0, bl/n|0]);
+            palette[b*3]   = r/n|0;
+            palette[b*3+1] = g/n|0;
+            palette[b*3+2] = bl/n|0;
         }
-        // build palette
-        const map = new Uint8Array(netsize*3);
-        const index = new Int32Array(netsize);
-        for (let i=0;i<netsize;i++) index[network[i][3]=i]=i;
-        let k=0;
-        for (let i=0;i<netsize;i++){const j=index[i];map[k++]=network[j][0];map[k++]=network[j][1];map[k++]=network[j][2];}
-        // lookup
-        function lookup(b,g,r){
-            let bestd=1e9,best=-1;
-            for(let i=0;i<netsize;i++){const n=network[i];const d=Math.abs(n[0]-b)+Math.abs(n[1]-g)+Math.abs(n[2]-r);if(d<bestd){bestd=d;best=i;}}
-            return index[best];
+        // fill remaining slots
+        for (let b = palColors.length; b < 256; b++) {
+            palColors.push([0,0,0]);
         }
-        return { map, lookup };
+        return { palette, palColors };
     }
 
-    // ── LZW encoder ───────────────────────────────────────────
-    function lzwEncode(width, height, pixels, colorDepth) {
-        const out = [];
-        const clearCode = 1 << colorDepth;
-        const eofCode = clearCode + 1;
-        let codeSize = colorDepth + 1;
-        let maxCode = 1 << codeSize;
-        const table = new Map();
-        let buf = 0, bufBits = 0;
-        const bytes = [];
-        function emit(code) {
-            buf |= code << bufBits;
-            bufBits += codeSize;
-            while (bufBits >= 8) { bytes.push(buf & 0xff); buf >>= 8; bufBits -= 8; }
-        }
-        function flush() {
-            if (bufBits > 0) { bytes.push(buf & 0xff); buf = 0; bufBits = 0; }
-            // write sub-blocks
-            let i = 0;
-            while (i < bytes.length) {
-                const len = Math.min(255, bytes.length - i);
-                out.push(len);
-                for (let j = 0; j < len; j++) out.push(bytes[i++]);
+    // ── Map each pixel to nearest palette index ───────────────
+    function mapPixels(data, palColors) {
+        const n = data.length / 4;
+        const indices = new Uint8Array(n);
+        // build a simple cache
+        const cache = new Map();
+        for (let i = 0; i < n; i++) {
+            const r = data[i*4], g = data[i*4+1], b = data[i*4+2];
+            const key = (r << 16) | (g << 8) | b;
+            let idx = cache.get(key);
+            if (idx === undefined) {
+                let best = 0, bestD = Infinity;
+                for (let j = 0; j < palColors.length; j++) {
+                    const p = palColors[j];
+                    const d = (r-p[0])**2 + (g-p[1])**2 + (b-p[2])**2;
+                    if (d < bestD) { bestD = d; best = j; }
+                }
+                idx = best;
+                cache.set(key, idx);
             }
-            out.push(0); // block terminator
+            indices[i] = idx;
         }
+        return indices;
+    }
+
+    // ── LZW compress pixel indices ────────────────────────────
+    function lzwEncode(indices, minCodeSize) {
+        const clearCode = 1 << minCodeSize;
+        const eofCode   = clearCode + 1;
+        let codeSize = minCodeSize + 1;
+        let maxCode  = 1 << codeSize;
         let nextCode = eofCode + 1;
-        table.clear();
+        const table  = new Map();
+
+        const bytes = [];
+        let buf = 0, bufBits = 0;
+
+        function emit(code) {
+            buf |= (code << bufBits);
+            bufBits += codeSize;
+            while (bufBits >= 8) {
+                bytes.push(buf & 0xff);
+                buf >>>= 8;
+                bufBits -= 8;
+            }
+        }
+
         emit(clearCode);
-        let prefix = pixels[0];
-        for (let i = 1; i < pixels.length; i++) {
-            const c = pixels[i];
-            const key = (prefix << 8) | c;
+        let prefix = indices[0];
+
+        for (let i = 1; i < indices.length; i++) {
+            const c   = indices[i];
+            const key = (prefix << 12) | c;
             if (table.has(key)) {
                 prefix = table.get(key);
             } else {
                 emit(prefix);
-                if (nextCode < 4096) {
+                if (nextCode <= 4095) {
                     table.set(key, nextCode++);
-                    if (nextCode > maxCode && codeSize < 12) { codeSize++; maxCode <<= 1; }
+                    if (nextCode > maxCode && codeSize < 12) {
+                        codeSize++;
+                        maxCode <<= 1;
+                    }
                 } else {
                     emit(clearCode);
                     table.clear();
                     nextCode = eofCode + 1;
-                    codeSize = colorDepth + 1;
-                    maxCode = 1 << codeSize;
+                    codeSize = minCodeSize + 1;
+                    maxCode  = 1 << codeSize;
                 }
                 prefix = c;
             }
         }
         emit(prefix);
         emit(eofCode);
-        flush();
+        if (bufBits > 0) bytes.push(buf & 0xff);
+
+        // pack into sub-blocks of max 255 bytes
+        const out = [];
+        for (let i = 0; i < bytes.length; ) {
+            const len = Math.min(255, bytes.length - i);
+            out.push(len);
+            for (let j = 0; j < len; j++) out.push(bytes[i++]);
+        }
+        out.push(0); // block terminator
         return out;
     }
 
-    // ── GIF89a writer ─────────────────────────────────────────
+    // ── Assemble GIF89a binary ────────────────────────────────
     function encode(frames, { loop = 0, width, height } = {}) {
         const out = [];
-        const push = v => out.push(v);
-        const pushWord = v => { push(v & 0xff); push((v >> 8) & 0xff); };
-        const pushArr = a => { for (let i = 0; i < a.length; i++) push(a[i]); };
+        const w16 = v => { out.push(v & 0xff, (v >> 8) & 0xff); };
 
-        // Header
-        pushArr([0x47,0x49,0x46,0x38,0x39,0x61]); // GIF89a
-        pushWord(width); pushWord(height);
-        push(0xf7); push(0); push(0); // global color table flag, bg, aspect
+        // Header + Logical Screen Descriptor
+        out.push(0x47,0x49,0x46,0x38,0x39,0x61); // GIF89a
+        w16(width); w16(height);
+        out.push(0xf7, 0x00, 0x00); // global color table, 256 colors, bg=0, aspect=0
 
         // Build global palette from first frame
-        const { map: palette } = NeuQuant(frames[0].data, 10);
-        pushArr(palette); // 256*3 bytes
+        const { palette, palColors } = buildPalette(frames[0].data);
+        for (let i = 0; i < palette.length; i++) out.push(palette[i]);
 
-        // Netscape loop block
-        pushArr([0x21,0xff,0x0b]);
-        pushArr([78,69,84,83,67,65,80,69,50,46,48]); // NETSCAPE2.0
-        push(3); push(1);
-        pushWord(loop < 0 ? 1 : loop); // 0 = infinite
-        push(0);
+        // Netscape Application Extension (looping)
+        out.push(0x21, 0xff, 0x0b,
+            0x4e,0x45,0x54,0x53,0x43,0x41,0x50,0x45,0x32,0x2e,0x30, // NETSCAPE2.0
+            0x03, 0x01);
+        w16(loop === 0 ? 0 : loop < 0 ? 1 : loop);
+        out.push(0x00);
 
-        for (let fi = 0; fi < frames.length; fi++) {
-            const f = frames[fi];
-            const delay = Math.max(2, Math.round((f.delay || 100) / 10)); // centiseconds
+        for (const f of frames) {
+            const delay = Math.max(2, Math.round((f.delay || 100) / 10));
 
-            // Graphic control extension
-            pushArr([0x21,0xf9,0x04,0x00]);
-            pushWord(delay);
-            push(0); push(0);
+            // Graphic Control Extension
+            out.push(0x21, 0xf9, 0x04, 0x00);
+            w16(delay);
+            out.push(0x00, 0x00);
 
-            // Image descriptor
-            push(0x2c);
-            pushWord(0); pushWord(0); pushWord(width); pushWord(height);
-            push(0); // no local color table
+            // Image Descriptor (no local color table)
+            out.push(0x2c);
+            w16(0); w16(0); w16(width); w16(height);
+            out.push(0x00);
 
-            // Quantize this frame
-            const { lookup } = NeuQuant(f.data, 10);
-            const indices = new Uint8Array(width * height);
-            for (let i = 0; i < width * height; i++) {
-                indices[i] = lookup(f.data[i*4], f.data[i*4+1], f.data[i*4+2]);
-            }
-
-            // LZW
-            push(8); // min code size
-            pushArr(lzwEncode(width, height, indices, 8));
+            // Quantize + encode
+            const indices = mapPixels(f.data, palColors);
+            out.push(0x08); // LZW min code size = 8
+            const lzw = lzwEncode(indices, 8);
+            for (let i = 0; i < lzw.length; i++) out.push(lzw[i]);
         }
 
-        push(0x3b); // trailer
+        out.push(0x3b); // GIF Trailer
         return new Uint8Array(out);
     }
 

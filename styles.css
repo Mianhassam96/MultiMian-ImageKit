@@ -1664,3 +1664,129 @@ footer::before {
     .logo-name { font-size: 0.9em; }
     .footer-center { display: none; }
 }
+
+/* ══════════════════════════════════════════════════════════════
+   TOOL CATEGORY SECTIONS (Homepage grouped layout)
+   ══════════════════════════════════════════════════════════════ */
+.tool-category {
+    margin-bottom: 52px;
+}
+
+.tool-category-header {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 20px;
+    border-radius: 30px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.88em;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    margin-bottom: 20px;
+    border: 1.5px solid transparent;
+}
+.tc-icon { font-size: 1.1em; }
+
+.tc-image {
+    background: linear-gradient(135deg, rgba(22,163,74,0.1), rgba(14,165,233,0.1));
+    border-color: rgba(22,163,74,0.25);
+    color: var(--accent);
+}
+[data-theme="dark"] .tc-image { background: rgba(22,163,74,0.08); }
+
+.tc-pdf {
+    background: linear-gradient(135deg, rgba(37,99,235,0.1), rgba(99,102,241,0.1));
+    border-color: rgba(37,99,235,0.25);
+    color: var(--accent2);
+}
+[data-theme="dark"] .tc-pdf { background: rgba(37,99,235,0.08); }
+
+.tc-media {
+    background: linear-gradient(135deg, rgba(217,119,6,0.1), rgba(239,68,68,0.1));
+    border-color: rgba(217,119,6,0.25);
+    color: #d97706;
+}
+[data-theme="dark"] .tc-media { background: rgba(217,119,6,0.08); color: #fbbf24; }
+
+/* New card icon colors */
+.ci-pdf2img  { background: linear-gradient(135deg, #e0f2fe, #bae6fd); }
+.ci-gif      { background: linear-gradient(135deg, #fef3c7, #fde68a); }
+.ci-videogif { background: linear-gradient(135deg, #fee2e2, #fecaca); }
+.ci-sticker  { background: linear-gradient(135deg, #f3e8ff, #e9d5ff); }
+[data-theme="dark"] .ci-pdf2img  { background: rgba(14,165,233,0.15); }
+[data-theme="dark"] .ci-gif      { background: rgba(217,119,6,0.15); }
+[data-theme="dark"] .ci-videogif { background: rgba(220,38,38,0.15); }
+[data-theme="dark"] .ci-sticker  { background: rgba(139,92,246,0.15); }
+
+/* ── Nav separator ─────────────────────────────────────────── */
+.nav-sep {
+    color: rgba(255,255,255,0.15);
+    font-size: 0.7em;
+    padding: 0 2px;
+    user-select: none;
+    flex-shrink: 0;
+}
+
+/* ── Drawer group labels ────────────────────────────────────── */
+.drawer-group-label {
+    font-size: 0.68em;
+    font-weight: 700;
+    color: rgba(255,255,255,0.3);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 10px 14px 4px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    margin-top: 4px;
+}
+
+/* ── PDF → Image pages grid ─────────────────────────────────── */
+.pdf2img-pages {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    justify-content: center;
+}
+.pdf2img-page-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 10px;
+    width: 130px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.pdf2img-page-item:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--accent2); }
+.pdf2img-page-item img {
+    width: 100%;
+    height: 100px;
+    object-fit: contain;
+    border-radius: 5px;
+    background: #fff;
+    border: 1px solid var(--border);
+}
+.pdf2img-page-item p {
+    font-size: 0.72em;
+    color: var(--text3);
+    font-weight: 600;
+    text-align: center;
+}
+
+/* ── Share QR code ──────────────────────────────────────────── */
+.share-qr-wrap {
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+    margin-top: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+#shareQrCode img,
+#shareQrCode canvas {
+    border-radius: 8px;
+    border: 3px solid var(--surface);
+    box-shadow: var(--shadow-sm);
+}

@@ -25,14 +25,21 @@
         <!-- Tabs (center) -->
         <nav class="tabs-nav" id="tabsNav" aria-label="Tools">
             <button class="tab-btn" data-tab="home">Home</button>
+            <span class="nav-sep">|</span>
             <button class="tab-btn" data-tab="ocr">OCR</button>
-            <button class="tab-btn" data-tab="pdf">Text</button>
             <button class="tab-btn" data-tab="compress">Compress</button>
             <button class="tab-btn" data-tab="resize">Resize</button>
             <button class="tab-btn" data-tab="convert">Convert</button>
             <button class="tab-btn" data-tab="watermark">Watermark</button>
             <button class="tab-btn" data-tab="merge">Merge</button>
             <button class="tab-btn" data-tab="share">Share</button>
+            <span class="nav-sep">|</span>
+            <button class="tab-btn" data-tab="pdf">Text</button>
+            <button class="tab-btn" data-tab="pdf2img">PDF→Img</button>
+            <span class="nav-sep">|</span>
+            <button class="tab-btn" data-tab="gif">→GIF</button>
+            <button class="tab-btn" data-tab="videogif">Video→GIF</button>
+            <button class="tab-btn" data-tab="sticker">Sticker</button>
         </nav>
 
         <!-- Right: toggle + hamburger -->
@@ -51,14 +58,21 @@
     <!-- Mobile drawer -->
     <div class="mobile-drawer" id="mobileDrawer">
         <button class="tab-btn" data-tab="home">🏠 Home</button>
-        <button class="tab-btn" data-tab="ocr">🔤 Image → Text</button>
-        <button class="tab-btn" data-tab="pdf">📝 Text Studio</button>
+        <div class="drawer-group-label">🖼 Image Tools</div>
+        <button class="tab-btn" data-tab="ocr">🔤 Image → Text (OCR)</button>
         <button class="tab-btn" data-tab="compress">🗜 Compress</button>
         <button class="tab-btn" data-tab="resize">✂️ Resize</button>
-        <button class="tab-btn" data-tab="convert">� Convert</button>
-        <button class="tab-btn" data-tab="watermark">� Watermark</button>
-        <button class="tab-btn" data-tab="merge">🔗 Merge</button>
-        <button class="tab-btn" data-tab="share">🔗 Share Link</button>
+        <button class="tab-btn" data-tab="convert">🔄 Convert Format</button>
+        <button class="tab-btn" data-tab="watermark">💧 Watermark</button>
+        <button class="tab-btn" data-tab="merge">🔗 Merge Images</button>
+        <button class="tab-btn" data-tab="share">🌐 Share Link</button>
+        <div class="drawer-group-label">📄 PDF Tools</div>
+        <button class="tab-btn" data-tab="pdf">📝 Text Studio</button>
+        <button class="tab-btn" data-tab="pdf2img">🖼 PDF → Image</button>
+        <div class="drawer-group-label">🎬 Media Tools</div>
+        <button class="tab-btn" data-tab="gif">🎞 Image → GIF</button>
+        <button class="tab-btn" data-tab="videogif">🎬 Video → GIF</button>
+        <button class="tab-btn" data-tab="sticker">🎨 Image → Sticker</button>
     </div>
 </header>
 
@@ -81,7 +95,7 @@
                 <span class="ht-line1">The Image Toolkit</span>
                 <span class="ht-line2">That <span class="ht-gradient">Works Instantly</span></span>
             </h1>
-            <p class="hero-desc">8 powerful tools — OCR, PDF, Compress, Resize, Convert, Watermark, Merge &amp; Share — all running 100% in your browser. Zero uploads. Zero limits.</p>
+            <p class="hero-desc">12 powerful tools — OCR, Compress, Resize, Convert, Watermark, Merge, Share, PDF↔Text, PDF→Image, Image→GIF, Video→GIF &amp; Sticker — all running 100% in your browser. Zero uploads. Zero limits.</p>
             <div class="hero-btns">
                 <button class="hero-cta hero-cta-primary" data-tab="ocr">
                     <span class="btn-icon">🔤</span> Extract Text (OCR)
@@ -104,12 +118,16 @@
             <span class="chip chip-6">💧 Watermark</span>
             <span class="chip chip-7">🔗 Merge</span>
             <span class="chip chip-8">🌐 Share</span>
+            <span class="chip chip-1">🎞 GIF</span>
+            <span class="chip chip-2">🎬 Video→GIF</span>
+            <span class="chip chip-3">🎨 Sticker</span>
+            <span class="chip chip-4">🖼 PDF→Img</span>
         </div>
 
         <!-- Stats -->
         <div class="stats-row">
             <div class="stat-item">
-                <span class="stat-val" data-count="8">0</span>
+                <span class="stat-val" data-count="12">0</span>
                 <span class="stat-lbl">Tools</span>
             </div>
             <div class="stat-divider"></div>
@@ -129,115 +147,195 @@
             </div>
         </div>
 
-        <!-- Feature cards -->
+        <!-- Feature cards — grouped by category -->
         <div class="features-section">
             <div class="section-label">
                 <span class="sl-line"></span>
                 <span>All Tools</span>
                 <span class="sl-line"></span>
             </div>
-            <div class="home-grid">
-                <div class="home-card" data-tab="ocr">
-                    <div class="card-glow"></div>
-                    <div class="card-top">
-                        <span class="card-icon-wrap ci-ocr">🔤</span>
-                        <span class="card-badge">Popular</span>
-                    </div>
-                    <h3>Image → Text</h3>
-                    <p>Extract text from any image in 10+ languages. Copy, download .txt or export as PDF.</p>
-                    <div class="card-footer">
-                        <span class="card-tech">Tesseract.js</span>
-                        <span class="card-arrow">→</span>
-                    </div>
+
+            <!-- 🖼 Image Tools -->
+            <div class="tool-category">
+                <div class="tool-category-header tc-image">
+                    <span class="tc-icon">🖼</span>
+                    <span>Image Tools</span>
                 </div>
-                <div class="home-card" data-tab="pdf">
-                    <div class="card-glow"></div>
-                    <div class="card-top">
-                        <span class="card-icon-wrap ci-pdf">📝</span>
-                        <span class="card-badge card-badge-new">New ⭐</span>
+                <div class="home-grid">
+                    <div class="home-card" data-tab="ocr">
+                        <div class="card-glow"></div>
+                        <div class="card-top">
+                            <span class="card-icon-wrap ci-ocr">🔤</span>
+                            <span class="card-badge">Popular</span>
+                        </div>
+                        <h3>Image → Text</h3>
+                        <p>Extract text from any image in 10+ languages. Copy, download .txt or export as PDF.</p>
+                        <div class="card-footer">
+                            <span class="card-tech">Tesseract.js</span>
+                            <span class="card-arrow">→</span>
+                        </div>
                     </div>
-                    <h3>Text Studio</h3>
-                    <p>Write, format &amp; export text. Convert text ↔ PDF. Export as TXT, RTF, DOCX or PDF.</p>
-                    <div class="card-footer">
-                        <span class="card-tech">jsPDF + PDF.js</span>
-                        <span class="card-arrow">→</span>
+                    <div class="home-card" data-tab="compress">
+                        <div class="card-glow"></div>
+                        <div class="card-top">
+                            <span class="card-icon-wrap ci-compress">🗜</span>
+                        </div>
+                        <h3>Compress</h3>
+                        <p>Reduce file size with a quality slider. Live before/after size comparison.</p>
+                        <div class="card-footer">
+                            <span class="card-tech">Canvas API</span>
+                            <span class="card-arrow">→</span>
+                        </div>
                     </div>
-                </div>
-                <div class="home-card" data-tab="compress">
-                    <div class="card-glow"></div>
-                    <div class="card-top">
-                        <span class="card-icon-wrap ci-compress">🗜</span>
+                    <div class="home-card" data-tab="resize">
+                        <div class="card-glow"></div>
+                        <div class="card-top">
+                            <span class="card-icon-wrap ci-resize">✂️</span>
+                        </div>
+                        <h3>Resize</h3>
+                        <p>Exact dimensions with aspect-ratio lock. Instagram, YouTube, Twitter &amp; Facebook presets.</p>
+                        <div class="card-footer">
+                            <span class="card-tech">Canvas API</span>
+                            <span class="card-arrow">→</span>
+                        </div>
                     </div>
-                    <h3>Compress</h3>
-                    <p>Reduce file size with a quality slider. Live before/after size comparison.</p>
-                    <div class="card-footer">
-                        <span class="card-tech">Canvas API</span>
-                        <span class="card-arrow">→</span>
+                    <div class="home-card" data-tab="convert">
+                        <div class="card-glow"></div>
+                        <div class="card-top">
+                            <span class="card-icon-wrap ci-convert">🔄</span>
+                        </div>
+                        <h3>Format Convert</h3>
+                        <p>JPG ↔ PNG ↔ WebP with quality control. Instant download, no re-upload.</p>
+                        <div class="card-footer">
+                            <span class="card-tech">Canvas API</span>
+                            <span class="card-arrow">→</span>
+                        </div>
                     </div>
-                </div>
-                <div class="home-card" data-tab="resize">
-                    <div class="card-glow"></div>
-                    <div class="card-top">
-                        <span class="card-icon-wrap ci-resize">✂️</span>
+                    <div class="home-card" data-tab="watermark">
+                        <div class="card-glow"></div>
+                        <div class="card-top">
+                            <span class="card-icon-wrap ci-wm">💧</span>
+                        </div>
+                        <h3>Watermark</h3>
+                        <p>Text watermarks with custom font, color, opacity &amp; 6 positions including tile.</p>
+                        <div class="card-footer">
+                            <span class="card-tech">Canvas API</span>
+                            <span class="card-arrow">→</span>
+                        </div>
                     </div>
-                    <h3>Resize</h3>
-                    <p>Exact dimensions with aspect-ratio lock. Social media presets built in.</p>
-                    <div class="card-footer">
-                        <span class="card-tech">Canvas API</span>
-                        <span class="card-arrow">→</span>
+                    <div class="home-card home-card-featured" data-tab="merge">
+                        <div class="card-glow"></div>
+                        <div class="card-top">
+                            <span class="card-icon-wrap ci-merge">🔗</span>
+                        </div>
+                        <h3>Merge 2 Images</h3>
+                        <p>Combine two images side-by-side or stacked. Export as JPG, PNG or PDF.</p>
+                        <div class="card-footer">
+                            <span class="card-tech">Canvas + jsPDF</span>
+                            <span class="card-arrow">→</span>
+                        </div>
                     </div>
-                </div>
-                <div class="home-card" data-tab="convert">
-                    <div class="card-glow"></div>
-                    <div class="card-top">
-                        <span class="card-icon-wrap ci-convert">🔄</span>
-                    </div>
-                    <h3>Format Convert</h3>
-                    <p>JPG ↔ PNG ↔ WebP with quality control. Instant download, no re-upload.</p>
-                    <div class="card-footer">
-                        <span class="card-tech">Canvas API</span>
-                        <span class="card-arrow">→</span>
-                    </div>
-                </div>
-                <div class="home-card" data-tab="watermark">
-                    <div class="card-glow"></div>
-                    <div class="card-top">
-                        <span class="card-icon-wrap ci-wm">💧</span>
-                    </div>
-                    <h3>Watermark</h3>
-                    <p>Text watermarks with custom font, color, opacity &amp; 6 positions including tile.</p>
-                    <div class="card-footer">
-                        <span class="card-tech">Canvas API</span>
-                        <span class="card-arrow">→</span>
-                    </div>
-                </div>
-                <div class="home-card home-card-featured" data-tab="merge">
-                    <div class="card-glow"></div>
-                    <div class="card-top">
-                        <span class="card-icon-wrap ci-merge">🔗</span>
-                        <span class="card-badge card-badge-new">New ⭐</span>
-                    </div>
-                    <h3>Merge 2 Images</h3>
-                    <p>Combine two images side-by-side or stacked. Export as JPG, PNG or PDF.</p>
-                    <div class="card-footer">
-                        <span class="card-tech">Canvas + jsPDF</span>
-                        <span class="card-arrow">→</span>
-                    </div>
-                </div>
-                <div class="home-card home-card-featured" data-tab="share">
-                    <div class="card-glow"></div>
-                    <div class="card-top">
-                        <span class="card-icon-wrap ci-share">🌐</span>
-                        <span class="card-badge card-badge-new">New ⭐</span>
-                    </div>
-                    <h3>Share Image</h3>
-                    <p>Upload and get a permanent public link. Share on WhatsApp, Telegram, Twitter and more.</p>
-                    <div class="card-footer">
-                        <span class="card-tech">ImgBB API</span>
-                        <span class="card-arrow">→</span>
+                    <div class="home-card home-card-featured" data-tab="share">
+                        <div class="card-glow"></div>
+                        <div class="card-top">
+                            <span class="card-icon-wrap ci-share">🌐</span>
+                            <span class="card-badge card-badge-new">New ⭐</span>
+                        </div>
+                        <h3>Share Image</h3>
+                        <p>Upload and get a permanent public link. Share on WhatsApp, Telegram, Twitter and more.</p>
+                        <div class="card-footer">
+                            <span class="card-tech">ImgBB API</span>
+                            <span class="card-arrow">→</span>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <!-- 📄 PDF Tools -->
+            <div class="tool-category">
+                <div class="tool-category-header tc-pdf">
+                    <span class="tc-icon">📄</span>
+                    <span>PDF Tools</span>
+                </div>
+                <div class="home-grid">
+                    <div class="home-card" data-tab="pdf">
+                        <div class="card-glow"></div>
+                        <div class="card-top">
+                            <span class="card-icon-wrap ci-pdf">📝</span>
+                            <span class="card-badge card-badge-new">New ⭐</span>
+                        </div>
+                        <h3>Text Studio</h3>
+                        <p>Write, format &amp; export text. Convert text ↔ PDF. Export as TXT, RTF, DOCX or PDF.</p>
+                        <div class="card-footer">
+                            <span class="card-tech">jsPDF + PDF.js</span>
+                            <span class="card-arrow">→</span>
+                        </div>
+                    </div>
+                    <div class="home-card" data-tab="pdf2img">
+                        <div class="card-glow"></div>
+                        <div class="card-top">
+                            <span class="card-icon-wrap ci-pdf2img">🖼</span>
+                            <span class="card-badge card-badge-new">New ⭐</span>
+                        </div>
+                        <h3>PDF → Image</h3>
+                        <p>Convert PDF pages to PNG or JPG. Download individual pages or all as a ZIP.</p>
+                        <div class="card-footer">
+                            <span class="card-tech">PDF.js + JSZip</span>
+                            <span class="card-arrow">→</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 🎬 Media Tools -->
+            <div class="tool-category">
+                <div class="tool-category-header tc-media">
+                    <span class="tc-icon">🎬</span>
+                    <span>Media Converter Tools</span>
+                </div>
+                <div class="home-grid">
+                    <div class="home-card" data-tab="gif">
+                        <div class="card-glow"></div>
+                        <div class="card-top">
+                            <span class="card-icon-wrap ci-gif">🎞</span>
+                            <span class="card-badge card-badge-new">New ⭐</span>
+                        </div>
+                        <h3>Image → GIF</h3>
+                        <p>Upload multiple images, reorder frames, set delay and export an animated GIF.</p>
+                        <div class="card-footer">
+                            <span class="card-tech">gif.js</span>
+                            <span class="card-arrow">→</span>
+                        </div>
+                    </div>
+                    <div class="home-card" data-tab="videogif">
+                        <div class="card-glow"></div>
+                        <div class="card-top">
+                            <span class="card-icon-wrap ci-videogif">🎬</span>
+                            <span class="card-badge card-badge-new">New ⭐</span>
+                        </div>
+                        <h3>Video → GIF</h3>
+                        <p>Upload a short video, select start/end time, adjust frame rate and export GIF.</p>
+                        <div class="card-footer">
+                            <span class="card-tech">Canvas + gif.js</span>
+                            <span class="card-arrow">→</span>
+                        </div>
+                    </div>
+                    <div class="home-card" data-tab="sticker">
+                        <div class="card-glow"></div>
+                        <div class="card-top">
+                            <span class="card-icon-wrap ci-sticker">🎨</span>
+                            <span class="card-badge card-badge-new">New ⭐</span>
+                        </div>
+                        <h3>Image → Sticker</h3>
+                        <p>Resize to 512×512 sticker format. Export as PNG or WebP for WhatsApp, Telegram &amp; Discord.</p>
+                        <div class="card-footer">
+                            <span class="card-tech">Canvas API</span>
+                            <span class="card-arrow">→</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <!-- How it works -->
@@ -648,11 +746,13 @@
             <div class="divider"></div>
             <div class="presets-row">
                 <span class="presets-label">Social Media Presets</span>
+                <button class="preset-btn" data-w="1080" data-h="1080">Instagram Post</button>
+                <button class="preset-btn" data-w="1920" data-h="1080">YouTube Thumbnail</button>
+                <button class="preset-btn" data-w="1200" data-h="675">Twitter Image</button>
+                <button class="preset-btn" data-w="1200" data-h="630">Facebook Post</button>
                 <button class="preset-btn" data-w="1920" data-h="1080">1920×1080 HD</button>
                 <button class="preset-btn" data-w="1280" data-h="720">1280×720</button>
-                <button class="preset-btn" data-w="1080" data-h="1080">1080×1080 IG</button>
                 <button class="preset-btn" data-w="1200" data-h="630">1200×630 OG</button>
-                <button class="preset-btn" data-w="800" data-h="600">800×600</button>
                 <button class="preset-btn" data-w="400" data-h="400">400×400 Avatar</button>
             </div>
         </div>
@@ -970,9 +1070,271 @@
                     <button class="share-copy-btn" data-copy="shareDeleteUrl">📋</button>
                 </div>
             </div>
+
+            <div class="share-qr-wrap">
+                <p class="share-extra-label" style="text-align:center; margin-bottom:10px;">QR Code</p>
+                <div id="shareQrCode"></div>
+            </div>
         </div>
     </div>
 
+    </section>
+
+    <!-- ══ PDF → Image Tab ══ -->
+    <section id="tab-pdf2img" class="tab-section">
+        <div class="section-header">
+            <div class="section-icon">🖼</div>
+            <div>
+                <h2>PDF → Image</h2>
+                <p>Convert PDF pages to PNG or JPG — download individually or as ZIP</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="drop-zone" id="pdf2imgDrop">
+                <span class="drop-icon">📄</span>
+                <p>Drop a <strong>.pdf</strong> file or <label for="pdf2imgUpload" class="link">click to upload</label></p>
+                <p class="drop-hint">PDF files — rendered client-side using PDF.js</p>
+                <input type="file" id="pdf2imgUpload" accept=".pdf,application/pdf" hidden>
+            </div>
+            <div id="pdf2imgFileInfo" class="file-info" style="margin-top:10px;"></div>
+            <div id="pdf2imgClearRow" class="clear-row" style="display:none;">
+                <button id="pdf2imgClear" class="clear-btn">✕ Clear</button>
+            </div>
+        </div>
+
+        <div id="pdf2imgOptions" class="card" style="display:none;">
+            <div class="options-panel">
+                <div class="opt-group">
+                    <label>Output Format</label>
+                    <select id="pdf2imgFormat">
+                        <option value="image/png">PNG — Lossless</option>
+                        <option value="image/jpeg">JPG — Smaller</option>
+                    </select>
+                </div>
+                <div class="opt-group" style="max-width:100px;">
+                    <label>Scale</label>
+                    <select id="pdf2imgScale">
+                        <option value="1">1x (72dpi)</option>
+                        <option value="2" selected>2x (144dpi)</option>
+                        <option value="3">3x (216dpi)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="progress-bar" id="pdf2imgProgress" style="display:none; margin-top:14px;">
+            <div class="progress-fill" id="pdf2imgProgressFill"></div>
+            <span id="pdf2imgProgressLabel">Converting…</span>
+        </div>
+
+        <div id="pdf2imgResult" style="display:none; margin-top:16px;">
+            <div class="card">
+                <div id="pdf2imgPages" class="pdf2img-pages"></div>
+                <div class="action-row" style="margin-top:14px;">
+                    <button id="pdf2imgDownloadAll" class="primary-btn">⬇ Download All as ZIP</button>
+                </div>
+            </div>
+            <p class="success-msg" id="pdf2imgSuccess" style="display:none;">✔ Pages converted successfully</p>
+        </div>
+    </section>
+
+    <!-- ══ Image → GIF Tab ══ -->
+    <section id="tab-gif" class="tab-section">
+        <div class="section-header">
+            <div class="section-icon">🎞</div>
+            <div>
+                <h2>Image → GIF</h2>
+                <p>Upload multiple images and create an animated GIF</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="drop-zone" id="gifDrop">
+                <span class="drop-icon">🎞</span>
+                <p>Drop images here or <label for="gifUpload" class="link">click to upload</label></p>
+                <p class="drop-hint">JPG, PNG, WebP — upload multiple files</p>
+                <input type="file" id="gifUpload" accept="image/*" multiple hidden>
+            </div>
+            <div id="gifFrameList" class="image-list" style="margin-top:14px;"></div>
+            <div id="gifClearRow" class="clear-row" style="display:none;">
+                <button id="gifClear" class="clear-btn">✕ Clear All Frames</button>
+            </div>
+        </div>
+
+        <div id="gifOptions" class="card" style="display:none;">
+            <div class="options-panel">
+                <div class="opt-group">
+                    <label>Frame Delay (ms)</label>
+                    <input type="number" id="gifDelay" value="300" min="50" max="5000" step="50">
+                </div>
+                <div class="opt-group">
+                    <label>Width (px)</label>
+                    <input type="number" id="gifWidth" value="480" min="50" max="1920">
+                </div>
+                <div class="opt-group">
+                    <label>Repeat</label>
+                    <select id="gifRepeat">
+                        <option value="0">Loop forever</option>
+                        <option value="-1">Play once</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="btn-row">
+            <button id="gifBtn" class="primary-btn" disabled>🎞 Create GIF</button>
+        </div>
+
+        <div class="progress-bar" id="gifProgress" style="display:none; margin-top:14px;">
+            <div class="progress-fill" id="gifProgressFill"></div>
+            <span id="gifProgressLabel">Rendering…</span>
+        </div>
+
+        <div id="gifResult" style="display:none; margin-top:16px;">
+            <div class="card" style="text-align:center;">
+                <img id="gifPreviewImg" alt="GIF preview" style="max-width:100%; max-height:320px; border-radius:8px; margin-bottom:14px;">
+                <div class="action-row">
+                    <button id="gifDownload" class="primary-btn">⬇ Download GIF</button>
+                </div>
+            </div>
+            <p class="success-msg" id="gifSuccess" style="display:none;">✔ GIF created successfully</p>
+        </div>
+    </section>
+
+    <!-- ══ Video → GIF Tab ══ -->
+    <section id="tab-videogif" class="tab-section">
+        <div class="section-header">
+            <div class="section-icon">🎬</div>
+            <div>
+                <h2>Video → GIF</h2>
+                <p>Convert a short video clip to an animated GIF</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="drop-zone" id="videogifDrop">
+                <span class="drop-icon">🎬</span>
+                <p>Drop a video here or <label for="videogifUpload" class="link">click to upload</label></p>
+                <p class="drop-hint">MP4, WebM, MOV — keep clips short for best results</p>
+                <input type="file" id="videogifUpload" accept="video/*" hidden>
+            </div>
+            <div id="videogifPreview" style="display:none; margin-top:14px; text-align:center;">
+                <video id="videogifVideo" controls style="max-width:100%; max-height:260px; border-radius:8px;"></video>
+                <div class="file-info" id="videogifFileInfo" style="margin-top:10px;"></div>
+            </div>
+            <div id="videogifClearRow" class="clear-row" style="display:none;">
+                <button id="videogifClear" class="clear-btn">✕ Clear</button>
+            </div>
+        </div>
+
+        <div id="videogifOptions" class="card" style="display:none;">
+            <div class="options-panel">
+                <div class="opt-group">
+                    <label>Start Time (s)</label>
+                    <input type="number" id="videogifStart" value="0" min="0" step="0.1">
+                </div>
+                <div class="opt-group">
+                    <label>End Time (s)</label>
+                    <input type="number" id="videogifEnd" value="5" min="0.1" step="0.1">
+                </div>
+                <div class="opt-group">
+                    <label>Frame Rate (fps)</label>
+                    <select id="videogifFps">
+                        <option value="5">5 fps</option>
+                        <option value="10" selected>10 fps</option>
+                        <option value="15">15 fps</option>
+                        <option value="20">20 fps</option>
+                    </select>
+                </div>
+                <div class="opt-group">
+                    <label>Width (px)</label>
+                    <input type="number" id="videogifWidth" value="480" min="50" max="1280">
+                </div>
+            </div>
+        </div>
+
+        <div class="btn-row">
+            <button id="videogifBtn" class="primary-btn" disabled>🎬 Convert to GIF</button>
+        </div>
+
+        <div class="progress-bar" id="videogifProgress" style="display:none; margin-top:14px;">
+            <div class="progress-fill" id="videogifProgressFill"></div>
+            <span id="videogifProgressLabel">Capturing frames…</span>
+        </div>
+
+        <div id="videogifResult" style="display:none; margin-top:16px;">
+            <div class="card" style="text-align:center;">
+                <img id="videogifPreviewImg" alt="GIF preview" style="max-width:100%; max-height:320px; border-radius:8px; margin-bottom:14px;">
+                <div class="action-row">
+                    <button id="videogifDownload" class="primary-btn">⬇ Download GIF</button>
+                </div>
+            </div>
+            <p class="success-msg" id="videogifSuccess" style="display:none;">✔ GIF created successfully</p>
+        </div>
+    </section>
+
+    <!-- ══ Image → Sticker Tab ══ -->
+    <section id="tab-sticker" class="tab-section">
+        <div class="section-header">
+            <div class="section-icon">🎨</div>
+            <div>
+                <h2>Image → Sticker</h2>
+                <p>Resize to 512×512 sticker format — export PNG or WebP for WhatsApp, Telegram &amp; Discord</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="drop-zone" id="stickerDrop">
+                <span class="drop-icon">🎨</span>
+                <p>Drop image here or <label for="stickerUpload" class="link">click to upload</label></p>
+                <p class="drop-hint">JPG, PNG, WebP — will be resized to 512×512</p>
+                <input type="file" id="stickerUpload" accept="image/*" hidden>
+            </div>
+            <div id="stickerPreview" class="preview-box" style="display:none; margin-top:14px;">
+                <img id="stickerImg" alt="Preview">
+                <div class="file-info" id="stickerFileInfo"></div>
+            </div>
+            <div id="stickerClearRow" class="clear-row" style="display:none;">
+                <button id="stickerClear" class="clear-btn">✕ Clear</button>
+            </div>
+        </div>
+
+        <div id="stickerOptions" class="card" style="display:none;">
+            <div class="options-panel">
+                <div class="opt-group">
+                    <label>Output Format</label>
+                    <select id="stickerFormat">
+                        <option value="image/png">PNG (WhatsApp / Discord)</option>
+                        <option value="image/webp">WebP (Telegram)</option>
+                    </select>
+                </div>
+                <div class="opt-group">
+                    <label>Size</label>
+                    <select id="stickerSize">
+                        <option value="512">512×512 (Standard)</option>
+                        <option value="256">256×256 (Small)</option>
+                    </select>
+                </div>
+                <div class="opt-group">
+                    <label>Background</label>
+                    <select id="stickerBg">
+                        <option value="transparent">Transparent</option>
+                        <option value="white">White</option>
+                        <option value="black">Black</option>
+                    </select>
+                </div>
+            </div>
+            <div id="stickerLiveWrap" style="text-align:center; margin-top:14px;">
+                <canvas id="stickerCanvas" style="display:none;"></canvas>
+                <img id="stickerResult" alt="Sticker preview" style="max-width:200px; max-height:200px; border-radius:8px; border:2px dashed var(--border);">
+            </div>
+        </div>
+
+        <div class="btn-row">
+            <button id="stickerBtn" class="primary-btn" disabled>🎨 Download Sticker</button>
+        </div>
+        <p class="success-msg" id="stickerSuccess" style="display:none;">✔ Sticker downloaded</p>
     </section>
 
 </main>
@@ -1003,6 +1365,9 @@
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="script.js"></script>
 </body>
 </html>

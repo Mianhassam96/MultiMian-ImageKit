@@ -1233,6 +1233,9 @@ shareBtn.addEventListener('click', async () => {
 
         document.getElementById('shareOpenBtn').href = viewerUrl;
 
+        // Generate QR code
+        generateShareQR(viewerUrl);
+
         // Social share buttons
         const encoded = encodeURIComponent(viewerUrl);
         const msg = encodeURIComponent('Check out this image: ' + viewerUrl);
@@ -1276,3 +1279,459 @@ document.querySelectorAll('.share-copy-btn[data-copy]').forEach(btn => {
         });
     });
 });
+
+// ══════════════════════════════════════════════════════════════
+// 9. PDF → Image
+// ══════════════════════════════════════════════════════════════
+const pdf2imgDrop   = document.getElementById('pdf2imgDrop');
+const pdf2imgUpload = document.getElementById('pdf2imgUpload');
+let pdf2imgFile = null;
+let pdf2imgBlobs = [];
+
+setupDrop(pdf2imgDrop, pdf2imgUpload, files => {
+    const file = files.find(f => f.type === 'application/pdf' || f.name.endsWith('.pdf'));
+    if (!file) return alert('Please upload a PDF file.');
+    pdf2imgFile = file;
+    const info = document.getElementById('pdf2imgFileInfo');
+    info.innerHTML = `<span>📄 <strong>${file.name}</strong></span><span>📦 <strong>${formatBytes(file.size)}</strong></span>`;
+    document.getElementById('pdf2imgClearRow').style.display = 'flex';
+    document.getElementById('pdf2imgOptions').style.display = 'block';
+    document.getElementById('pdf2imgResult').style.display = 'none';
+    convertPdfToImages(file);
+});
+
+document.getElementById('pdf2imgClear').addEventListener('click', () => {
+    pdf2imgFile = null;
+    pdf2imgBlobs = [];
+    document.getElementById('pdf2imgFileInfo').innerHTML = '';
+    document.getElementById('pdf2imgClearRow').style.display = 'none';
+    document.getElementById('pdf2imgOptions').style.display = 'none';
+    document.getElementById('pdf2imgResult').style.display = 'none';
+    document.getElementById('pdf2imgProgress').style.display = 'none';
+    document.getElementById('pdf2imgPages').innerHTML = '';
+    pdf2imgUpload.value = '';
+});
+
+async function convertPdfToImages(file) {
+    const progress = document.getElementById('pdf2imgProgress');
+    const fill = document.getElementById('pdf2imgProgressFill');
+    const label = document.getElementById('pdf2imgProgressLabel');
+    progress.style.display = 'block';
+    fill.style.width = '0%';
+    label.textContent = 'Loading PDF…';
+    pdf2imgBlobs = [];
+
+    try {
+        const arrayBuffer = await file.arrayBuffer();
+        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+        const total = pdf.numPages;
+        const pagesEl = document.getElementById('pdf2imgPages');
+        pagesEl.innerHTML = '';
+        const format = document.getElementById('pdf2imgFormat').value;
+        const scale = parseFloat(document.getElementById('pdf2imgScale').value);
+        const ext = format === 'image/jpeg' ? 'jpg' : 'png';
+
+        for (let i = 1; i <= total; i++) {
+            label.textContent = `Page ${i} of ${total}`;
+            fill.style.width = Math.round((i / total) * 100) + '%';
+
+            const page = await pdf.getPage(i);
+            const viewport = page.getViewport({ scale });
+            const canvas = document.createElement('canvas');
+            canvas.width = viewport.width;
+            canvas.height = viewport.height;
+            await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
+
+            const blob = await new Promise(res => canvas.toBlob(res, format, 0.92));
+            pdf2imgBlobs.push({ blob, name: `page-${i}.${ext}` });
+
+            // Thumbnail
+            const thumb = document.createElement('div');
+            thumb.className = 'pdf2img-page-item';
+            const img = document.createElement('img');
+            img.src = URL.createObjectURL(blob);
+            const lbl = document.createElement('p');
+            lbl.textContent = `Page ${i}`;
+            const dlBtn = document.createElement('button');
+            dlBtn.className = 'secondary-btn';
+            dlBtn.style.cssText = 'font-size:0.72em; padding:4px 10px; margin-top:6px;';
+            dlBtn.textContent = '⬇ Download';
+            dlBtn.addEventListener('click', () => triggerDownload(URL.createObjectURL(blob), `page-${i}.${ext}`));
+            thumb.appendChild(img);
+            thumb.appendChild(lbl);
+            thumb.appendChild(dlBtn);
+            pagesEl.appendChild(thumb);
+        }
+
+        progress.style.display = 'none';
+        document.getElementById('pdf2imgResult').style.display = 'block';
+        document.getElementById('pdf2imgSuccess').style.display = 'block';
+    } catch (err) {
+        progress.style.display = 'none';
+        alert('Failed to convert PDF: ' + err.message);
+    }
+}
+
+document.getElementById('pdf2imgDownloadAll').addEventListener('click', async () => {
+    if (!pdf2imgBlobs.length) return;
+    const btn = document.getElementById('pdf2imgDownloadAll');
+    btn.disabled = true;
+    btn.textContent = '⏳ Zipping…';
+    try {
+        const zip = new JSZip();
+        pdf2imgBlobs.forEach(({ blob, name }) => zip.file(name, blob));
+        const zipBlob = await zip.generateAsync({ type: 'blob' });
+        triggerDownload(URL.createObjectURL(zipBlob), 'pdf-pages.zip');
+    } catch (err) {
+        alert('ZIP failed: ' + err.message);
+    }
+    btn.disabled = false;
+    btn.textContent = '⬇ Download All as ZIP';
+});
+
+// ══════════════════════════════════════════════════════════════
+// 10. Image → GIF
+// ══════════════════════════════════════════════════════════════
+const gifDrop   = document.getElementById('gifDrop');
+const gifUpload = document.getElementById('gifUpload');
+const gifBtn    = document.getElementById('gifBtn');
+let gifFrames = []; // array of { file, dataUrl }
+let gifBlobUrl = null;
+
+setupDrop(gifDrop, gifUpload, files => {
+    const imgs = files.filter(f => f.type.startsWith('image/'));
+    if (!imgs.length) return alert('Please upload image files.');
+    imgs.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = e => {
+            gifFrames.push({ file, dataUrl: e.target.result });
+            renderGifFrameList();
+        };
+        reader.readAsDataURL(file);
+    });
+});
+
+function renderGifFrameList() {
+    const list = document.getElementById('gifFrameList');
+    list.innerHTML = '';
+    gifFrames.forEach((frame, i) => {
+        const thumb = document.createElement('div');
+        thumb.className = 'thumb';
+        thumb.draggable = true;
+        thumb.dataset.index = i;
+        const img = document.createElement('img');
+        img.src = frame.dataUrl;
+        const removeBtn = document.createElement('button');
+        removeBtn.className = 'remove-btn';
+        removeBtn.textContent = '×';
+        removeBtn.addEventListener('click', () => {
+            gifFrames.splice(i, 1);
+            renderGifFrameList();
+        });
+        const lbl = document.createElement('p');
+        lbl.textContent = `Frame ${i + 1}`;
+        thumb.appendChild(img);
+        thumb.appendChild(removeBtn);
+        thumb.appendChild(lbl);
+        list.appendChild(thumb);
+    });
+    document.getElementById('gifOptions').style.display = gifFrames.length ? 'block' : 'none';
+    document.getElementById('gifClearRow').style.display = gifFrames.length ? 'flex' : 'none';
+    gifBtn.disabled = gifFrames.length < 2;
+}
+
+document.getElementById('gifClear').addEventListener('click', () => {
+    gifFrames = [];
+    renderGifFrameList();
+    document.getElementById('gifResult').style.display = 'none';
+    gifUpload.value = '';
+});
+
+gifBtn.addEventListener('click', async () => {
+    if (gifFrames.length < 2) return alert('Add at least 2 frames.');
+    gifBtn.disabled = true;
+    const progress = document.getElementById('gifProgress');
+    const fill = document.getElementById('gifProgressFill');
+    const label = document.getElementById('gifProgressLabel');
+    progress.style.display = 'block';
+    fill.style.width = '10%';
+    label.textContent = 'Loading frames…';
+
+    const delay = parseInt(document.getElementById('gifDelay').value) || 300;
+    const targetW = parseInt(document.getElementById('gifWidth').value) || 480;
+    const repeat = parseInt(document.getElementById('gifRepeat').value);
+
+    try {
+        // Load all images
+        const images = await Promise.all(gifFrames.map(f => loadImage(f.dataUrl)));
+        const h = Math.round(images[0].naturalHeight * (targetW / images[0].naturalWidth));
+
+        fill.style.width = '30%';
+        label.textContent = 'Rendering GIF…';
+
+        const gif = new GIF({
+            workers: 2,
+            quality: 10,
+            width: targetW,
+            height: h,
+            repeat,
+            workerScript: 'https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.worker.js'
+        });
+
+        const canvas = document.createElement('canvas');
+        canvas.width = targetW;
+        canvas.height = h;
+        const ctx = canvas.getContext('2d');
+
+        images.forEach(img => {
+            ctx.clearRect(0, 0, targetW, h);
+            ctx.drawImage(img, 0, 0, targetW, h);
+            gif.addFrame(canvas, { delay, copy: true });
+        });
+
+        gif.on('progress', p => {
+            fill.style.width = (30 + Math.round(p * 65)) + '%';
+            label.textContent = Math.round(p * 100) + '%';
+        });
+
+        gif.on('finished', blob => {
+            fill.style.width = '100%';
+            label.textContent = 'Done!';
+            setTimeout(() => { progress.style.display = 'none'; }, 600);
+            gifBlobUrl = URL.createObjectURL(blob);
+            document.getElementById('gifPreviewImg').src = gifBlobUrl;
+            document.getElementById('gifResult').style.display = 'block';
+            document.getElementById('gifSuccess').style.display = 'block';
+            gifBtn.disabled = false;
+        });
+
+        gif.render();
+    } catch (err) {
+        progress.style.display = 'none';
+        alert('GIF creation failed: ' + err.message);
+        gifBtn.disabled = false;
+    }
+});
+
+document.getElementById('gifDownload').addEventListener('click', () => {
+    if (gifBlobUrl) triggerDownload(gifBlobUrl, 'animated.gif');
+});
+
+// ══════════════════════════════════════════════════════════════
+// 11. Video → GIF
+// ══════════════════════════════════════════════════════════════
+const videogifDrop   = document.getElementById('videogifDrop');
+const videogifUpload = document.getElementById('videogifUpload');
+const videogifBtn    = document.getElementById('videogifBtn');
+const videogifVideo  = document.getElementById('videogifVideo');
+let videogifFile = null;
+let videogifBlobUrl = null;
+
+setupDrop(videogifDrop, videogifUpload, files => {
+    const file = files.find(f => f.type.startsWith('video/'));
+    if (!file) return alert('Please upload a video file.');
+    videogifFile = file;
+    videogifVideo.src = URL.createObjectURL(file);
+    document.getElementById('videogifPreview').style.display = 'block';
+    document.getElementById('videogifFileInfo').innerHTML =
+        `<span>📄 <strong>${file.name}</strong></span><span>📦 <strong>${formatBytes(file.size)}</strong></span>`;
+    document.getElementById('videogifClearRow').style.display = 'flex';
+    document.getElementById('videogifOptions').style.display = 'block';
+    videogifBtn.disabled = false;
+    // Set end time to video duration once loaded
+    videogifVideo.addEventListener('loadedmetadata', () => {
+        document.getElementById('videogifEnd').value = Math.min(5, videogifVideo.duration).toFixed(1);
+    }, { once: true });
+});
+
+document.getElementById('videogifClear').addEventListener('click', () => {
+    videogifFile = null;
+    videogifVideo.src = '';
+    document.getElementById('videogifPreview').style.display = 'none';
+    document.getElementById('videogifClearRow').style.display = 'none';
+    document.getElementById('videogifOptions').style.display = 'none';
+    document.getElementById('videogifResult').style.display = 'none';
+    videogifBtn.disabled = true;
+    videogifUpload.value = '';
+});
+
+videogifBtn.addEventListener('click', async () => {
+    if (!videogifFile) return;
+    const startTime = parseFloat(document.getElementById('videogifStart').value) || 0;
+    const endTime   = parseFloat(document.getElementById('videogifEnd').value) || 5;
+    const fps       = parseInt(document.getElementById('videogifFps').value) || 10;
+    const targetW   = parseInt(document.getElementById('videogifWidth').value) || 480;
+
+    if (endTime <= startTime) return alert('End time must be greater than start time.');
+    const duration = endTime - startTime;
+    const totalFrames = Math.round(duration * fps);
+    if (totalFrames > 200) return alert('Too many frames. Reduce duration or frame rate.');
+
+    videogifBtn.disabled = true;
+    const progress = document.getElementById('videogifProgress');
+    const fill = document.getElementById('videogifProgressFill');
+    const label = document.getElementById('videogifProgressLabel');
+    progress.style.display = 'block';
+    fill.style.width = '5%';
+    label.textContent = 'Capturing frames…';
+
+    try {
+        const video = document.createElement('video');
+        video.src = URL.createObjectURL(videogifFile);
+        video.muted = true;
+        await new Promise(res => { video.onloadedmetadata = res; video.load(); });
+
+        const aspectH = Math.round(video.videoHeight * (targetW / video.videoWidth));
+        const canvas = document.createElement('canvas');
+        canvas.width = targetW;
+        canvas.height = aspectH;
+        const ctx = canvas.getContext('2d');
+
+        const gif = new GIF({
+            workers: 2,
+            quality: 10,
+            width: targetW,
+            height: aspectH,
+            repeat: 0,
+            workerScript: 'https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.worker.js'
+        });
+
+        const frameDelay = Math.round(1000 / fps);
+
+        for (let i = 0; i < totalFrames; i++) {
+            const t = startTime + (i / fps);
+            await new Promise(res => {
+                video.currentTime = t;
+                video.onseeked = res;
+            });
+            ctx.drawImage(video, 0, 0, targetW, aspectH);
+            gif.addFrame(canvas, { delay: frameDelay, copy: true });
+            fill.style.width = Math.round((i / totalFrames) * 60) + '%';
+            label.textContent = `Frame ${i + 1} / ${totalFrames}`;
+        }
+
+        label.textContent = 'Rendering GIF…';
+        fill.style.width = '65%';
+
+        gif.on('progress', p => {
+            fill.style.width = (65 + Math.round(p * 30)) + '%';
+            label.textContent = Math.round(p * 100) + '%';
+        });
+
+        gif.on('finished', blob => {
+            fill.style.width = '100%';
+            label.textContent = 'Done!';
+            setTimeout(() => { progress.style.display = 'none'; }, 600);
+            videogifBlobUrl = URL.createObjectURL(blob);
+            document.getElementById('videogifPreviewImg').src = videogifBlobUrl;
+            document.getElementById('videogifResult').style.display = 'block';
+            document.getElementById('videogifSuccess').style.display = 'block';
+            videogifBtn.disabled = false;
+        });
+
+        gif.render();
+    } catch (err) {
+        progress.style.display = 'none';
+        alert('Conversion failed: ' + err.message);
+        videogifBtn.disabled = false;
+    }
+});
+
+document.getElementById('videogifDownload').addEventListener('click', () => {
+    if (videogifBlobUrl) triggerDownload(videogifBlobUrl, 'video-to-gif.gif');
+});
+
+// ══════════════════════════════════════════════════════════════
+// 12. Image → Sticker
+// ══════════════════════════════════════════════════════════════
+const stickerDrop   = document.getElementById('stickerDrop');
+const stickerUpload = document.getElementById('stickerUpload');
+const stickerBtn    = document.getElementById('stickerBtn');
+const stickerCanvas = document.getElementById('stickerCanvas');
+const stickerResult = document.getElementById('stickerResult');
+let stickerFile = null;
+
+setupDrop(stickerDrop, stickerUpload, files => {
+    if (!files[0]) return;
+    stickerFile = files[0];
+    document.getElementById('stickerImg').src = URL.createObjectURL(stickerFile);
+    document.getElementById('stickerPreview').style.display = 'block';
+    buildFileInfo(document.getElementById('stickerFileInfo'), stickerFile);
+    document.getElementById('stickerOptions').style.display = 'block';
+    document.getElementById('stickerClearRow').style.display = 'flex';
+    stickerBtn.disabled = false;
+    renderSticker();
+});
+
+['stickerFormat', 'stickerSize', 'stickerBg'].forEach(id => {
+    document.getElementById(id).addEventListener('change', () => { if (stickerFile) renderSticker(); });
+});
+
+function renderSticker() {
+    const size = parseInt(document.getElementById('stickerSize').value) || 512;
+    const bg   = document.getElementById('stickerBg').value;
+    const img  = new Image();
+    img.onload = () => {
+        stickerCanvas.width  = size;
+        stickerCanvas.height = size;
+        const ctx = stickerCanvas.getContext('2d');
+        ctx.clearRect(0, 0, size, size);
+        if (bg === 'white') { ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, size, size); }
+        else if (bg === 'black') { ctx.fillStyle = '#000000'; ctx.fillRect(0, 0, size, size); }
+        // Fit image inside square maintaining aspect ratio
+        const ratio = Math.min(size / img.naturalWidth, size / img.naturalHeight);
+        const dw = img.naturalWidth * ratio;
+        const dh = img.naturalHeight * ratio;
+        const dx = (size - dw) / 2;
+        const dy = (size - dh) / 2;
+        ctx.drawImage(img, dx, dy, dw, dh);
+        stickerResult.src = stickerCanvas.toDataURL('image/png');
+    };
+    img.src = URL.createObjectURL(stickerFile);
+}
+
+stickerBtn.addEventListener('click', () => {
+    if (!stickerFile) return;
+    renderSticker();
+    setTimeout(() => {
+        const format = document.getElementById('stickerFormat').value;
+        const ext = format === 'image/webp' ? 'webp' : 'png';
+        const size = parseInt(document.getElementById('stickerSize').value) || 512;
+        stickerCanvas.toBlob(blob => {
+            triggerDownload(URL.createObjectURL(blob), `sticker-${size}x${size}.${ext}`);
+            document.getElementById('stickerSuccess').style.display = 'block';
+        }, format, 0.95);
+    }, 120);
+});
+
+document.getElementById('stickerClear').addEventListener('click', () => {
+    stickerFile = null;
+    document.getElementById('stickerImg').src = '';
+    document.getElementById('stickerPreview').style.display = 'none';
+    document.getElementById('stickerOptions').style.display = 'none';
+    document.getElementById('stickerClearRow').style.display = 'none';
+    stickerBtn.disabled = true;
+    document.getElementById('stickerSuccess').style.display = 'none';
+    stickerResult.src = '';
+    stickerUpload.value = '';
+});
+
+// ══════════════════════════════════════════════════════════════
+// QR Code for Share Tool
+// ══════════════════════════════════════════════════════════════
+function generateShareQR(url) {
+    const container = document.getElementById('shareQrCode');
+    container.innerHTML = '';
+    try {
+        new QRCode(container, {
+            text: url,
+            width: 128,
+            height: 128,
+            colorDark: '#0f1117',
+            colorLight: '#ffffff',
+            correctLevel: QRCode.CorrectLevel.M
+        });
+    } catch (e) {
+        container.innerHTML = '<p style="font-size:0.75em;color:var(--text3);">QR unavailable</p>';
+    }
+}

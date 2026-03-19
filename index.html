@@ -658,13 +658,14 @@
                 <div class="ts-upload-or-paste">
                     <div class="drop-zone" id="txtDrop">
                         <span class="drop-icon">📄</span>
-                        <p>Drop a <strong>.txt</strong> file or <label for="txtUpload" class="link">click to upload</label></p>
-                        <p class="drop-hint">Plain text files only</p>
-                        <input type="file" id="txtUpload" accept=".txt,text/plain" hidden>
+                        <p>Drop a file or <label for="txtUpload" class="link">click to upload</label></p>
+                        <p class="drop-hint">Supports .txt, .rtf, .docx files</p>
+                        <input type="file" id="txtUpload" accept=".txt,.rtf,.doc,.docx,text/plain,text/rtf,application/rtf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" hidden>
                     </div>
                     <div class="ts-or-divider"><span>or</span></div>
                     <textarea id="t2pText" class="ts-plain-textarea" placeholder="Paste or type your text here…" rows="8"></textarea>
                 </div>
+                <div id="t2pFileInfo" class="file-info" style="display:none; margin-top:8px;"></div>
                 <div id="t2pClearRow" class="clear-row" style="display:none;">
                     <button id="t2pClear" class="clear-btn">✕ Clear</button>
                 </div>

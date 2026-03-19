@@ -614,12 +614,55 @@ const t2pText = document.getElementById('t2pText');
 setupDrop(document.getElementById('txtDrop'), document.getElementById('txtUpload'), files => {
     const file = files[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = e => {
-        t2pText.value = e.target.result;
-        document.getElementById('t2pClearRow').style.display = 'flex';
-    };
-    reader.readAsText(file);
+    const name = file.name.toLowerCase();
+    const fileInfo = document.getElementById('t2pFileInfo');
+    fileInfo.innerHTML = `<span>📄 <strong>${file.name}</strong></span><span>📦 <strong>${formatBytes(file.size)}</strong></span>`;
+    fileInfo.style.display = 'flex';
+    document.getElementById('t2pClearRow').style.display = 'flex';
+
+    if (name.endsWith('.docx')) {
+        // Extract text from DOCX (it's a ZIP with XML inside)
+        const reader = new FileReader();
+        reader.onload = async e => {
+            try {
+                const zip = await JSZip.loadAsync(e.target.result);
+                const xmlFile = zip.file('word/document.xml');
+                if (!xmlFile) throw new Error('Invalid DOCX file');
+                const xml = await xmlFile.async('string');
+                // Strip XML tags, preserve paragraph breaks
+                const text = xml
+                    .replace(/<w:p[ >]/g, '\n<w:p ')
+                    .replace(/<[^>]+>/g, '')
+                    .replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>')
+                    .replace(/&quot;/g,'"').replace(/&#39;/g,"'")
+                    .replace(/\n{3,}/g, '\n\n').trim();
+                t2pText.value = text;
+            } catch {
+                alert('Could not read DOCX. Try saving as .txt first.');
+            }
+        };
+        reader.readAsArrayBuffer(file);
+    } else if (name.endsWith('.rtf')) {
+        // Strip RTF control words, keep plain text
+        const reader = new FileReader();
+        reader.onload = e => {
+            let rtf = e.target.result;
+            // Remove RTF header/groups, extract readable text
+            let text = rtf
+                .replace(/\{\\[^{}]+\}/g, '')       // remove groups
+                .replace(/\\[a-z]+\-?\d*\s?/g, ' ') // remove control words
+                .replace(/[{}\\]/g, '')               // remove braces/backslashes
+                .replace(/\r\n|\r/g, '\n')
+                .replace(/\n{3,}/g, '\n\n').trim();
+            t2pText.value = text;
+        };
+        reader.readAsText(file, 'utf-8');
+    } else {
+        // Plain .txt
+        const reader = new FileReader();
+        reader.onload = e => { t2pText.value = e.target.result; };
+        reader.readAsText(file);
+    }
 });
 
 t2pText.addEventListener('input', () => {
@@ -630,6 +673,7 @@ document.getElementById('t2pClear').addEventListener('click', () => {
     t2pText.value = '';
     document.getElementById('t2pClearRow').style.display = 'none';
     document.getElementById('t2pSuccess').style.display = 'none';
+    document.getElementById('t2pFileInfo').style.display = 'none';
     document.getElementById('txtUpload').value = '';
 });
 

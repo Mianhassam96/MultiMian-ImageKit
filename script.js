@@ -1,92 +1,34 @@
 // ══════════════════════════════════════════════════════════════
-// GIFMaker — omggif (GifWriter) + median-cut quantizer
+// GIFMaker — gif.js wrapper (promise-based, blob worker URL)
 // ══════════════════════════════════════════════════════════════
 const GIFMaker = (() => {
-
-    // Median-cut quantizer: RGBA Uint8Array → { palInts: number[256], indexed: Uint8Array }
-    function quantize(rgba, maxColors) {
-        const n = rgba.length >> 2;
-        // collect unique RGB values as integers
-        const pixels = new Int32Array(n);
-        for (let i = 0; i < n; i++) {
-            pixels[i] = (rgba[i*4] << 16) | (rgba[i*4+1] << 8) | rgba[i*4+2];
-        }
-
-        // split a bucket along its widest channel
-        function split(bucket) {
-            let minR=255,maxR=0,minG=255,maxG=0,minB=255,maxB=0;
-            for (const p of bucket) {
-                const r=(p>>16)&0xff, g=(p>>8)&0xff, b=p&0xff;
-                if(r<minR)minR=r; if(r>maxR)maxR=r;
-                if(g<minG)minG=g; if(g>maxG)maxG=g;
-                if(b<minB)minB=b; if(b>maxB)maxB=b;
-            }
-            const rR=maxR-minR, gR=maxG-minG, bR=maxB-minB;
-            const sh = rR>=gR && rR>=bR ? 16 : gR>=bR ? 8 : 0;
-            bucket.sort((a,b) => ((a>>sh)&0xff) - ((b>>sh)&0xff));
-            const mid = bucket.length >> 1;
-            return [bucket.slice(0, mid), bucket.slice(mid)];
-        }
-
-        let buckets = [Array.from(pixels)];
-        while (buckets.length < maxColors) {
-            let li = 0;
-            for (let i = 1; i < buckets.length; i++) {
-                if (buckets[i].length > buckets[li].length) li = i;
-            }
-            if (buckets[li].length < 2) break;
-            const [a, b] = split(buckets[li]);
-            buckets.splice(li, 1, a, b);
-        }
-
-        // average each bucket → palette entry (as 0xRRGGBB int)
-        const palInts = new Array(maxColors).fill(0);
-        for (let i = 0; i < buckets.length; i++) {
-            const bkt = buckets[i];
-            if (!bkt.length) continue;
-            let sr=0, sg=0, sb=0;
-            for (const p of bkt) { sr+=(p>>16)&0xff; sg+=(p>>8)&0xff; sb+=p&0xff; }
-            palInts[i] = (((sr/bkt.length)|0) << 16) | (((sg/bkt.length)|0) << 8) | ((sb/bkt.length)|0);
-        }
-
-        // map each pixel to nearest palette index (cached)
-        const indexed = new Uint8Array(n);
-        const cache = new Map();
-        for (let i = 0; i < n; i++) {
-            const key = pixels[i];
-            let idx = cache.get(key);
-            if (idx === undefined) {
-                const r=(key>>16)&0xff, g=(key>>8)&0xff, b=key&0xff;
-                let best=0, bestD=Infinity;
-                for (let j = 0; j < palInts.length; j++) {
-                    const pr=(palInts[j]>>16)&0xff, pg=(palInts[j]>>8)&0xff, pb=palInts[j]&0xff;
-                    const d=(r-pr)**2+(g-pg)**2+(b-pb)**2;
-                    if (d < bestD) { bestD=d; best=j; if(d===0) break; }
-                }
-                cache.set(key, best);
-                idx = best;
-            }
-            indexed[i] = idx;
-        }
-        return { palInts, indexed };
+    // Fetch the worker script once and cache as blob URL to avoid CORS issues
+    let workerBlobUrl = null;
+    async function getWorkerUrl() {
+        if (workerBlobUrl) return workerBlobUrl;
+        const resp = await fetch('https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.worker.js');
+        const text = await resp.text();
+        const blob = new Blob([text], { type: 'application/javascript' });
+        workerBlobUrl = URL.createObjectURL(blob);
+        return workerBlobUrl;
     }
 
-    function encode(frames, { width, height, loop = 0 } = {}) {
-        if (!frames || !frames.length) throw new Error('No frames');
-
-        // omggif buffer: worst case ~5 bytes/pixel/frame + header
-        const buf = new Uint8Array(width * height * frames.length * 5 + 4096);
-        // loop: 0 = forever, N = N times, -1 = play once (omit loop block)
-        const loopOpt = loop < 0 ? {} : { loop: loop };
-        const writer = new GifWriter(buf, width, height, loopOpt);
-
-        for (const f of frames) {
-            const { palInts, indexed } = quantize(f.data, 256);
-            const delay = Math.max(2, Math.round((f.delay || 100) / 10)); // cs
-            writer.addFrame(0, 0, width, height, indexed, { palette: palInts, delay });
-        }
-
-        return buf.slice(0, writer.end());
+    async function encode(frames, { loop = 0, quality = 10 } = {}) {
+        const workerScript = await getWorkerUrl();
+        return new Promise((resolve, reject) => {
+            const gif = new GIF({
+                workers: 2,
+                quality: quality,
+                workerScript: workerScript,
+                repeat: loop < 0 ? -1 : loop
+            });
+            for (const f of frames) {
+                gif.addFrame(f.canvas, { delay: f.delay || 300, copy: true });
+            }
+            gif.on('finished', blob => resolve(blob));
+            gif.on('error',    err  => reject(new Error(err)));
+            gif.render();
+        });
     }
 
     return { encode };
@@ -1836,32 +1778,24 @@ gifBtn.addEventListener('click', async () => {
         const h = Math.round(images[0].naturalHeight * (targetW / images[0].naturalWidth));
 
         fill.style.width = '30%';
-        label.textContent = 'Encoding GIF…';
+        label.textContent = 'Drawing frames…';
 
-        const canvas = document.createElement('canvas');
-        canvas.width  = targetW;
-        canvas.height = h;
-        const ctx = canvas.getContext('2d');
-
-        const gifFrameData = [];
-        images.forEach((img, i) => {
+        // Build one canvas per frame for gif.js
+        const gifFrameList = images.map((img, i) => {
             const frameDelay = (frames[i].delay !== null ? frames[i].delay : globalDelay);
-            ctx.clearRect(0, 0, targetW, h);
-            ctx.drawImage(img, 0, 0, targetW, h);
-            const imageData = ctx.getImageData(0, 0, targetW, h);
-            gifFrameData.push({ data: imageData.data.slice(), delay: frameDelay });
-            fill.style.width = (30 + Math.round(((i + 1) / images.length) * 50)) + '%';
-            label.textContent = `Processing frame ${i + 1} / ${images.length}`;
+            const c = document.createElement('canvas');
+            c.width = targetW; c.height = h;
+            c.getContext('2d').drawImage(img, 0, 0, targetW, h);
+            return { canvas: c, delay: frameDelay };
         });
 
-        fill.style.width = '85%';
+        fill.style.width = '60%';
         label.textContent = 'Encoding GIF…';
 
-        const gifBytes = GIFMaker.encode(gifFrameData, {
-            width: targetW, height: h,
-            loop: repeat < 0 ? -1 : (repeat === 0 ? 0 : repeat)
+        const blob = await GIFMaker.encode(gifFrameList, {
+            loop: repeat,
+            quality: Math.round(20 - (colors / 256) * 18) // map 256→2, 64→16
         });
-        const blob = new Blob([gifBytes], { type: 'image/gif' });
 
         fill.style.width = '100%';
         label.textContent = 'Done!';
@@ -2079,32 +2013,32 @@ videogifBtn.addEventListener('click', async () => {
         canvas.height = aspectH;
         const ctx = canvas.getContext('2d');
 
-        const frameDelayCentisec = Math.max(2, Math.round(100 / fps));
-
-        // capture frames
-        const frameData = [];
+        // capture frames as individual canvases for gif.js
+        const capturedFrames = [];
         for (let i = 0; i < totalFrames; i++) {
             const t = startTime + (i / fps);
             await new Promise(res => { video.currentTime = t; video.onseeked = res; });
-            ctx.drawImage(video, 0, 0, targetW, aspectH);
-            frameData.push(ctx.getImageData(0, 0, targetW, aspectH).data.slice());
-            fill.style.width = Math.round(((i + 1) / totalFrames) * 70) + '%';
+            const fc = document.createElement('canvas');
+            fc.width = targetW; fc.height = aspectH;
+            fc.getContext('2d').drawImage(video, 0, 0, targetW, aspectH);
+            capturedFrames.push(fc);
+            fill.style.width = Math.round(((i + 1) / totalFrames) * 65) + '%';
             label.textContent = `Capturing frame ${i + 1} / ${totalFrames}`;
         }
 
         // apply reverse / ping-pong
-        let orderedFrames = [...frameData];
+        let orderedFrames = [...capturedFrames];
         if (reverseMode === 1) orderedFrames = orderedFrames.reverse();
         if (reverseMode === 2) orderedFrames = [...orderedFrames, ...[...orderedFrames].reverse()];
 
-        fill.style.width = '75%';
+        fill.style.width = '70%';
         label.textContent = 'Encoding GIF…';
 
-        const gifBytes = GIFMaker.encode(
-            orderedFrames.map(data => ({ data, delay: Math.round(1000 / fps) })),
-            { width: targetW, height: aspectH, loop: loopVal < 0 ? -1 : (loopVal === 0 ? 0 : loopVal) }
+        const frameDelay = Math.round(1000 / fps);
+        const blob = await GIFMaker.encode(
+            orderedFrames.map(c => ({ canvas: c, delay: frameDelay })),
+            { loop: loopVal, quality: Math.round(20 - (colors / 256) * 18) }
         );
-        const blob = new Blob([gifBytes], { type: 'image/gif' });
 
         fill.style.width = '100%';
         label.textContent = 'Done!';

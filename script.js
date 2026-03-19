@@ -1821,16 +1821,24 @@ document.getElementById('gifDownload').addEventListener('click', () => {
 
 document.getElementById('gifCopyClipboard').addEventListener('click', async () => {
     if (!gifBlobUrl) return;
+    const btn = document.getElementById('gifCopyClipboard');
+    btn.textContent = '⏳ Copying…';
     try {
-        const res  = await fetch(gifBlobUrl);
-        const blob = await res.blob();
-        await navigator.clipboard.write([new ClipboardItem({ 'image/gif': blob })]);
-        const btn = document.getElementById('gifCopyClipboard');
-        btn.textContent = '✅ Copied!';
-        setTimeout(() => { btn.textContent = '📋 Copy to Clipboard'; }, 2000);
+        // Browsers don't support image/gif in clipboard — copy first frame as PNG
+        const img = new Image();
+        await new Promise((res, rej) => { img.onload = res; img.onerror = rej; img.src = gifBlobUrl; });
+        const c = document.createElement('canvas');
+        c.width = img.naturalWidth; c.height = img.naturalHeight;
+        c.getContext('2d').drawImage(img, 0, 0);
+        const pngBlob = await new Promise(res => c.toBlob(res, 'image/png'));
+        await navigator.clipboard.write([new ClipboardItem({ 'image/png': pngBlob })]);
+        btn.textContent = '✅ Copied as PNG!';
     } catch {
-        alert('Copy not supported in this browser. Use Download instead.');
+        // Clipboard API not available — just download instead
+        triggerDownload(gifBlobUrl, 'animated.gif');
+        btn.textContent = '⬇ Downloaded!';
     }
+    setTimeout(() => { btn.textContent = '📋 Copy to Clipboard'; }, 2500);
 });
 
 // ══════════════════════════════════════════════════════════════
@@ -2064,16 +2072,22 @@ document.getElementById('videogifDownload').addEventListener('click', () => {
 
 document.getElementById('videogifCopyClipboard').addEventListener('click', async () => {
     if (!videogifBlobUrl) return;
+    const btn = document.getElementById('videogifCopyClipboard');
+    btn.textContent = '⏳ Copying…';
     try {
-        const res  = await fetch(videogifBlobUrl);
-        const blob = await res.blob();
-        await navigator.clipboard.write([new ClipboardItem({ 'image/gif': blob })]);
-        const btn = document.getElementById('videogifCopyClipboard');
-        btn.textContent = '✅ Copied!';
-        setTimeout(() => { btn.textContent = '📋 Copy to Clipboard'; }, 2000);
+        const img = new Image();
+        await new Promise((res, rej) => { img.onload = res; img.onerror = rej; img.src = videogifBlobUrl; });
+        const c = document.createElement('canvas');
+        c.width = img.naturalWidth; c.height = img.naturalHeight;
+        c.getContext('2d').drawImage(img, 0, 0);
+        const pngBlob = await new Promise(res => c.toBlob(res, 'image/png'));
+        await navigator.clipboard.write([new ClipboardItem({ 'image/png': pngBlob })]);
+        btn.textContent = '✅ Copied as PNG!';
     } catch {
-        alert('Copy not supported in this browser. Use Download instead.');
+        triggerDownload(videogifBlobUrl, 'video-to-gif.gif');
+        btn.textContent = '⬇ Downloaded!';
     }
+    setTimeout(() => { btn.textContent = '📋 Copy to Clipboard'; }, 2500);
 });
 
 // ══════════════════════════════════════════════════════════════

@@ -2305,3 +2305,628 @@ function generateShareQR(url) {
         });
     });
 })();
+
+
+// ══════════════════════════════════════════════════════════════
+// SESSION PRODUCTIVITY TRACKER
+// ══════════════════════════════════════════════════════════════
+const SessionTracker = (() => {
+    let count = parseInt(sessionStorage.getItem('ik_session_count') || '0');
+
+    function increment(label) {
+        count++;
+        sessionStorage.setItem('ik_session_count', count);
+        const bar = document.getElementById('sessionBar');
+        const countEl = document.getElementById('sessionCount');
+        if (bar && countEl) {
+            countEl.textContent = count;
+            bar.style.display = 'flex';
+        }
+        // Show celebration on milestones
+        if (count === 1 || count === 5 || count === 10 || count === 25) {
+            showCelebration(label || 'Done!');
+        }
+    }
+
+    return { increment };
+})();
+
+// ── Celebration overlay ────────────────────────────────────────
+function showCelebration(msg) {
+    const overlay = document.createElement('div');
+    overlay.className = 'celebration-overlay';
+    overlay.innerHTML = `<div class="celebration-badge">✅ ${msg}</div>`;
+    document.body.appendChild(overlay);
+    setTimeout(() => overlay.remove(), 1800);
+    spawnConfetti();
+}
+
+function spawnConfetti() {
+    const colors = ['#16a34a','#0ea5e9','#6366f1','#f59e0b','#ec4899','#10b981'];
+    for (let i = 0; i < 28; i++) {
+        const p = document.createElement('div');
+        p.className = 'confetti-particle';
+        p.style.cssText = `
+            left: ${Math.random() * 100}vw;
+            top: ${Math.random() * 30}vh;
+            background: ${colors[Math.floor(Math.random() * colors.length)]};
+            animation-duration: ${0.8 + Math.random() * 1.2}s;
+            animation-delay: ${Math.random() * 0.4}s;
+            width: ${6 + Math.random() * 8}px;
+            height: ${6 + Math.random() * 8}px;
+            border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
+        `;
+        document.body.appendChild(p);
+        setTimeout(() => p.remove(), 2200);
+    }
+}
+
+// ── Patch existing tool success handlers to track session ──────
+(function patchSessionTracking() {
+    // Patch compress
+    const origCompressBtn = document.getElementById('compressBtn');
+    if (origCompressBtn) {
+        origCompressBtn.addEventListener('click', () => {
+            // tracked after blob download in compress handler below
+        });
+    }
+})();
+
+// ══════════════════════════════════════════════════════════════
+// SMART FILE ANALYSIS
+// ══════════════════════════════════════════════════════════════
+function analyzeImage(file, imgEl, containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    const insights = [];
+    const sizeMB = file.size / 1048576;
+    const sizeKB = file.size / 1024;
+    const ext = (file.type || '').split('/')[1] || file.name.split('.').pop().toLowerCase();
+
+    // Size analysis
+    if (sizeMB > 5) {
+        insights.push({ type: 'warn', icon: '⚠️', text: `<strong>Large file (${sizeMB.toFixed(1)} MB)</strong> — Compressing could reduce this by 70–90% with minimal quality loss.` });
+    } else if (sizeMB > 1) {
+        insights.push({ type: 'info', icon: '💡', text: `<strong>${sizeMB.toFixed(1)} MB</strong> — Good candidate for compression. WebP conversion could save ~40%.` });
+    } else {
+        insights.push({ type: 'good', icon: '✅', text: `<strong>File size looks good</strong> (${sizeKB.toFixed(0)} KB) — Already well-optimized.` });
+    }
+
+    // Format analysis
+    if (ext === 'png' && sizeMB > 0.5) {
+        insights.push({ type: 'tip', icon: '🔄', text: `<strong>PNG detected</strong> — Converting to WebP could reduce size by 25–35% with no visible quality loss.` });
+    }
+    if (ext === 'bmp') {
+        insights.push({ type: 'warn', icon: '⚠️', text: `<strong>BMP format</strong> — This is uncompressed. Convert to JPG or WebP for 90%+ size reduction.` });
+    }
+    if (ext === 'gif') {
+        insights.push({ type: 'info', icon: '💡', text: `<strong>GIF detected</strong> — If this is animated, use the Video→GIF tool for better quality.` });
+    }
+
+    // Resolution analysis (needs image to load)
+    if (imgEl && imgEl.naturalWidth) {
+        const w = imgEl.naturalWidth;
+        const h = imgEl.naturalHeight;
+        if (w > 4000 || h > 4000) {
+            insights.push({ type: 'warn', icon: '📐', text: `<strong>Very high resolution (${w}×${h}px)</strong> — Most screens only need 1920×1080. Resizing could save significant space.` });
+        } else if (w < 400 || h < 400) {
+            insights.push({ type: 'warn', icon: '🔍', text: `<strong>Low resolution (${w}×${h}px)</strong> — This image may appear blurry on larger screens or social media.` });
+        } else if (w === h) {
+            insights.push({ type: 'tip', icon: '📱', text: `<strong>Square image (${w}×${h}px)</strong> — Perfect for Instagram posts! Use the Sticker tool for WhatsApp.` });
+        }
+        // Social media hints
+        if (w === 1920 && h === 1080) {
+            insights.push({ type: 'good', icon: '✅', text: `<strong>1920×1080 — YouTube/HD ready</strong> — Perfect dimensions for YouTube thumbnails and HD displays.` });
+        }
+        if (w === 1080 && h === 1080) {
+            insights.push({ type: 'good', icon: '✅', text: `<strong>1080×1080 — Instagram ready</strong> — Perfect square format for Instagram posts.` });
+        }
+    }
+
+    // Transparency hint
+    if (ext === 'png') {
+        insights.push({ type: 'info', icon: '🔲', text: `<strong>PNG may have transparency</strong> — If you need a solid background, use the Sticker tool to set a background color.` });
+    }
+
+    // Render insights
+    const insightsEl = container.querySelector('.sa-insights');
+    if (!insightsEl) return;
+    insightsEl.innerHTML = insights.map(i =>
+        `<div class="sa-insight sa-${i.type}">
+            <span class="sa-insight-icon">${i.icon}</span>
+            <span class="sa-insight-text">${i.text}</span>
+        </div>`
+    ).join('');
+    container.style.display = 'block';
+}
+
+// ══════════════════════════════════════════════════════════════
+// BEFORE / AFTER SLIDER (Compress tool)
+// ══════════════════════════════════════════════════════════════
+(function initBeforeAfter() {
+    const container = document.getElementById('baContainer');
+    if (!container) return;
+    const afterWrap = document.getElementById('baAfterWrap');
+    const divider   = document.getElementById('baDivider');
+    let dragging = false;
+
+    function setPosition(x) {
+        const rect = container.getBoundingClientRect();
+        let pct = Math.max(5, Math.min(95, ((x - rect.left) / rect.width) * 100));
+        afterWrap.style.width = pct + '%';
+        divider.style.left    = pct + '%';
+        // sync after image width so it shows correctly
+        const afterImg = document.getElementById('baAfter');
+        if (afterImg) afterImg.style.width = (100 / (pct / 100)) + '%';
+    }
+
+    container.addEventListener('mousedown', e => { dragging = true; setPosition(e.clientX); });
+    container.addEventListener('touchstart', e => { dragging = true; setPosition(e.touches[0].clientX); }, { passive: true });
+    document.addEventListener('mousemove', e => { if (dragging) setPosition(e.clientX); });
+    document.addEventListener('touchmove', e => { if (dragging) setPosition(e.touches[0].clientX); }, { passive: true });
+    document.addEventListener('mouseup',  () => { dragging = false; });
+    document.addEventListener('touchend', () => { dragging = false; });
+})();
+
+// Patch compress tool to add smart analysis + before/after + savings animation
+(function patchCompressTool() {
+    const origSetupDrop = setupDrop;
+    // Hook into compress file load
+    const compressDrop2   = document.getElementById('compressDrop');
+    const compressUpload2 = document.getElementById('compressUpload');
+    if (!compressDrop2) return;
+
+    // After file loads, run analysis
+    const origCompressFiles = compressDrop2._onFiles;
+    compressUpload2.addEventListener('change', () => {
+        setTimeout(() => {
+            if (compressFile) {
+                const img = document.getElementById('compressImg');
+                img.onload = () => analyzeImage(compressFile, img, 'compressAnalysis');
+            }
+        }, 200);
+    });
+
+    // Patch compress button to show savings animation + before/after
+    const compressBtn2 = document.getElementById('compressBtn');
+    if (!compressBtn2) return;
+
+    compressBtn2.addEventListener('click', function handler() {
+        // After compression, show before/after and savings animation
+        setTimeout(() => {
+            const origSrc = document.getElementById('compressImg').src;
+            const quality = parseInt(document.getElementById('qualitySlider').value) / 100;
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                canvas.width = img.naturalWidth;
+                canvas.height = img.naturalHeight;
+                canvas.getContext('2d').drawImage(img, 0, 0);
+                canvas.toBlob(blob => {
+                    if (!blob || !compressFile) return;
+
+                    // Before/After
+                    const baWrap = document.getElementById('beforeAfterWrap');
+                    const baBefore = document.getElementById('baBefore');
+                    const baAfter  = document.getElementById('baAfter');
+                    if (baWrap && baBefore && baAfter) {
+                        baBefore.src = origSrc;
+                        baAfter.src  = URL.createObjectURL(blob);
+                        baWrap.style.display = 'block';
+                        // Reset divider to 50%
+                        const afterWrap = document.getElementById('baAfterWrap');
+                        const divider   = document.getElementById('baDivider');
+                        if (afterWrap) afterWrap.style.width = '50%';
+                        if (divider)   divider.style.left    = '50%';
+                    }
+
+                    // Savings animation
+                    const origBytes = compressFile.size;
+                    const newBytes  = blob.size;
+                    const saved     = Math.max(0, ((origBytes - newBytes) / origBytes * 100)).toFixed(1);
+                    const animEl    = document.getElementById('compressSavingsAnim');
+                    if (animEl) {
+                        document.getElementById('savingsFrom').textContent = formatBytes(origBytes);
+                        document.getElementById('savingsTo').textContent   = formatBytes(newBytes);
+                        document.getElementById('savingsPct').textContent  = `Saved ${saved}%`;
+                        animEl.style.display = 'block';
+                    }
+
+                    // Savings bar
+                    const savingsDisplay = document.getElementById('savingsDisplay');
+                    const savingsBarFill = document.getElementById('savingsBarFill');
+                    const savingsLabel   = document.getElementById('savingsLabel');
+                    if (savingsDisplay && savingsBarFill && savingsLabel) {
+                        savingsDisplay.style.display = 'block';
+                        setTimeout(() => { savingsBarFill.style.width = saved + '%'; }, 50);
+                        savingsLabel.textContent = `Reduced by ${saved}% — from ${formatBytes(origBytes)} to ${formatBytes(newBytes)}`;
+                    }
+
+                    // Session tracking
+                    SessionTracker.increment(`Saved ${saved}%!`);
+                }, 'image/jpeg', quality);
+            };
+            img.src = origSrc;
+        }, 300);
+    });
+})();
+
+// Patch other tools to track session
+['ocrBtn','resizeBtn','convertBtn','wmBtn','mergeBtn','shareBtn','gifBtn','videogifBtn','stickerBtn','t2pBtn','ssBtn'].forEach(id => {
+    const btn = document.getElementById(id);
+    if (!btn) return;
+    btn.addEventListener('click', () => {
+        setTimeout(() => {
+            const successEl = document.querySelector(`#${id.replace('Btn','Success')}, #${id.replace('Btn','').toLowerCase()}Success`);
+            if (successEl && successEl.style.display !== 'none') {
+                SessionTracker.increment('Done!');
+            }
+        }, 1500);
+    });
+});
+
+// ══════════════════════════════════════════════════════════════
+// 13. SCREENSHOT STUDIO
+// ══════════════════════════════════════════════════════════════
+const ssDrop   = document.getElementById('ssDrop');
+const ssUpload = document.getElementById('ssUpload');
+const ssBtn    = document.getElementById('ssBtn');
+const ssCopyBtn= document.getElementById('ssCopyBtn');
+const ssCanvas = document.getElementById('ssCanvas');
+let ssFile = null;
+let ssCurrentStyle = 'macOS';
+
+if (ssDrop && ssUpload) {
+    setupDrop(ssDrop, ssUpload, files => {
+        if (!files[0]) return;
+        ssFile = files[0];
+        const img = document.getElementById('ssImg');
+        img.src = URL.createObjectURL(ssFile);
+        document.getElementById('ssPreview').style.display = 'block';
+        buildFileInfo(document.getElementById('ssFileInfo'), ssFile);
+        document.getElementById('ssClearRow').style.display = 'flex';
+        ssBtn.disabled = false;
+        ssCopyBtn.disabled = false;
+        img.onload = () => {
+            analyzeImage(ssFile, img, 'ssAnalysis');
+            renderScreenshotStudio();
+        };
+        document.getElementById('ssOptions').style.display = 'block';
+    });
+}
+
+// Style tab switching
+document.querySelectorAll('.ss-style-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.ss-style-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        ssCurrentStyle = btn.dataset.style;
+        if (ssFile) renderScreenshotStudio();
+    });
+});
+
+// Options change → re-render
+['ssBgType','ssPadding','ssRadius','ssShadow'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('change', () => { if (ssFile) renderScreenshotStudio(); });
+});
+
+function renderScreenshotStudio() {
+    if (!ssFile || !ssCanvas) return;
+    const img = document.getElementById('ssImg');
+    if (!img.naturalWidth) return;
+
+    const bgType  = document.getElementById('ssBgType')?.value  || 'gradient-purple';
+    const padding = parseInt(document.getElementById('ssPadding')?.value || '80');
+    const radius  = parseInt(document.getElementById('ssRadius')?.value  || '16');
+    const shadow  = document.getElementById('ssShadow')?.value  || 'medium';
+    const style   = ssCurrentStyle;
+
+    const iW = img.naturalWidth;
+    const iH = img.naturalHeight;
+
+    // Scale for preview (max 800px wide)
+    const scale = Math.min(1, 800 / (iW + padding * 2));
+    const cW = Math.round((iW + padding * 2) * scale);
+    const cH = Math.round((iH + padding * 2 + (style === 'macOS' || style === 'browser' ? 36 : 0)) * scale);
+
+    ssCanvas.width  = cW;
+    ssCanvas.height = cH;
+    const ctx = ssCanvas.getContext('2d');
+
+    // Background
+    drawBackground(ctx, cW, cH, bgType);
+
+    // Shadow
+    const sx = padding * scale;
+    const sy = (padding + (style === 'macOS' || style === 'browser' ? 36 : 0)) * scale;
+    const sw = iW * scale;
+    const sh = iH * scale;
+
+    if (shadow !== 'none') {
+        const shadows = {
+            soft:   { blur: 20, spread: 0, alpha: 0.15 },
+            medium: { blur: 40, spread: 0, alpha: 0.25 },
+            hard:   { blur: 8,  spread: 0, alpha: 0.5  },
+            glow:   { blur: 60, spread: 0, alpha: 0.35, color: '#6366f1' }
+        };
+        const s = shadows[shadow] || shadows.medium;
+        ctx.shadowColor   = s.color || `rgba(0,0,0,${s.alpha})`;
+        ctx.shadowBlur    = s.blur;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = shadow === 'hard' ? 4 : 8;
+    }
+
+    // Draw frame
+    ctx.save();
+    if (style === 'macOS' || style === 'browser') {
+        // Draw title bar
+        const barH = 36 * scale;
+        const barY = padding * scale;
+        ctx.shadowColor = 'transparent';
+        ctx.fillStyle = style === 'macOS' ? '#2d2d2d' : '#f1f3f4';
+        roundRect(ctx, sx, barY, sw, barH + sh, radius * scale);
+        ctx.fill();
+
+        // Reset shadow for content
+        ctx.shadowColor = 'transparent';
+
+        if (style === 'macOS') {
+            // Traffic lights
+            const dotY = barY + barH / 2;
+            const dots = ['#ff5f57','#febc2e','#28c840'];
+            dots.forEach((c, i) => {
+                ctx.beginPath();
+                ctx.arc(sx + (14 + i * 20) * scale, dotY, 6 * scale, 0, Math.PI * 2);
+                ctx.fillStyle = c;
+                ctx.fill();
+            });
+        } else {
+            // Browser address bar
+            ctx.fillStyle = '#fff';
+            const urlBarW = sw * 0.5;
+            const urlBarH = 20 * scale;
+            const urlBarX = sx + (sw - urlBarW) / 2;
+            const urlBarY = barY + (barH - urlBarH) / 2;
+            roundRect(ctx, urlBarX, urlBarY, urlBarW, urlBarH, 10 * scale);
+            ctx.fill();
+            ctx.fillStyle = '#999';
+            ctx.font = `${10 * scale}px system-ui`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('multimian.com', urlBarX + urlBarW / 2, urlBarY + urlBarH / 2);
+        }
+
+        // Draw screenshot inside frame
+        ctx.save();
+        roundRect(ctx, sx, sy, sw, sh, 0);
+        ctx.clip();
+        ctx.drawImage(img, sx, sy, sw, sh);
+        ctx.restore();
+
+        // Outer border
+        ctx.strokeStyle = style === 'macOS' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)';
+        ctx.lineWidth = 1;
+        roundRect(ctx, sx, barY, sw, barH + sh, radius * scale);
+        ctx.stroke();
+
+    } else {
+        // Simple rounded screenshot
+        ctx.save();
+        roundRect(ctx, sx, sy, sw, sh, radius * scale);
+        ctx.clip();
+        ctx.shadowColor = 'transparent';
+        ctx.drawImage(img, sx, sy, sw, sh);
+        ctx.restore();
+
+        // Border
+        ctx.shadowColor = 'transparent';
+        ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+        ctx.lineWidth = 1;
+        roundRect(ctx, sx, sy, sw, sh, radius * scale);
+        ctx.stroke();
+    }
+
+    ctx.restore();
+    ctx.shadowColor = 'transparent';
+}
+
+function drawBackground(ctx, w, h, type) {
+    const gradients = {
+        'gradient-purple': ['#667eea','#764ba2'],
+        'gradient-blue':   ['#0ea5e9','#6366f1'],
+        'gradient-green':  ['#16a34a','#0ea5e9'],
+        'gradient-sunset': ['#f59e0b','#ef4444','#8b5cf6'],
+        'gradient-dark':   ['#0f172a','#1e293b'],
+        'solid-white':     ['#ffffff','#ffffff'],
+        'solid-black':     ['#000000','#000000'],
+        'transparent':     null
+    };
+    const stops = gradients[type];
+    if (!stops) {
+        ctx.clearRect(0, 0, w, h);
+        return;
+    }
+    if (stops[0] === stops[1]) {
+        ctx.fillStyle = stops[0];
+        ctx.fillRect(0, 0, w, h);
+        return;
+    }
+    const grd = ctx.createLinearGradient(0, 0, w, h);
+    stops.forEach((c, i) => grd.addColorStop(i / (stops.length - 1), c));
+    ctx.fillStyle = grd;
+    ctx.fillRect(0, 0, w, h);
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.lineTo(x + w - r, y);
+    ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+    ctx.lineTo(x + w, y + h - r);
+    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    ctx.lineTo(x + r, y + h);
+    ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+    ctx.lineTo(x, y + r);
+    ctx.quadraticCurveTo(x, y, x + r, y);
+    ctx.closePath();
+}
+
+function getFullResSSCanvas() {
+    if (!ssFile) return null;
+    const img = document.getElementById('ssImg');
+    if (!img.naturalWidth) return null;
+
+    const bgType  = document.getElementById('ssBgType')?.value  || 'gradient-purple';
+    const padding = parseInt(document.getElementById('ssPadding')?.value || '80');
+    const radius  = parseInt(document.getElementById('ssRadius')?.value  || '16');
+    const shadow  = document.getElementById('ssShadow')?.value  || 'medium';
+    const style   = ssCurrentStyle;
+
+    const iW = img.naturalWidth;
+    const iH = img.naturalHeight;
+    const cW = iW + padding * 2;
+    const cH = iH + padding * 2 + (style === 'macOS' || style === 'browser' ? 36 : 0);
+
+    const c = document.createElement('canvas');
+    c.width = cW; c.height = cH;
+    const ctx = c.getContext('2d');
+
+    drawBackground(ctx, cW, cH, bgType);
+
+    const sx = padding;
+    const sy = padding + (style === 'macOS' || style === 'browser' ? 36 : 0);
+
+    if (shadow !== 'none') {
+        const shadows = { soft:{blur:30,alpha:0.15}, medium:{blur:60,alpha:0.25}, hard:{blur:12,alpha:0.5}, glow:{blur:80,alpha:0.35,color:'#6366f1'} };
+        const s = shadows[shadow] || shadows.medium;
+        ctx.shadowColor = s.color || `rgba(0,0,0,${s.alpha})`;
+        ctx.shadowBlur  = s.blur;
+        ctx.shadowOffsetY = shadow === 'hard' ? 6 : 12;
+    }
+
+    if (style === 'macOS' || style === 'browser') {
+        const barH = 36;
+        const barY = padding;
+        ctx.shadowColor = 'transparent';
+        ctx.fillStyle = style === 'macOS' ? '#2d2d2d' : '#f1f3f4';
+        roundRect(ctx, sx, barY, iW, barH + iH, radius);
+        ctx.fill();
+        ctx.shadowColor = 'transparent';
+        if (style === 'macOS') {
+            const dotY = barY + barH / 2;
+            ['#ff5f57','#febc2e','#28c840'].forEach((c2, i) => {
+                ctx.beginPath(); ctx.arc(sx + 14 + i * 20, dotY, 6, 0, Math.PI * 2);
+                ctx.fillStyle = c2; ctx.fill();
+            });
+        } else {
+            ctx.fillStyle = '#fff';
+            const urlBarW = iW * 0.5, urlBarH = 20;
+            const urlBarX = sx + (iW - urlBarW) / 2, urlBarY = barY + (barH - urlBarH) / 2;
+            roundRect(ctx, urlBarX, urlBarY, urlBarW, urlBarH, 10); ctx.fill();
+        }
+        ctx.save();
+        roundRect(ctx, sx, sy, iW, iH, 0); ctx.clip();
+        ctx.drawImage(img, sx, sy, iW, iH);
+        ctx.restore();
+    } else {
+        ctx.save();
+        roundRect(ctx, sx, sy, iW, iH, radius); ctx.clip();
+        ctx.shadowColor = 'transparent';
+        ctx.drawImage(img, sx, sy, iW, iH);
+        ctx.restore();
+    }
+    ctx.shadowColor = 'transparent';
+    return c;
+}
+
+if (ssBtn) {
+    ssBtn.addEventListener('click', () => {
+        const c = getFullResSSCanvas();
+        if (!c) return;
+        c.toBlob(blob => {
+            const name = (ssFile?.name || 'screenshot').replace(/\.[^.]+$/, '') + '-studio.png';
+            triggerDownload(URL.createObjectURL(blob), name);
+            document.getElementById('ssSuccess').style.display = 'block';
+            SessionTracker.increment('Screenshot exported!');
+        }, 'image/png');
+    });
+}
+
+if (ssCopyBtn) {
+    ssCopyBtn.addEventListener('click', async () => {
+        const c = getFullResSSCanvas();
+        if (!c) return;
+        ssCopyBtn.textContent = '⏳ Copying…';
+        try {
+            const blob = await new Promise(res => c.toBlob(res, 'image/png'));
+            await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+            ssCopyBtn.textContent = '✅ Copied!';
+        } catch {
+            ssCopyBtn.textContent = '❌ Failed';
+        }
+        setTimeout(() => { ssCopyBtn.textContent = '📋 Copy to Clipboard'; }, 2500);
+    });
+}
+
+const ssClearBtn = document.getElementById('ssClear');
+if (ssClearBtn) {
+    ssClearBtn.addEventListener('click', () => {
+        ssFile = null;
+        document.getElementById('ssImg').src = '';
+        document.getElementById('ssPreview').style.display = 'none';
+        document.getElementById('ssClearRow').style.display = 'none';
+        document.getElementById('ssOptions').style.display = 'none';
+        document.getElementById('ssAnalysis').style.display = 'none';
+        document.getElementById('ssSuccess').style.display = 'none';
+        ssBtn.disabled = true;
+        ssCopyBtn.disabled = true;
+        ssUpload.value = '';
+        if (ssCanvas) { ssCanvas.width = 0; ssCanvas.height = 0; }
+    });
+}
+
+// ── Patch compress drop to trigger analysis ────────────────────
+(function patchCompressAnalysis() {
+    const compressUploadEl = document.getElementById('compressUpload');
+    const compressDrop3    = document.getElementById('compressDrop');
+    if (!compressDrop3) return;
+
+    // Watch for compressFile changes via MutationObserver on preview
+    const observer = new MutationObserver(() => {
+        if (compressFile) {
+            const img = document.getElementById('compressImg');
+            if (img.src && img.naturalWidth) {
+                analyzeImage(compressFile, img, 'compressAnalysis');
+            } else {
+                img.onload = () => analyzeImage(compressFile, img, 'compressAnalysis');
+            }
+        }
+    });
+    const preview = document.getElementById('compressPreview');
+    if (preview) observer.observe(preview, { attributes: true, attributeFilter: ['style'] });
+})();
+
+// ── Workflow card navigation ───────────────────────────────────
+document.querySelectorAll('.workflow-card[data-tab]').forEach(card => {
+    card.addEventListener('click', () => activateTab(card.dataset.tab));
+});
+
+// ── Add screenshot to nav dropdown items ──────────────────────
+// (already done in HTML, just ensure activateTab handles it)
+
+// ── Session bar on home load ───────────────────────────────────
+document.querySelectorAll('.tab-btn[data-tab="home"]').forEach(b => {
+    b.addEventListener('click', () => {
+        const count = parseInt(sessionStorage.getItem('ik_session_count') || '0');
+        if (count > 0) {
+            const bar = document.getElementById('sessionBar');
+            const countEl = document.getElementById('sessionCount');
+            if (bar && countEl) {
+                countEl.textContent = count;
+                bar.style.display = 'flex';
+            }
+        }
+    });
+});

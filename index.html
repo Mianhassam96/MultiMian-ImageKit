@@ -33,6 +33,10 @@
                 </button>
                 <div class="nav-dropdown-panel">
                     <div class="ndp-header">🖼 Image Tools</div>
+                    <button class="ndp-item" data-tab="screenshot">
+                        <span class="ndp-icon">✨</span>
+                        <span class="ndp-text"><strong>Screenshot Studio</strong><small>Frames, shadows &amp; gradients</small></span>
+                    </button>
                     <button class="ndp-item" data-tab="ocr">
                         <span class="ndp-icon">🔤</span>
                         <span class="ndp-text"><strong>Image → Text</strong><small>OCR extraction</small></span>
@@ -128,6 +132,7 @@
     <div class="mobile-drawer" id="mobileDrawer">
         <button class="tab-btn" data-tab="home">🏠 Home</button>
         <div class="drawer-group-label">🖼 Image Tools</div>
+        <button class="tab-btn" data-tab="screenshot">✨ Screenshot Studio</button>
         <button class="tab-btn" data-tab="ocr">🔤 Image → Text (OCR)</button>
         <button class="tab-btn" data-tab="compress">🗜 Compress</button>
         <button class="tab-btn" data-tab="resize">✂️ Resize</button>
@@ -156,6 +161,13 @@
         <!-- Animated background canvas -->
         <canvas id="heroCanvas" aria-hidden="true"></canvas>
 
+        <!-- Session Stats Bar -->
+        <div class="session-bar" id="sessionBar" style="display:none;">
+            <span class="session-bar-icon">⚡</span>
+            <span id="sessionBarText">You've optimized <strong id="sessionCount">0</strong> files this session</span>
+            <button class="session-bar-close" onclick="document.getElementById('sessionBar').style.display='none'">×</button>
+        </div>
+
         <!-- Hero -->
         <div class="hero">
             <div class="hero-eyebrow">
@@ -164,42 +176,41 @@
                 <span class="eyebrow-dot"></span>
             </div>
             <h1 class="hero-title">
-                <span class="ht-line1">The Image Toolkit</span>
-                <span class="ht-line2">That <span class="ht-gradient">Works Instantly</span></span>
+                <span class="ht-line1">The Fastest Way to</span>
+                <span class="ht-line2">Prepare Images <span class="ht-gradient">for Anywhere</span></span>
             </h1>
-            <p class="hero-desc">12 powerful tools — OCR, Compress, Resize, Convert, Watermark, Merge, Share, PDF↔Text, PDF→Image, Image→GIF, Video→GIF &amp; Sticker — all running 100% in your browser. Zero uploads. Zero limits.</p>
+            <p class="hero-desc">Compress, convert, beautify, optimize, scan and export images in seconds — directly in your browser. Built for creators who move fast.</p>
             <div class="hero-btns">
-                <button class="hero-cta hero-cta-primary" data-tab="ocr">
-                    <span class="btn-icon">🔤</span> Extract Text (OCR)
+                <button class="hero-cta hero-cta-primary" data-tab="screenshot">
+                    <span class="btn-icon">✨</span> Screenshot Studio
                     <span class="btn-arrow">→</span>
                 </button>
                 <button class="hero-cta hero-cta-ghost" data-tab="compress">
-                    <span class="btn-icon">🗜</span> Compress Image
+                    <span class="btn-icon">🗜</span> Make Images Load Faster
                 </button>
             </div>
             <p class="hero-note">No file leaves your device &nbsp;·&nbsp; Works offline &nbsp;·&nbsp; Open source</p>
         </div>
 
-        <!-- Floating tool chips -->
-        <div class="tool-chips" aria-hidden="true">
-            <span class="chip chip-1">🔤 OCR</span>
-            <span class="chip chip-2">📄 PDF</span>
-            <span class="chip chip-3">🗜 Compress</span>
-            <span class="chip chip-4">✂️ Resize</span>
-            <span class="chip chip-5">🔄 Convert</span>
-            <span class="chip chip-6">💧 Watermark</span>
-            <span class="chip chip-7">🔗 Merge</span>
-            <span class="chip chip-8">🌐 Share</span>
-            <span class="chip chip-1">🎞 GIF</span>
-            <span class="chip chip-2">🎬 Video→GIF</span>
-            <span class="chip chip-3">🎨 Sticker</span>
-            <span class="chip chip-4">🖼 PDF→Img</span>
+        <!-- Pain points strip -->
+        <div class="pain-strip">
+            <span class="pain-item">😤 Blurry uploads?</span>
+            <span class="pain-sep">·</span>
+            <span class="pain-item">📦 Oversized files?</span>
+            <span class="pain-sep">·</span>
+            <span class="pain-item">🖼 Ugly screenshots?</span>
+            <span class="pain-sep">·</span>
+            <span class="pain-item">🐌 Slow websites?</span>
+            <span class="pain-sep">·</span>
+            <span class="pain-item">✂️ Manual resizing?</span>
+            <span class="pain-sep">·</span>
+            <span class="pain-item">📄 Poor thumbnails?</span>
         </div>
 
         <!-- Stats -->
         <div class="stats-row">
             <div class="stat-item">
-                <span class="stat-val" data-count="12">0</span>
+                <span class="stat-val" data-count="13">0</span>
                 <span class="stat-lbl">Tools</span>
             </div>
             <div class="stat-divider"></div>
@@ -219,9 +230,81 @@
             </div>
         </div>
 
-        <!-- Feature cards — grouped by category -->
+        <!-- Workflow Cards + Feature Cards -->
         <div class="features-section">
+
+            <!-- ⭐ Workflow Cards — Outcome-focused -->
             <div class="section-label">
+                <span class="sl-line"></span>
+                <span>Quick Workflows</span>
+                <span class="sl-line"></span>
+            </div>
+            <div class="workflow-grid">
+                <div class="workflow-card wf-screenshot" data-tab="screenshot">
+                    <div class="wf-badge">⭐ Signature</div>
+                    <div class="wf-icon">✨</div>
+                    <h3>Screenshot Studio</h3>
+                    <p>Turn raw screenshots into beautiful, shareable visuals with frames, shadows &amp; gradients.</p>
+                    <div class="wf-steps">
+                        <span>Upload</span><span class="wf-arrow">→</span>
+                        <span>Style</span><span class="wf-arrow">→</span>
+                        <span>Export</span>
+                    </div>
+                </div>
+                <div class="workflow-card wf-website" data-tab="compress">
+                    <div class="wf-icon">🚀</div>
+                    <h3>Make Images Load Faster</h3>
+                    <p>Compress &amp; convert to WebP. See exactly how much size you save before downloading.</p>
+                    <div class="wf-steps">
+                        <span>Upload</span><span class="wf-arrow">→</span>
+                        <span>Compress</span><span class="wf-arrow">→</span>
+                        <span>Save 80%+</span>
+                    </div>
+                </div>
+                <div class="workflow-card wf-social" data-tab="resize">
+                    <div class="wf-icon">📱</div>
+                    <h3>Resize for Socials</h3>
+                    <p>One click to Instagram, YouTube, Twitter &amp; Facebook sizes. Aspect-ratio locked.</p>
+                    <div class="wf-steps">
+                        <span>Upload</span><span class="wf-arrow">→</span>
+                        <span>Pick Preset</span><span class="wf-arrow">→</span>
+                        <span>Download</span>
+                    </div>
+                </div>
+                <div class="workflow-card wf-scan" data-tab="ocr">
+                    <div class="wf-icon">🧾</div>
+                    <h3>Extract Text Instantly</h3>
+                    <p>OCR any image or scanned document in 10+ languages. Export as TXT or PDF.</p>
+                    <div class="wf-steps">
+                        <span>Upload</span><span class="wf-arrow">→</span>
+                        <span>OCR</span><span class="wf-arrow">→</span>
+                        <span>Copy / Export</span>
+                    </div>
+                </div>
+                <div class="workflow-card wf-protect" data-tab="watermark">
+                    <div class="wf-icon">💧</div>
+                    <h3>Protect My Work</h3>
+                    <p>Add text watermarks with custom position, opacity &amp; color. Tile across entire image.</p>
+                    <div class="wf-steps">
+                        <span>Upload</span><span class="wf-arrow">→</span>
+                        <span>Watermark</span><span class="wf-arrow">→</span>
+                        <span>Download</span>
+                    </div>
+                </div>
+                <div class="workflow-card wf-sticker" data-tab="sticker">
+                    <div class="wf-icon">🎨</div>
+                    <h3>Make WhatsApp Stickers</h3>
+                    <p>Resize to 512×512 sticker format. Export PNG or WebP for WhatsApp, Telegram &amp; Discord.</p>
+                    <div class="wf-steps">
+                        <span>Upload</span><span class="wf-arrow">→</span>
+                        <span>Style</span><span class="wf-arrow">→</span>
+                        <span>Share</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- All Tools Grid -->
+            <div class="section-label" style="margin-top:64px;">
                 <span class="sl-line"></span>
                 <span>All Tools</span>
                 <span class="sl-line"></span>
@@ -234,14 +317,27 @@
                     <span>Image Tools</span>
                 </div>
                 <div class="home-grid">
+                    <div class="home-card" data-tab="screenshot">
+                        <div class="card-glow"></div>
+                        <div class="card-top">
+                            <span class="card-icon-wrap ci-screenshot">✨</span>
+                            <span class="card-badge card-badge-new">⭐ New</span>
+                        </div>
+                        <h3>Screenshot Studio</h3>
+                        <p>Beautiful frames, shadows &amp; gradients. Turn raw screenshots into shareable visuals.</p>
+                        <div class="card-footer">
+                            <span class="card-tech">Canvas API</span>
+                            <span class="card-arrow">→</span>
+                        </div>
+                    </div>
                     <div class="home-card" data-tab="ocr">
                         <div class="card-glow"></div>
                         <div class="card-top">
                             <span class="card-icon-wrap ci-ocr">🔤</span>
                             <span class="card-badge">Popular</span>
                         </div>
-                        <h3>Image → Text</h3>
-                        <p>Extract text from any image in 10+ languages. Copy, download .txt or export as PDF.</p>
+                        <h3>Extract Text Instantly</h3>
+                        <p>OCR any image in 10+ languages. Copy, download .txt or export as PDF.</p>
                         <div class="card-footer">
                             <span class="card-tech">Tesseract.js</span>
                             <span class="card-arrow">→</span>
@@ -252,8 +348,8 @@
                         <div class="card-top">
                             <span class="card-icon-wrap ci-compress">🗜</span>
                         </div>
-                        <h3>Compress</h3>
-                        <p>Reduce file size with a quality slider. Live before/after size comparison.</p>
+                        <h3>Make Images Load Faster</h3>
+                        <p>Reduce file size with live before/after comparison. See savings before you download.</p>
                         <div class="card-footer">
                             <span class="card-tech">Canvas API</span>
                             <span class="card-arrow">→</span>
@@ -264,7 +360,7 @@
                         <div class="card-top">
                             <span class="card-icon-wrap ci-resize">✂️</span>
                         </div>
-                        <h3>Resize</h3>
+                        <h3>Resize for Socials</h3>
                         <p>Exact dimensions with aspect-ratio lock. Instagram, YouTube, Twitter &amp; Facebook presets.</p>
                         <div class="card-footer">
                             <span class="card-tech">Canvas API</span>
@@ -276,7 +372,7 @@
                         <div class="card-top">
                             <span class="card-icon-wrap ci-convert">🔄</span>
                         </div>
-                        <h3>Format Convert</h3>
+                        <h3>Convert for Any Platform</h3>
                         <p>JPG ↔ PNG ↔ WebP with quality control. Instant download, no re-upload.</p>
                         <div class="card-footer">
                             <span class="card-tech">Canvas API</span>
@@ -288,7 +384,7 @@
                         <div class="card-top">
                             <span class="card-icon-wrap ci-wm">💧</span>
                         </div>
-                        <h3>Watermark</h3>
+                        <h3>Protect My Work</h3>
                         <p>Text watermarks with custom font, color, opacity &amp; 6 positions including tile.</p>
                         <div class="card-footer">
                             <span class="card-tech">Canvas API</span>
@@ -300,8 +396,8 @@
                         <div class="card-top">
                             <span class="card-icon-wrap ci-merge">🔗</span>
                         </div>
-                        <h3>Merge 2 Images</h3>
-                        <p>Combine two images side-by-side or stacked. Export as JPG, PNG or PDF.</p>
+                        <h3>Combine Screenshots</h3>
+                        <p>Merge two images side-by-side or stacked. Export as JPG, PNG or PDF.</p>
                         <div class="card-footer">
                             <span class="card-tech">Canvas + jsPDF</span>
                             <span class="card-arrow">→</span>
@@ -313,7 +409,7 @@
                             <span class="card-icon-wrap ci-share">🌐</span>
                             <span class="card-badge card-badge-new">New ⭐</span>
                         </div>
-                        <h3>Share Image</h3>
+                        <h3>Share Anywhere</h3>
                         <p>Upload and get a permanent public link. Share on WhatsApp, Telegram, Twitter and more.</p>
                         <div class="card-footer">
                             <span class="card-tech">ImgBB API</span>
@@ -375,7 +471,7 @@
                         <h3>Image → GIF</h3>
                         <p>Upload multiple images, reorder frames, set delay and export an animated GIF.</p>
                         <div class="card-footer">
-                            <span class="card-tech">gifenc</span>
+                            <span class="card-tech">gif.js</span>
                             <span class="card-arrow">→</span>
                         </div>
                     </div>
@@ -388,7 +484,7 @@
                         <h3>Video → GIF</h3>
                         <p>Upload a short video, select start/end time, adjust frame rate and export GIF.</p>
                         <div class="card-footer">
-                            <span class="card-tech">Canvas + gifenc</span>
+                            <span class="card-tech">Canvas + gif.js</span>
                             <span class="card-arrow">→</span>
                         </div>
                     </div>
@@ -398,7 +494,7 @@
                             <span class="card-icon-wrap ci-sticker">🎨</span>
                             <span class="card-badge card-badge-new">New ⭐</span>
                         </div>
-                        <h3>Image → Sticker</h3>
+                        <h3>Make WhatsApp Stickers</h3>
                         <p>Resize to 512×512 sticker format. Export as PNG or WebP for WhatsApp, Telegram &amp; Discord.</p>
                         <div class="card-footer">
                             <span class="card-tech">Canvas API</span>
@@ -420,20 +516,20 @@
             <div class="how-steps">
                 <div class="how-step">
                     <div class="how-num"><span>1</span></div>
-                    <h4>Pick a Tool</h4>
-                    <p>Click any tab in the header or a card below to open the tool.</p>
+                    <h4>Choose Your Goal</h4>
+                    <p>Pick a workflow card or open any tool from the nav. No learning curve.</p>
                 </div>
                 <div class="how-connector"><span></span></div>
                 <div class="how-step">
                     <div class="how-num"><span>2</span></div>
-                    <h4>Upload Image</h4>
-                    <p>Drag &amp; drop or click to upload. JPG, PNG, WebP and more.</p>
+                    <h4>Drop Your File</h4>
+                    <p>Drag &amp; drop or click to upload. JPG, PNG, WebP, PDF, Video and more.</p>
                 </div>
                 <div class="how-connector"><span></span></div>
                 <div class="how-step">
                     <div class="how-num"><span>3</span></div>
-                    <h4>Download</h4>
-                    <p>Adjust settings, hit the action button and download instantly.</p>
+                    <h4>Download Instantly</h4>
+                    <p>Adjust settings, hit the action button and download in seconds.</p>
                 </div>
             </div>
         </div>
@@ -465,6 +561,108 @@
             </div>
         </div>
 
+    </section>
+
+    <!-- ══ Screenshot Studio Tab ══ -->
+    <section id="tab-screenshot" class="tab-section">
+        <div class="section-header">
+            <div class="section-icon">✨</div>
+            <div>
+                <h2>Screenshot Studio</h2>
+                <p>Turn raw screenshots into beautiful, shareable visuals</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="drop-zone" id="ssDrop">
+                <span class="drop-icon">✨</span>
+                <p>Drop your screenshot here or <label for="ssUpload" class="link">click to upload</label></p>
+                <p class="drop-hint">JPG, PNG, WebP — any screenshot or image</p>
+                <input type="file" id="ssUpload" accept="image/*" hidden>
+            </div>
+            <div id="ssPreview" class="preview-box" style="display:none; margin-top:14px;">
+                <img id="ssImg" alt="Preview">
+                <div class="file-info" id="ssFileInfo"></div>
+            </div>
+            <div id="ssClearRow" class="clear-row" style="display:none;">
+                <button id="ssClear" class="clear-btn">✕ Clear &amp; Upload New</button>
+            </div>
+        </div>
+
+        <!-- Smart Analysis -->
+        <div id="ssAnalysis" class="smart-analysis-card" style="display:none;">
+            <div class="sa-header">
+                <span class="sa-icon">🧠</span>
+                <strong>Smart Analysis</strong>
+                <span class="sa-badge">AI-powered insights</span>
+            </div>
+            <div id="saInsights" class="sa-insights"></div>
+        </div>
+
+        <div id="ssOptions" class="card" style="display:none;">
+            <div class="ss-style-tabs">
+                <button class="ss-style-btn active" data-style="macOS">🍎 macOS</button>
+                <button class="ss-style-btn" data-style="browser">🌐 Browser</button>
+                <button class="ss-style-btn" data-style="shadow">🌑 Shadow</button>
+                <button class="ss-style-btn" data-style="gradient">🌈 Gradient</button>
+                <button class="ss-style-btn" data-style="none">⬜ Clean</button>
+            </div>
+            <div class="options-panel" style="margin-top:14px;">
+                <div class="opt-group">
+                    <label>Background</label>
+                    <select id="ssBgType">
+                        <option value="gradient-purple">Purple Gradient</option>
+                        <option value="gradient-blue">Blue Gradient</option>
+                        <option value="gradient-green">Green Gradient</option>
+                        <option value="gradient-sunset">Sunset Gradient</option>
+                        <option value="gradient-dark">Dark Gradient</option>
+                        <option value="solid-white">Solid White</option>
+                        <option value="solid-black">Solid Black</option>
+                        <option value="transparent">Transparent</option>
+                    </select>
+                </div>
+                <div class="opt-group">
+                    <label>Padding</label>
+                    <select id="ssPadding">
+                        <option value="40">Small</option>
+                        <option value="80" selected>Medium</option>
+                        <option value="120">Large</option>
+                        <option value="160">Extra Large</option>
+                    </select>
+                </div>
+                <div class="opt-group">
+                    <label>Corner Radius</label>
+                    <select id="ssRadius">
+                        <option value="0">None</option>
+                        <option value="8">Small</option>
+                        <option value="16" selected>Medium</option>
+                        <option value="24">Large</option>
+                    </select>
+                </div>
+                <div class="opt-group">
+                    <label>Shadow</label>
+                    <select id="ssShadow">
+                        <option value="none">None</option>
+                        <option value="soft">Soft</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="hard">Hard</option>
+                        <option value="glow">Glow</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Live Preview Canvas -->
+            <div class="ss-preview-wrap" style="margin-top:16px;">
+                <p class="preview-label">Live Preview</p>
+                <canvas id="ssCanvas" style="max-width:100%; border-radius:8px; display:block; margin:0 auto;"></canvas>
+            </div>
+        </div>
+
+        <div class="btn-row">
+            <button id="ssBtn" class="primary-btn" disabled>✨ Download Studio Shot</button>
+            <button id="ssCopyBtn" class="secondary-btn" disabled>📋 Copy to Clipboard</button>
+        </div>
+        <p class="success-msg" id="ssSuccess" style="display:none;">✔ Screenshot exported successfully</p>
     </section>
 
     <!-- ══ OCR Tab ══ -->
@@ -770,6 +968,16 @@
             </div>
         </div>
 
+        <!-- Smart Analysis -->
+        <div id="compressAnalysis" class="smart-analysis-card" style="display:none;">
+            <div class="sa-header">
+                <span class="sa-icon">🧠</span>
+                <strong>Smart Analysis</strong>
+                <span class="sa-badge">File insights</span>
+            </div>
+            <div id="compressSaInsights" class="sa-insights"></div>
+        </div>
+
         <div id="compressOptions" class="card" style="display:none;">
             <div class="slider-row">
                 <div class="slider-label">
@@ -784,10 +992,41 @@
                 <span>Compressed<strong id="compSize">-</strong></span>
                 <span>Saved<strong id="savedPct">-</strong></span>
             </div>
+            <!-- Animated savings display -->
+            <div id="savingsDisplay" class="savings-display" style="display:none;">
+                <div class="savings-bar-wrap">
+                    <div class="savings-bar-fill" id="savingsBarFill"></div>
+                </div>
+                <div class="savings-label" id="savingsLabel"></div>
+            </div>
+        </div>
+
+        <!-- Before / After Slider -->
+        <div id="beforeAfterWrap" class="before-after-wrap" style="display:none;">
+            <p class="preview-label">Before / After</p>
+            <div class="ba-container" id="baContainer">
+                <img class="ba-before" id="baBefore" alt="Original">
+                <div class="ba-after-wrap" id="baAfterWrap">
+                    <img class="ba-after" id="baAfter" alt="Compressed">
+                </div>
+                <div class="ba-divider" id="baDivider">
+                    <div class="ba-handle">⇔</div>
+                </div>
+                <span class="ba-label ba-label-left">Original</span>
+                <span class="ba-label ba-label-right">Compressed</span>
+            </div>
         </div>
 
         <div class="btn-row">
             <button id="compressBtn" class="primary-btn" disabled>🗜 Compress &amp; Download</button>
+        </div>
+        <div id="compressSavingsAnim" class="savings-anim" style="display:none;">
+            <div class="savings-anim-inner">
+                <span class="savings-anim-from" id="savingsFrom"></span>
+                <span class="savings-anim-arrow">→</span>
+                <span class="savings-anim-to" id="savingsTo"></span>
+                <span class="savings-anim-pct" id="savingsPct"></span>
+            </div>
         </div>
         <p class="success-msg" id="compressSuccess" style="display:none;">✔ Image compressed successfully</p>
     </section>
@@ -1550,18 +1789,19 @@
         <div class="about-tools-section">
             <div class="about-section-label">What's Inside</div>
             <div class="about-tools-list">
-                <div class="about-tool-row"><span class="atr-icon">🔤</span><div class="atr-info"><strong>OCR — Image to Text</strong><span>Extract text from images in 10+ languages using Tesseract.js</span></div><span class="atr-badge">Tesseract.js</span></div>
-                <div class="about-tool-row"><span class="atr-icon">🗜</span><div class="atr-info"><strong>Compress</strong><span>Reduce image file size with live quality preview</span></div><span class="atr-badge">Canvas API</span></div>
-                <div class="about-tool-row"><span class="atr-icon">✂️</span><div class="atr-info"><strong>Resize</strong><span>Custom dimensions with social media presets</span></div><span class="atr-badge">Canvas API</span></div>
-                <div class="about-tool-row"><span class="atr-icon">🔄</span><div class="atr-info"><strong>Format Convert</strong><span>JPG ↔ PNG ↔ WebP with quality control</span></div><span class="atr-badge">Canvas API</span></div>
-                <div class="about-tool-row"><span class="atr-icon">💧</span><div class="atr-info"><strong>Watermark</strong><span>Text overlays with custom font, color and position</span></div><span class="atr-badge">Canvas API</span></div>
-                <div class="about-tool-row"><span class="atr-icon">🔗</span><div class="atr-info"><strong>Merge Images</strong><span>Combine two images side-by-side or stacked</span></div><span class="atr-badge">Canvas + jsPDF</span></div>
-                <div class="about-tool-row"><span class="atr-icon">🌐</span><div class="atr-info"><strong>Share Image</strong><span>Get a permanent public link with QR code</span></div><span class="atr-badge">ImgBB API</span></div>
+                <div class="about-tool-row"><span class="atr-icon">✨</span><div class="atr-info"><strong>Screenshot Studio</strong><span>Beautiful frames, shadows &amp; gradients — turn screenshots into shareable visuals</span></div><span class="atr-badge">Canvas API</span></div>
+                <div class="about-tool-row"><span class="atr-icon">🔤</span><div class="atr-info"><strong>OCR — Extract Text Instantly</strong><span>Extract text from images in 10+ languages using Tesseract.js</span></div><span class="atr-badge">Tesseract.js</span></div>
+                <div class="about-tool-row"><span class="atr-icon">🗜</span><div class="atr-info"><strong>Make Images Load Faster</strong><span>Reduce image file size with live before/after comparison</span></div><span class="atr-badge">Canvas API</span></div>
+                <div class="about-tool-row"><span class="atr-icon">✂️</span><div class="atr-info"><strong>Resize for Socials</strong><span>Custom dimensions with social media presets</span></div><span class="atr-badge">Canvas API</span></div>
+                <div class="about-tool-row"><span class="atr-icon">🔄</span><div class="atr-info"><strong>Convert for Any Platform</strong><span>JPG ↔ PNG ↔ WebP with quality control</span></div><span class="atr-badge">Canvas API</span></div>
+                <div class="about-tool-row"><span class="atr-icon">💧</span><div class="atr-info"><strong>Protect My Work</strong><span>Text overlays with custom font, color and position</span></div><span class="atr-badge">Canvas API</span></div>
+                <div class="about-tool-row"><span class="atr-icon">🔗</span><div class="atr-info"><strong>Combine Screenshots</strong><span>Merge two images side-by-side or stacked</span></div><span class="atr-badge">Canvas + jsPDF</span></div>
+                <div class="about-tool-row"><span class="atr-icon">🌐</span><div class="atr-info"><strong>Share Anywhere</strong><span>Get a permanent public link with QR code</span></div><span class="atr-badge">ImgBB API</span></div>
                 <div class="about-tool-row"><span class="atr-icon">📝</span><div class="atr-info"><strong>Text Studio</strong><span>Write, format and export as TXT, RTF, DOCX or PDF</span></div><span class="atr-badge">jsPDF + PDF.js</span></div>
                 <div class="about-tool-row"><span class="atr-icon">🖼</span><div class="atr-info"><strong>PDF → Image</strong><span>Convert PDF pages to PNG or JPG, download as ZIP</span></div><span class="atr-badge">PDF.js + JSZip</span></div>
-                <div class="about-tool-row"><span class="atr-icon">🎞</span><div class="atr-info"><strong>Image → GIF</strong><span>Multi-frame animated GIF from multiple images</span></div><span class="atr-badge">gifenc</span></div>
-                <div class="about-tool-row"><span class="atr-icon">🎬</span><div class="atr-info"><strong>Video → GIF</strong><span>Clip any video segment and export as GIF</span></div><span class="atr-badge">Canvas + gifenc</span></div>
-                <div class="about-tool-row"><span class="atr-icon">🎨</span><div class="atr-info"><strong>Image → Sticker</strong><span>512×512 sticker format for WhatsApp, Telegram &amp; Discord</span></div><span class="atr-badge">Canvas API</span></div>
+                <div class="about-tool-row"><span class="atr-icon">🎞</span><div class="atr-info"><strong>Image → GIF</strong><span>Multi-frame animated GIF from multiple images</span></div><span class="atr-badge">gif.js</span></div>
+                <div class="about-tool-row"><span class="atr-icon">🎬</span><div class="atr-info"><strong>Video → GIF</strong><span>Clip any video segment and export as GIF</span></div><span class="atr-badge">Canvas + gif.js</span></div>
+                <div class="about-tool-row"><span class="atr-icon">🎨</span><div class="atr-info"><strong>Make WhatsApp Stickers</strong><span>512×512 sticker format for WhatsApp, Telegram &amp; Discord</span></div><span class="atr-badge">Canvas API</span></div>
             </div>
         </div>
 
@@ -1736,7 +1976,7 @@
             <span class="footer-logo">
                 <span class="fl-multi">Multi</span><span class="fl-mian">Mian</span><span class="fl-kit"> ImageKit</span>
             </span>
-            <span class="footer-tagline">Extract Text • Convert to PDF • Compress Images.</span>
+            <span class="footer-tagline">The fastest way to prepare images for anywhere.</span>
         </div>
         <div class="footer-center">
             <span class="footer-copy">&copy; 2026 MultiMian &nbsp;|&nbsp; Built with modern web technologies.</span>

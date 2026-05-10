@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="styles-phase2.css">
     <link rel="stylesheet" href="styles-phase3.css">
+    <link rel="stylesheet" href="styles-phase4.css">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#16a34a">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -245,7 +246,7 @@
                 <span class="ht-line1">The Fastest Way to</span>
                 <span class="ht-line2">Prepare Images <span class="ht-gradient">for Anywhere</span></span>
             </h1>
-            <p class="hero-desc">Compress, convert, beautify, optimize, scan and export images in seconds — directly in your browser. Built for creators who move fast.</p>
+            <p class="hero-desc" id="heroTaglineRotator">Fast image workflows for creators.</p>
             <div class="hero-btns">
                 <button class="hero-cta hero-cta-primary" data-tab="screenshot">
                     <span class="btn-icon">✨</span> Screenshot Studio
@@ -293,6 +294,30 @@
             <div class="stat-item">
                 <span class="stat-val">0</span>
                 <span class="stat-lbl">Server Uploads</span>
+            </div>
+        </div>
+
+        <!-- Achievement Dashboard -->
+        <div class="achievement-dashboard" id="achievementDash" style="display:none;">
+            <div class="ach-item" id="achMbSaved">
+                <span class="ach-val" id="achMbVal">0</span>
+                <span class="ach-unit">MB</span>
+                <span class="ach-lbl">Saved</span>
+            </div>
+            <div class="ach-divider"></div>
+            <div class="ach-item" id="achExports">
+                <span class="ach-val" id="achExportsVal">0</span>
+                <span class="ach-lbl">Exports</span>
+            </div>
+            <div class="ach-divider"></div>
+            <div class="ach-item">
+                <span class="ach-val" id="achWorkflowsVal">0</span>
+                <span class="ach-lbl">Workflows</span>
+            </div>
+            <div class="ach-divider"></div>
+            <div class="ach-item">
+                <span class="ach-val" id="achStreakVal">0</span>
+                <span class="ach-lbl">Day Streak</span>
             </div>
         </div>
 
@@ -771,6 +796,21 @@
         <div id="ssSuggestions" class="ss-engine-banner"></div>
 
         <div id="ssOptions" class="card" style="display:none;">
+            <!-- Preset Scenes -->
+            <div class="ss-scenes-row">
+                <span class="ss-scenes-label">Preset Scenes</span>
+                <div class="ss-scenes-grid" id="ssScenesGrid">
+                    <button class="ss-scene-btn" data-scene="macos-desk" title="macOS Desktop">🖥 macOS Desk</button>
+                    <button class="ss-scene-btn" data-scene="neon-studio" title="Neon Studio">🌆 Neon Studio</button>
+                    <button class="ss-scene-btn" data-scene="indie-tweet" title="Indie Hacker Tweet">🐦 Indie Tweet</button>
+                    <button class="ss-scene-btn" data-scene="ph-launch" title="Product Hunt Launch">🚀 PH Launch</button>
+                    <button class="ss-scene-btn" data-scene="glass-desk" title="Glass Desk">🔮 Glass Desk</button>
+                    <button class="ss-scene-btn" data-scene="code-dark" title="Code Dark">💻 Code Dark</button>
+                    <button class="ss-scene-btn" data-scene="minimal-white" title="Minimal White">⬜ Minimal</button>
+                    <button class="ss-scene-btn" data-scene="gradient-pop" title="Gradient Pop">🌈 Gradient Pop</button>
+                </div>
+            </div>
+            <div class="divider"></div>
             <div class="ss-style-tabs">
                 <button class="ss-style-btn active" data-style="macOS">🍎 macOS</button>
                 <button class="ss-style-btn" data-style="browser">🌐 Browser</button>
@@ -2241,15 +2281,14 @@
     </div>
 </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-<script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.js"></script>
-<script src="script.js"></script>
-<script src="phase2.js"></script>
-<script src="phase3.js"></script>
+<!-- Core libs needed immediately -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
+<!-- Heavy libs — loaded lazily by phase4.js when tab opens -->
+<script src="script.js" defer></script>
+<script src="phase2.js" defer></script>
+<script src="phase3.js" defer></script>
+<script src="phase4.js" defer></script>
 </body>
 </html>

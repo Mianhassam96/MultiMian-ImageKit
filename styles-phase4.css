@@ -1,0 +1,206 @@
+/* ══════════════════════════════════════════════════════════════
+   PHASE 4 — Design System · Achievement · SS Scenes · Mobile
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Achievement Dashboard ─────────────────────────────────── */
+.achievement-dashboard {
+  position: relative; z-index: 1;
+  display: flex; align-items: center; justify-content: center;
+  gap: 0; max-width: 560px; margin: 0 auto 48px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  animation: fadeUp 0.4s ease;
+}
+.ach-item {
+  flex: 1; text-align: center; padding: 18px 12px;
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+}
+.ach-val {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.6em; font-weight: 800; line-height: 1;
+  background: linear-gradient(135deg, #16a34a, #0ea5e9);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.ach-unit {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.9em; font-weight: 700;
+  background: linear-gradient(135deg, #16a34a, #0ea5e9);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; margin-left: 2px;
+}
+.ach-lbl {
+  font-size: 0.68em; color: var(--text3);
+  font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
+}
+.ach-divider { width: 1px; height: 36px; background: var(--border); flex-shrink: 0; }
+
+/* ── Screenshot Studio Preset Scenes ──────────────────────── */
+.ss-scenes-row {
+  margin-bottom: 4px;
+}
+.ss-scenes-label {
+  display: block; font-size: 0.72em; font-weight: 700;
+  color: var(--text3); text-transform: uppercase; letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+.ss-scenes-grid {
+  display: flex; flex-wrap: wrap; gap: 8px;
+}
+.ss-scene-btn {
+  padding: 8px 14px; border-radius: 10px;
+  border: 1.5px solid var(--border);
+  background: var(--surface2); color: var(--text2);
+  font-size: 0.8em; font-weight: 600; cursor: pointer;
+  transition: all 0.18s var(--ease-out, cubic-bezier(.22,1,.36,1));
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  white-space: nowrap;
+  display: flex; align-items: center; gap: 6px;
+}
+.ss-scene-btn:hover {
+  border-color: var(--accent2); background: var(--accent2-light);
+  color: var(--accent2); transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+.ss-scene-btn.active {
+  background: linear-gradient(135deg, var(--accent2), var(--accent2-dark));
+  color: #fff; border-color: transparent;
+  box-shadow: 0 4px 14px rgba(37,99,235,0.3);
+}
+
+/* ── Mobile Sticky CTA ─────────────────────────────────────── */
+.mobile-sticky-cta {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  z-index: 6000; padding: 12px 16px;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.12);
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(.22,1,.36,1);
+  display: none;
+}
+.mobile-sticky-cta.visible { transform: translateY(0); }
+.mobile-sticky-btn {
+  width: 100%; padding: 14px;
+  background: linear-gradient(135deg, var(--accent2), var(--accent2-dark));
+  color: #fff; border: none; border-radius: var(--radius);
+  font-size: 1em; font-weight: 700; cursor: pointer;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+@media (max-width: 768px) {
+  .mobile-sticky-cta { display: block; }
+}
+
+/* ── Workflow Dashboard homepage ───────────────────────────── */
+/* Hero becomes more focused — less text, more action */
+.hero { padding: 64px 24px 40px; }
+.hero-desc {
+  font-size: 1em; color: var(--text2);
+  max-width: 520px; margin: 0 auto 28px;
+  line-height: 1.7;
+}
+
+/* Screenshot Studio as hero feature — bigger card */
+.wf-screenshot {
+  background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(14,165,233,0.08));
+  border-color: rgba(99,102,241,0.25);
+}
+[data-theme="dark"] .wf-screenshot {
+  background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(14,165,233,0.12));
+}
+.wf-screenshot .wf-icon { font-size: 2.4em; }
+.wf-screenshot h3 { font-size: 1.1em; }
+
+/* ── Design system — unified spacing ──────────────────────── */
+/* Reduce visual stacking on tool pages */
+.smart-analysis-card { margin-bottom: 12px; }
+.ss-engine-banner    { margin-bottom: 12px; }
+.card + .card        { margin-top: 0; }
+
+/* Cleaner section headers */
+.section-header {
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+.section-header h2 { font-size: 1.2em; }
+
+/* Tighter options panel */
+.options-panel { padding: 14px; gap: 10px; }
+.opt-group label { font-size: 0.74em; }
+
+/* Reduce border radius inconsistency */
+.drop-zone { border-radius: var(--radius); }
+.preview-box { border-radius: var(--radius); }
+.file-info span { border-radius: 20px; }
+
+/* ── Typography hierarchy ──────────────────────────────────── */
+.home-card h3 { font-size: 0.95em; line-height: 1.3; }
+.home-card p  { font-size: 0.8em; line-height: 1.6; }
+.workflow-card h3 { font-size: 1em; }
+.workflow-card p  { font-size: 0.82em; }
+
+/* ── Reduced animation noise ───────────────────────────────── */
+/* Only animate what matters */
+.home-card:hover .card-glow { opacity: 0.7; }
+.home-card:hover { transform: translateY(-4px); }
+/* Remove competing animations on chips */
+.chip { animation: none; }
+.chip:hover { transform: translateY(-3px); }
+
+/* ── Focus mode — cleaner tool layout ─────────────────────── */
+.tool-focus-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 16px;
+}
+.tool-mode-toggle {
+  display: flex; gap: 4px;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 20px; padding: 3px;
+}
+.tool-mode-btn {
+  padding: 5px 14px; border-radius: 16px;
+  border: none; background: transparent;
+  font-size: 0.76em; font-weight: 600; color: var(--text3);
+  cursor: pointer; transition: all 0.15s;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+.tool-mode-btn.active {
+  background: var(--surface); color: var(--text);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ── Lazy loading skeleton ─────────────────────────────────── */
+.lib-loading-hint {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 14px; border-radius: var(--radius-sm);
+  background: var(--surface2); border: 1px solid var(--border);
+  font-size: 0.8em; color: var(--text3); margin-bottom: 12px;
+  animation: pulse 1.5s ease infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.5; }
+}
+
+/* ── Responsive polish ─────────────────────────────────────── */
+@media (max-width: 640px) {
+  .achievement-dashboard { max-width: calc(100% - 32px); margin: 0 16px 32px; }
+  .ach-val { font-size: 1.3em; }
+  .ach-item { padding: 14px 8px; }
+  .ss-scenes-grid { gap: 6px; }
+  .ss-scene-btn { font-size: 0.74em; padding: 6px 10px; }
+  .hero { padding: 48px 16px 32px; }
+  .so-launcher { padding: 0 16px; }
+}
+
+/* ── Smooth scroll for anchor links ───────────────────────── */
+html { scroll-behavior: smooth; }
+
+/* ── Print styles — hide UI chrome ────────────────────────── */
+@media print {
+  header, footer, .session-bar, .workflow-panel,
+  .pwa-banner, .cmd-palette { display: none !important; }
+}

@@ -1,0 +1,315 @@
+/* ══════════════════════════════════════════════════════════════
+   PHASE 3 — Speed · Polish · Workflow Automation · Batch
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Intersection observer fade-in ────────────────────────── */
+.workflow-card, .home-card, .how-step, .about-card {
+  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(.22,1,.36,1);
+}
+.workflow-card.in-view, .home-card.in-view, .how-step.in-view, .about-card.in-view {
+  opacity: 1 !important; transform: translateY(0) !important;
+}
+
+/* ── Smart Optimize Launcher ───────────────────────────────── */
+.so-launcher {
+  display: none;
+  position: relative; z-index: 1;
+  max-width: 700px; margin: 0 auto 32px;
+  padding: 0 24px;
+}
+.so-launcher-card {
+  background: linear-gradient(135deg, rgba(22,163,74,0.08), rgba(14,165,233,0.08), rgba(99,102,241,0.08));
+  border: 1.5px solid rgba(22,163,74,0.25);
+  border-radius: var(--radius-xl);
+  padding: 24px 28px;
+  display: flex; align-items: center; gap: 20px;
+  flex-wrap: wrap;
+}
+.so-launcher-icon { font-size: 2.4em; flex-shrink: 0; }
+.so-launcher-text { flex: 1; min-width: 200px; }
+.so-launcher-text h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.05em; font-weight: 700; color: var(--text); margin-bottom: 4px;
+}
+.so-launcher-text p { font-size: 0.82em; color: var(--text2); line-height: 1.5; }
+.so-launch-btn {
+  background: linear-gradient(135deg, #16a34a, #0ea5e9);
+  color: #fff; border: none; border-radius: var(--radius);
+  padding: 12px 24px; font-size: 0.92em; font-weight: 700;
+  cursor: pointer; white-space: nowrap;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  box-shadow: 0 4px 16px rgba(14,165,233,0.3);
+  transition: transform 0.15s, box-shadow 0.2s;
+  display: flex; align-items: center; gap: 8px;
+}
+.so-launch-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(14,165,233,0.4); }
+
+/* ── Smart Optimize Modal ──────────────────────────────────── */
+.so-modal {
+  display: none; position: fixed; inset: 0; z-index: 9998;
+  align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.65); backdrop-filter: blur(8px);
+}
+.so-modal-inner {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  width: min(520px, 94vw);
+  box-shadow: 0 32px 80px rgba(0,0,0,0.5);
+  overflow: hidden;
+  animation: cmdIn 0.2s cubic-bezier(.22,1,.36,1);
+}
+.so-modal-header {
+  display: flex; align-items: center; gap: 12px;
+  padding: 18px 22px;
+  background: linear-gradient(135deg, rgba(22,163,74,0.1), rgba(14,165,233,0.1));
+  border-bottom: 1px solid var(--border);
+}
+.so-modal-title { flex: 1; font-family: 'Space Grotesk', sans-serif; font-size: 1em; font-weight: 700; color: var(--text); }
+.so-close-btn {
+  background: none; border: none; color: var(--text3);
+  cursor: pointer; font-size: 1.1em; padding: 4px 8px;
+  border-radius: 6px; transition: background 0.15s;
+}
+.so-close-btn:hover { background: var(--surface2); }
+.so-modal-body { padding: 20px 22px; }
+.so-drop-zone { padding: 20px; margin-bottom: 16px; }
+.so-progress-wrap { margin-bottom: 16px; }
+.so-progress-bar {
+  height: 8px; background: var(--surface3); border-radius: 20px; overflow: hidden; margin-bottom: 6px;
+}
+.so-progress-fill {
+  height: 100%; width: 0%;
+  background: linear-gradient(90deg, #16a34a, #0ea5e9, #6366f1);
+  border-radius: 20px;
+  transition: width 0.4s cubic-bezier(.22,1,.36,1);
+}
+.so-pct { font-size: 0.76em; font-weight: 700; color: var(--accent2); text-align: right; }
+.so-log {
+  max-height: 180px; overflow-y: auto;
+  display: flex; flex-direction: column; gap: 6px;
+  padding: 4px 0;
+}
+.so-step {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 0.82em; color: var(--text2);
+  animation: fadeUp 0.2s ease;
+}
+.so-step-icon { font-size: 1em; flex-shrink: 0; }
+.so-next-steps {
+  border-top: 1px solid var(--border);
+  padding-top: 16px; margin-top: 8px;
+}
+.so-next-label { font-size: 0.76em; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+.so-next-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+.so-next-btn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 14px; border-radius: 10px;
+  border: 1.5px solid var(--border);
+  background: var(--surface2); color: var(--text2);
+  font-size: 0.8em; font-weight: 600; cursor: pointer;
+  transition: all 0.15s; font-family: 'Plus Jakarta Sans', sans-serif;
+}
+.so-next-btn:hover { border-color: var(--accent2); color: var(--accent2); background: var(--accent2-light); }
+
+/* ── Batch Queue ───────────────────────────────────────────── */
+.batch-section {
+  display: none;
+  max-width: 700px; margin: 0 auto 32px; padding: 0 24px;
+  position: relative; z-index: 1;
+}
+.batch-header {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 14px; flex-wrap: wrap;
+}
+.batch-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1em; font-weight: 700; color: var(--text); flex: 1;
+}
+.batch-count {
+  background: var(--accent2-light); color: var(--accent2);
+  border-radius: 20px; padding: 2px 10px;
+  font-size: 0.76em; font-weight: 700;
+}
+.batch-op-select {
+  padding: 7px 10px; border: 1.5px solid var(--border);
+  border-radius: 8px; font-size: 0.82em;
+  background: var(--surface); color: var(--text);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+.batch-run-btn {
+  background: linear-gradient(135deg, var(--accent2), var(--accent2-dark));
+  color: #fff; border: none; border-radius: 8px;
+  padding: 8px 18px; font-size: 0.82em; font-weight: 700;
+  cursor: pointer; font-family: 'Plus Jakarta Sans', sans-serif;
+  transition: opacity 0.2s;
+}
+.batch-run-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.batch-run-btn:not(:disabled):hover { opacity: 0.88; }
+.batch-clear-btn {
+  background: none; border: 1.5px solid var(--danger);
+  color: var(--danger); border-radius: 8px;
+  padding: 7px 14px; font-size: 0.8em; font-weight: 600;
+  cursor: pointer; font-family: 'Plus Jakarta Sans', sans-serif;
+  transition: all 0.15s;
+}
+.batch-clear-btn:hover { background: var(--danger); color: #fff; }
+.batch-drop {
+  border: 2px dashed var(--border); border-radius: var(--radius);
+  padding: 20px; text-align: center; background: var(--surface2);
+  cursor: pointer; transition: all 0.2s; margin-bottom: 12px;
+  font-size: 0.84em; color: var(--text2);
+}
+.batch-drop:hover, .batch-drop.dragover { border-color: var(--accent2); background: var(--accent2-light); }
+.batch-queue-list { display: flex; flex-direction: column; gap: 6px; }
+.bq-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px; border-radius: 10px;
+  background: var(--surface); border: 1px solid var(--border);
+  font-size: 0.8em; transition: border-color 0.15s;
+}
+.bq-item.bq-processing { border-color: var(--accent2); background: var(--accent2-light); }
+.bq-item.bq-done { border-color: rgba(22,163,74,0.3); background: rgba(22,163,74,0.05); }
+.bq-item.bq-error { border-color: rgba(220,38,38,0.3); background: rgba(220,38,38,0.05); }
+.bq-icon { font-size: 1em; flex-shrink: 0; }
+.bq-name { flex: 1; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.bq-size { color: var(--text3); white-space: nowrap; flex-shrink: 0; }
+.bq-op { color: var(--accent2); font-weight: 600; white-space: nowrap; flex-shrink: 0; }
+.bq-status { color: var(--text3); white-space: nowrap; flex-shrink: 0; }
+.bq-remove {
+  background: none; border: none; color: var(--text3);
+  cursor: pointer; font-size: 0.9em; padding: 2px 6px;
+  border-radius: 4px; flex-shrink: 0; transition: color 0.15s;
+}
+.bq-remove:hover { color: var(--danger); }
+
+/* ── Smart Suggestions Engine Banner ───────────────────────── */
+.ss-engine-banner {
+  display: none;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 14px 16px;
+  margin-bottom: 14px; animation: fadeUp 0.25s ease;
+}
+.ss-engine-header {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 10px;
+}
+.ss-engine-icon { font-size: 1em; }
+.ss-engine-title { font-size: 0.84em; font-weight: 700; color: var(--text); }
+.ss-engine-sub { font-size: 0.72em; color: var(--text3); margin-left: auto; }
+.ss-engine-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.ss-engine-chip {
+  display: flex; flex-direction: column; align-items: flex-start;
+  padding: 8px 12px; border-radius: 10px;
+  border: 1.5px solid var(--border);
+  background: var(--surface); cursor: pointer;
+  transition: all 0.15s; font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.82em; font-weight: 600; color: var(--text);
+}
+.ss-engine-chip:hover { border-color: var(--accent2); background: var(--accent2-light); color: var(--accent2); }
+.ss-chip-reason { font-size: 0.7em; font-weight: 400; color: var(--text3); margin-top: 2px; }
+.ss-engine-chip:hover .ss-chip-reason { color: var(--accent2); opacity: 0.8; }
+
+/* ── Screenshot Studio Phase 3 ─────────────────────────────── */
+.ss-ratio-row {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  padding: 12px 0 4px;
+  border-top: 1px solid var(--border);
+  margin-top: 12px;
+}
+.ss-ratio-label {
+  width: 100%; font-size: 0.72em; font-weight: 700;
+  color: var(--text3); text-transform: uppercase; letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+.ss-ratio-btn {
+  padding: 5px 12px; border-radius: 20px;
+  border: 1.5px solid var(--border);
+  background: var(--surface2); color: var(--text2);
+  font-size: 0.76em; font-weight: 600; cursor: pointer;
+  transition: all 0.15s; font-family: 'Plus Jakarta Sans', sans-serif;
+  white-space: nowrap;
+}
+.ss-ratio-btn:hover { border-color: var(--accent2); color: var(--accent2); }
+.ss-ratio-btn.active {
+  background: var(--accent2); color: #fff; border-color: transparent;
+}
+.ss-dyn-bg-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 14px; border-radius: 20px;
+  border: 1.5px solid rgba(99,102,241,0.3);
+  background: rgba(99,102,241,0.08); color: #6366f1;
+  font-size: 0.78em; font-weight: 600; cursor: pointer;
+  transition: all 0.15s; font-family: 'Plus Jakarta Sans', sans-serif;
+  margin-top: 8px;
+}
+.ss-dyn-bg-btn:hover { background: rgba(99,102,241,0.15); border-color: #6366f1; }
+
+/* ── Hero tagline rotator ───────────────────────────────────── */
+#heroTaglineRotator {
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  display: inline-block;
+}
+
+/* ── Keyboard shortcut hints ───────────────────────────────── */
+.kbd-hint {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 0.68em; color: var(--text3);
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 5px; padding: 1px 6px;
+  font-family: 'Plus Jakarta Sans', monospace;
+  vertical-align: middle; margin-left: 6px;
+}
+
+/* ── Visual polish — reduced borders, better spacing ───────── */
+.tab-section:not(.home-section) {
+  /* Slightly more breathing room */
+  padding-top: 8px;
+}
+.section-header {
+  margin-bottom: 20px;
+}
+/* Softer card borders */
+.card {
+  border-color: var(--border);
+  transition: box-shadow 0.25s, border-color 0.25s;
+}
+.card:hover {
+  border-color: rgba(37,99,235,0.15);
+}
+/* Tighter option panels */
+.options-panel {
+  gap: 12px;
+}
+/* Smoother primary button */
+.primary-btn {
+  transition: transform 0.18s cubic-bezier(.22,1,.36,1), box-shadow 0.2s, opacity 0.2s;
+}
+/* Better focus rings */
+*:focus-visible {
+  outline: 2px solid var(--accent2);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ── Micro-interaction: tool card active state ─────────────── */
+.home-card:active { transform: translateY(-2px) scale(0.99); }
+.workflow-card:active { transform: translateY(-2px) scale(0.99); }
+
+/* ── Smooth tab transitions ────────────────────────────────── */
+.tab-section.active {
+  animation: tabReveal 0.28s cubic-bezier(.22,1,.36,1);
+}
+@keyframes tabReveal {
+  from { opacity: 0; transform: translateY(10px) scale(0.995); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ── Responsive batch ──────────────────────────────────────── */
+@media (max-width: 640px) {
+  .bq-item { flex-wrap: wrap; }
+  .bq-op, .bq-status { display: none; }
+  .so-launcher-card { flex-direction: column; text-align: center; }
+  .ss-ratio-row { gap: 4px; }
+  .ss-ratio-btn { font-size: 0.7em; padding: 4px 9px; }
+}

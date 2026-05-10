@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="styles-phase2.css">
+    <link rel="stylesheet" href="styles-phase3.css">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#16a34a">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -217,6 +218,20 @@
             <span class="session-bar-icon">⚡</span>
             <span id="sessionBarText">You've optimized <strong id="sessionCount">0</strong> files this session</span>
             <button class="session-bar-close" onclick="document.getElementById('sessionBar').style.display='none'">×</button>
+        </div>
+
+        <!-- Smart Optimize Launcher -->
+        <div class="so-launcher" id="soLauncher" style="display:block;">
+            <div class="so-launcher-card">
+                <div class="so-launcher-icon">🚀</div>
+                <div class="so-launcher-text">
+                    <h3>Smart Optimize — One Click</h3>
+                    <p>Drop any image. We analyze, compress, convert to the best format and download — automatically.</p>
+                </div>
+                <button class="so-launch-btn" id="smartOptimizeBtn">
+                    <span>⚡</span> Smart Optimize
+                </button>
+            </div>
         </div>
 
         <!-- Hero -->
@@ -557,6 +572,32 @@
 
         </div>
 
+        <!-- Batch Queue -->
+        <div class="batch-section" id="batchSection">
+            <div class="section-label" style="margin-top:64px;">
+                <span class="sl-line"></span>
+                <span>Batch Queue</span>
+                <span class="sl-line"></span>
+            </div>
+            <div class="batch-header">
+                <span class="batch-title">🗂 Batch Processing</span>
+                <span class="batch-count" id="batchCount">0</span>
+                <select class="batch-op-select" id="batchOperation">
+                    <option value="compress-webp">Compress → WebP</option>
+                    <option value="compress-jpg">Compress → JPG</option>
+                    <option value="convert-png">Convert → PNG</option>
+                    <option value="convert-webp">Convert → WebP</option>
+                </select>
+                <button class="batch-run-btn" id="batchRunBtn" disabled>▶ Run All</button>
+                <button class="batch-clear-btn" id="batchClearBtn">Clear Done</button>
+            </div>
+            <div class="drop-zone batch-drop" id="batchDrop">
+                <span>📂 Drop multiple images here to add to queue</span>
+                <input type="file" id="batchUpload" accept="image/*" multiple hidden>
+            </div>
+            <div class="batch-queue-list" id="batchQueueList"></div>
+        </div>
+
         <!-- Recent Workspace -->
         <div id="recentWorkspace" class="recent-workspace" style="display:none;">
             <div class="section-label" style="margin-top:64px;">
@@ -726,6 +767,9 @@
             <div id="saInsights" class="sa-insights"></div>
         </div>
 
+        <!-- Smart Suggestions -->
+        <div id="ssSuggestions" class="ss-engine-banner"></div>
+
         <div id="ssOptions" class="card" style="display:none;">
             <div class="ss-style-tabs">
                 <button class="ss-style-btn active" data-style="macOS">🍎 macOS</button>
@@ -750,6 +794,7 @@
                         <option value="solid-white">Solid White</option>
                         <option value="solid-black">Solid Black</option>
                         <option value="transparent">Transparent</option>
+                        <option value="dynamic">✨ From Image Colors</option>
                     </select>
                 </div>
                 <div class="opt-group">
@@ -787,6 +832,14 @@
                 <p class="preview-label">Live Preview</p>
                 <canvas id="ssCanvas" style="max-width:100%; border-radius:8px; display:block; margin:0 auto;"></canvas>
             </div>
+
+            <!-- Share-ready ratios -->
+            <div class="ss-ratio-row" id="ssRatioRow">
+                <span class="ss-ratio-label">Export Ratio</span>
+            </div>
+
+            <!-- Dynamic background -->
+            <button class="ss-dyn-bg-btn" id="ssDynBgBtn">🎨 Auto Background from Image Colors</button>
         </div>
 
         <div class="btn-row">
@@ -1108,6 +1161,9 @@
             </div>
             <div id="compressSaInsights" class="sa-insights"></div>
         </div>
+
+        <!-- Smart Suggestions -->
+        <div id="compressSuggestions" class="ss-engine-banner"></div>
 
         <div id="compressOptions" class="card" style="display:none;">
             <!-- Quick Mode -->
@@ -2130,6 +2186,38 @@
 
 </main>
 
+<!-- ══ Smart Optimize Modal ══ -->
+<div id="soModal" class="so-modal">
+  <div class="so-modal-inner">
+    <div class="so-modal-header">
+      <span style="font-size:1.3em;">🚀</span>
+      <span class="so-modal-title">Smart Optimize</span>
+      <button class="so-close-btn" id="soClose">✕</button>
+    </div>
+    <div class="so-modal-body">
+      <div class="drop-zone so-drop-zone" id="soDrop">
+        <span class="drop-icon">🚀</span>
+        <p>Drop image here or <label for="soUpload" class="link">click to upload</label></p>
+        <input type="file" id="soUpload" accept="image/*" hidden>
+      </div>
+      <div class="so-progress-wrap">
+        <div class="so-progress-bar"><div class="so-progress-fill" id="soBar"></div></div>
+        <div class="so-pct" id="soPct">0%</div>
+      </div>
+      <div class="so-log" id="soLog"></div>
+      <div class="so-next-steps" id="soNextSteps" style="display:none;">
+        <div class="so-next-label">Continue with <span id="soNextFile"></span></div>
+        <div class="so-next-btns">
+          <button class="so-next-btn" data-tab="screenshot">✨ Beautify</button>
+          <button class="so-next-btn" data-tab="resize">✂️ Resize</button>
+          <button class="so-next-btn" data-tab="share">🌐 Share</button>
+          <button class="so-next-btn" data-tab="watermark">💧 Watermark</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <footer id="site-footer">
     <div class="footer-inner">
         <div class="footer-left">
@@ -2162,5 +2250,6 @@
 <script src="https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.js"></script>
 <script src="script.js"></script>
 <script src="phase2.js"></script>
+<script src="phase3.js"></script>
 </body>
 </html>

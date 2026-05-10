@@ -1,60 +1,85 @@
 # MultiMian ImageKit
 
-**Extract Text • Convert • Compress • Resize • Optimize — All in One Smart Toolkit**
+**Fast image workflows for creators — Compress, Convert, Beautify, Optimize, all in-browser.**
 
-A fast, browser-based media utility. No installation, no backend upload — everything runs locally in your browser.
+A browser-native creator productivity platform. No installation, no backend upload — everything runs locally in your browser.
 
 🌐 **Live Demo:** https://mianhassam96.github.io/MultiMian-ImageKit/
 
 ---
 
-## ✨ Tools (12 total)
+## ✨ Phase 2 — Workflow Platform
+
+### ⚡ New Platform Features
+| Feature | Description |
+|---------|-------------|
+| 🔗 Shared Asset Pipeline | Upload once, continue through multiple tools without re-uploading |
+| ⚡ Workflow Engine | After each action, get smart "continue with this file" suggestions |
+| ⌘K Command Palette | Search all tools, workflows and actions instantly |
+| 📦 Universal Export Pack | 1 image → all social sizes + WebP + favicon as ZIP |
+| 🏥 Image Health Score | Score out of 100 with specific issues and one-click fixes |
+| 🕐 Recent Workspace | Last 6 exports with thumbnails — continue where you left off |
+| 📱 PWA Install | Install as desktop/mobile app, works offline |
+| 🎛 Progressive Disclosure | Quick mode + Advanced accordion on Compress tool |
+
+### 🖼 Screenshot Studio — New Presets
+- 🐦 Tweet mode — Twitter card overlay
+- 🚀 Product Hunt style — PH badge overlay
+- 💻 Code theme — code editor frame
+- 🔮 Glass — glassmorphism border + spotlight glow
+- (+ existing: macOS, Browser, Shadow, Gradient, Clean)
+
+---
+
+## 🛠 All Tools (13)
 
 ### 🖼 Image Tools
 | Tool | Description |
 |------|-------------|
-| 🔤 Image → Text (OCR) | Extract text from any image in 10+ languages. Copy, download .txt or export as PDF |
-| 🗜 Compress | Reduce file size with quality slider. Live before/after size comparison |
-| ✂️ Resize | Exact dimensions with aspect-ratio lock. Social media presets (Instagram, YouTube, Twitter, Facebook) |
+| ✨ Screenshot Studio | Frames, shadows & gradients. macOS, Browser, Tweet, PH, Code, Glass presets |
+| 🔤 Image → Text (OCR) | Extract text in 10+ languages. Copy, TXT or PDF export |
+| 🗜 Compress | Quick mode + Advanced. Live before/after slider. Savings animation |
+| ✂️ Resize | Exact dimensions + social presets (Instagram, YouTube, Twitter, Facebook) |
 | 🔄 Format Convert | JPG ↔ PNG ↔ WebP with quality control |
-| 💧 Watermark | Text overlay with custom font, color, opacity & 6 positions including tile |
-| 🔗 Merge Images | Combine two images side-by-side or stacked. Export as JPG, PNG or PDF |
-| 🌐 Share Image | Upload and get a permanent public link. Share on WhatsApp, Telegram, Twitter and more |
+| 💧 Watermark | Text overlay, 6 positions + tile, custom font/color/opacity |
+| 🔗 Merge Images | Side-by-side or stacked. Export JPG, PNG or PDF |
+| 🌐 Share Image | ImgBB upload → public link + QR code |
 
 ### 📄 PDF Tools
 | Tool | Description |
 |------|-------------|
-| 📝 Text Studio | Write, format & export text. Convert text ↔ PDF. Export as TXT, RTF, DOCX or PDF |
-| 🖼 PDF → Image | Convert PDF pages to PNG or JPG. Download individual pages or all as a ZIP |
+| 📝 Text Studio | Rich text editor. Export TXT, RTF, DOCX, PDF. Read .txt/.rtf/.docx |
+| 🖼 PDF → Image | Pages to PNG/JPG. Individual or ZIP download |
 
-### 🎬 Media Converter Tools
+### 🎬 Media Tools
 | Tool | Description |
 |------|-------------|
-| 🎞 Image → GIF | Upload multiple images, reorder frames, set delay and export an animated GIF |
-| 🎬 Video → GIF | Upload a short video, select start/end time, adjust frame rate and export GIF |
-| 🎨 Image → Sticker | Resize to 512×512 sticker format. Export as PNG or WebP for WhatsApp, Telegram & Discord |
+| 🎞 Image → GIF | Multi-frame animated GIF, drag-reorder, per-frame delay |
+| 🎬 Video → GIF | Clip trimmer, frame rate control, ping-pong mode |
+| 🎨 Image → Sticker | 512×512 PNG/WebP for WhatsApp, Telegram & Discord |
 
 ---
 
 ## 🎨 UI / UX
-
-- Dark mode & light mode (saved to localStorage)
-- Drag & drop upload on all tools
-- File info panel: name, size, resolution, format
-- Animated progress bars
-- Mobile responsive layout with hamburger drawer
-- Dropdown navigation grouped by category
+- Dark/light mode (localStorage)
+- Drag & drop on all tools
+- Animated hero canvas (particle mesh)
+- Dropdown nav grouped by category
+- Mobile hamburger drawer
+- Confetti celebrations on milestones
+- Session productivity tracker
+- Smart file analysis on upload
 
 ## 💻 Technologies
-
-- HTML5, CSS3, Vanilla JavaScript (ES6+)
-- [Tesseract.js](https://github.com/naptha/tesseract.js) — Browser OCR
+- HTML5, CSS3, Vanilla JS (ES6+)
+- [Tesseract.js](https://github.com/naptha/tesseract.js) — OCR
 - [jsPDF](https://github.com/parallax/jsPDF) — PDF generation
 - [PDF.js](https://mozilla.github.io/pdf.js/) — PDF parsing
-- [gifenc](https://github.com/mattdesl/gifenc) — GIF encoding
+- [gif.js](https://github.com/jnordberg/gif.js) — GIF encoding
 - [JSZip](https://stuk.github.io/jszip/) — ZIP generation
-- Canvas API — Image manipulation
+- [QRCode.js](https://github.com/davidshimjs/qrcodejs) — QR codes
+- Canvas API — all image manipulation
+- Service Worker — PWA + offline support
 
 ## 📄 License
-
 MIT License — Free for personal and commercial use.

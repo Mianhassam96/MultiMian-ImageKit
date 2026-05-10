@@ -9,8 +9,50 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles-phase2.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#16a34a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ImageKit">
 </head>
 <body>
+
+<!-- ══ Command Palette (Ctrl+K) ══ -->
+<div id="cmdPalette" class="cmd-palette" role="dialog" aria-modal="true" aria-label="Command palette" style="display:none;">
+  <div class="cmd-backdrop" id="cmdBackdrop"></div>
+  <div class="cmd-modal">
+    <div class="cmd-search-row">
+      <span class="cmd-search-icon">⌘</span>
+      <input type="text" id="cmdInput" class="cmd-input" placeholder="Search tools, workflows, actions…" autocomplete="off" spellcheck="false">
+      <kbd class="cmd-esc">ESC</kbd>
+    </div>
+    <div class="cmd-results" id="cmdResults"></div>
+    <div class="cmd-footer">
+      <span><kbd>↑↓</kbd> navigate</span>
+      <span><kbd>↵</kbd> open</span>
+      <span><kbd>ESC</kbd> close</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PWA Install Banner ══ -->
+<div id="pwaBanner" class="pwa-banner" style="display:none;">
+  <span class="pwa-icon">📱</span>
+  <span class="pwa-text">Install ImageKit as an app — works offline, no browser needed.</span>
+  <button id="pwaInstallBtn" class="pwa-install-btn">Install</button>
+  <button id="pwaDismiss" class="pwa-dismiss">✕</button>
+</div>
+
+<!-- ══ Workflow Continuation Panel ══ -->
+<div id="workflowPanel" class="workflow-panel" style="display:none;">
+  <div class="wfp-header">
+    <span class="wfp-icon">⚡</span>
+    <span class="wfp-title">Continue with this file</span>
+    <button class="wfp-close" id="wfpClose">✕</button>
+  </div>
+  <div class="wfp-actions" id="wfpActions"></div>
+</div>
 
 <header id="site-header">
     <div class="header-inner">
@@ -117,6 +159,9 @@
 
         <!-- Right: toggle + hamburger -->
         <div class="header-right">
+            <button id="cmdPaletteBtn" class="cmd-palette-btn" aria-label="Command palette (Ctrl+K)" title="Command palette (Ctrl+K)">
+                <span>⌘K</span>
+            </button>
             <button id="darkToggle" class="dark-toggle" aria-label="Toggle theme">
                 <span class="toggle-track"><span class="toggle-thumb"></span></span>
                 <span id="toggleIcon">🌙</span>
@@ -506,6 +551,82 @@
 
         </div>
 
+        <!-- Recent Workspace -->
+        <div id="recentWorkspace" class="recent-workspace" style="display:none;">
+            <div class="section-label" style="margin-top:64px;">
+                <span class="sl-line"></span>
+                <span>Recent Workspace</span>
+                <span class="sl-line"></span>
+            </div>
+            <div class="rw-grid" id="rwGrid"></div>
+        </div>
+
+        <!-- Universal Export Pack -->
+        <div class="uep-section">
+            <div class="section-label" style="margin-top:64px;">
+                <span class="sl-line"></span>
+                <span>Universal Export Pack</span>
+                <span class="sl-line"></span>
+            </div>
+            <div class="uep-card">
+                <div class="uep-left">
+                    <div class="uep-icon">📦</div>
+                    <div>
+                        <h3>One Image → Every Platform</h3>
+                        <p>Upload once, get all social sizes + WebP optimized + favicon — downloaded as a ZIP. No re-uploading.</p>
+                        <div class="uep-sizes">
+                            <span>Instagram Post 1080×1080</span>
+                            <span>Story 1080×1920</span>
+                            <span>Twitter/X 1200×675</span>
+                            <span>LinkedIn 1200×627</span>
+                            <span>YouTube Thumb 1280×720</span>
+                            <span>Blog Hero 1600×900</span>
+                            <span>Open Graph 1200×630</span>
+                            <span>Favicon 32×32</span>
+                            <span>WebP Optimized</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="uep-right">
+                    <div class="drop-zone uep-drop" id="uepDrop">
+                        <span class="drop-icon">📦</span>
+                        <p>Drop image here or <label for="uepUpload" class="link">click to upload</label></p>
+                        <input type="file" id="uepUpload" accept="image/*" hidden>
+                    </div>
+                    <div id="uepProgress" style="display:none;" class="uep-progress">
+                        <div class="progress-bar"><div class="progress-fill" id="uepFill"></div><span id="uepLabel">Generating…</span></div>
+                    </div>
+                    <div id="uepSuccess" class="success-msg" style="display:none;">✅ ZIP downloaded! All sizes ready.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Image Health Score -->
+        <div class="ihs-section">
+            <div class="section-label" style="margin-top:64px;">
+                <span class="sl-line"></span>
+                <span>Image Health Score</span>
+                <span class="sl-line"></span>
+            </div>
+            <div class="ihs-card">
+                <div class="ihs-left">
+                    <div class="ihs-icon">🏥</div>
+                    <div>
+                        <h3>Diagnose Your Image</h3>
+                        <p>Get a score out of 100 with specific issues and one-click fixes. Know exactly what to improve before publishing.</p>
+                    </div>
+                </div>
+                <div class="ihs-right">
+                    <div class="drop-zone ihs-drop" id="ihsDrop">
+                        <span class="drop-icon">🏥</span>
+                        <p>Drop image to score it or <label for="ihsUpload" class="link">click to upload</label></p>
+                        <input type="file" id="ihsUpload" accept="image/*" hidden>
+                    </div>
+                    <div id="ihsResult" class="ihs-result" style="display:none;"></div>
+                </div>
+            </div>
+        </div>
+
         <!-- How it works -->
         <div class="how-section">
             <div class="section-label">
@@ -603,6 +724,10 @@
             <div class="ss-style-tabs">
                 <button class="ss-style-btn active" data-style="macOS">🍎 macOS</button>
                 <button class="ss-style-btn" data-style="browser">🌐 Browser</button>
+                <button class="ss-style-btn" data-style="tweet">🐦 Tweet</button>
+                <button class="ss-style-btn" data-style="producthunt">🚀 Product Hunt</button>
+                <button class="ss-style-btn" data-style="code">💻 Code</button>
+                <button class="ss-style-btn" data-style="glass">🔮 Glass</button>
                 <button class="ss-style-btn" data-style="shadow">🌑 Shadow</button>
                 <button class="ss-style-btn" data-style="gradient">🌈 Gradient</button>
                 <button class="ss-style-btn" data-style="none">⬜ Clean</button>
@@ -979,12 +1104,41 @@
         </div>
 
         <div id="compressOptions" class="card" style="display:none;">
-            <div class="slider-row">
-                <div class="slider-label">
-                    <span>Compression Quality</span>
-                    <strong><span id="qualityValue">80</span>%</strong>
+            <!-- Quick Mode -->
+            <div class="quick-mode-row">
+                <span class="qm-label">Quick Mode</span>
+                <div class="qm-btns">
+                    <button class="qm-btn" data-quality="95">Maximum Quality</button>
+                    <button class="qm-btn active" data-quality="80">Balanced</button>
+                    <button class="qm-btn" data-quality="50">Ultra Small</button>
                 </div>
-                <input type="range" id="qualitySlider" min="1" max="100" value="80">
+            </div>
+            <!-- Advanced toggle -->
+            <button class="advanced-toggle" id="compressAdvancedToggle">
+                <span>Advanced Options</span><span class="adv-chevron">▾</span>
+            </button>
+            <div id="compressAdvanced" class="advanced-panel" style="display:none;">
+                <div class="slider-row">
+                    <div class="slider-label">
+                        <span>JPEG Quality</span>
+                        <strong><span id="qualityValue">80</span>%</strong>
+                    </div>
+                    <input type="range" id="qualitySlider" min="1" max="100" value="80">
+                </div>
+                <div class="options-panel" style="margin-top:12px;">
+                    <div class="opt-group">
+                        <label>Output Format</label>
+                        <select id="compressFormat">
+                            <option value="image/jpeg">JPEG</option>
+                            <option value="image/webp">WebP (smaller)</option>
+                            <option value="image/png">PNG (lossless)</option>
+                        </select>
+                    </div>
+                    <div class="opt-group">
+                        <label>Max Width (px)</label>
+                        <input type="number" id="compressMaxW" placeholder="No limit" min="100" max="8000">
+                    </div>
+                </div>
             </div>
             <div class="divider"></div>
             <div class="size-info">
@@ -2001,5 +2155,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.js"></script>
 <script src="script.js"></script>
+<script src="phase2.js"></script>
 </body>
 </html>

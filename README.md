@@ -69,7 +69,7 @@ A browser-native creator productivity platform. No installation, no backend uplo
 - Confetti celebrations on milestones
 - Session productivity tracker
 - Smart file analysis on upload
-
+ 
 ## 💻 Technologies
 - HTML5, CSS3, Vanilla JS (ES6+)
 - [Tesseract.js](https://github.com/naptha/tesseract.js) — OCR

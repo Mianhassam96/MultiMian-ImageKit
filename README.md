@@ -8,8 +8,6 @@ A browser-native creator productivity platform. No installation, no backend uplo
 
 ---
 
-## ✨ Phase 2 — Workflow Platform
-
 ### ⚡ New Platform Features
 | Feature | Description |
 |---------|-------------|

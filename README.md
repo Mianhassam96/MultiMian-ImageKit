@@ -1,4 +1,4 @@
-# MultiMian ImageKit
+ # MultiMian ImageKit
 
 **Fast image workflows for creators — Compress, Convert, Beautify, Optimize, all in-browser.**
 

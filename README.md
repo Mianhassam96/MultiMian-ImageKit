@@ -78,6 +78,6 @@ A browser-native creator productivity platform. No installation, no backend uplo
 - [QRCode.js](https://github.com/davidshimjs/qrcodejs) — QR codes
 - Canvas API — all image manipulation
 - Service Worker — PWA + offline support
-
+ 
 ## 📄 License
 MIT License — Free for personal and commercial use.

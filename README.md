@@ -9,7 +9,7 @@ A browser-native creator productivity platform. No installation, no backend uplo
 ---
 
 ### ⚡ New Platform Features
-| Feature | Description |
+| Feature | Description | 
 |---------|-------------|
 | 🔗 Shared Asset Pipeline | Upload once, continue through multiple tools without re-uploading |
 | ⚡ Workflow Engine | After each action, get smart "continue with this file" suggestions |

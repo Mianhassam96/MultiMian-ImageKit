@@ -1,4 +1,4 @@
-# MultiMian ImageKit
+ # MultiMian ImageKit
 
 **Fast image workflows for creators — Compress, Convert, Beautify, Optimize, all in-browser.**
 
@@ -8,10 +8,8 @@ A browser-native creator productivity platform. No installation, no backend uplo
 
 ---
 
-## ✨ Phase 2 — Workflow Platform
-
 ### ⚡ New Platform Features
-| Feature | Description |
+| Feature | Description | 
 |---------|-------------|
 | 🔗 Shared Asset Pipeline | Upload once, continue through multiple tools without re-uploading |
 | ⚡ Workflow Engine | After each action, get smart "continue with this file" suggestions |
@@ -30,7 +28,7 @@ A browser-native creator productivity platform. No installation, no backend uplo
 - (+ existing: macOS, Browser, Shadow, Gradient, Clean)
 
 ---
-
+ 
 ## 🛠 All Tools (13)
 
 ### 🖼 Image Tools
@@ -69,7 +67,7 @@ A browser-native creator productivity platform. No installation, no backend uplo
 - Confetti celebrations on milestones
 - Session productivity tracker
 - Smart file analysis on upload
-
+ 
 ## 💻 Technologies
 - HTML5, CSS3, Vanilla JS (ES6+)
 - [Tesseract.js](https://github.com/naptha/tesseract.js) — OCR
@@ -80,6 +78,6 @@ A browser-native creator productivity platform. No installation, no backend uplo
 - [QRCode.js](https://github.com/davidshimjs/qrcodejs) — QR codes
 - Canvas API — all image manipulation
 - Service Worker — PWA + offline support
-
+ 
 ## 📄 License
 MIT License — Free for personal and commercial use.

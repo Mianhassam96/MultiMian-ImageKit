@@ -99,6 +99,46 @@ document.querySelectorAll('.hero-cta[data-tab], .home-card[data-tab]').forEach(e
     el.addEventListener('click', () => activateTab(el.dataset.tab));
 });
 
+// ── Browse All Tools button — smooth scroll to tools grid ─────
+const heroBrowseBtn = document.getElementById('heroBrowseBtn');
+if (heroBrowseBtn) {
+    heroBrowseBtn.addEventListener('click', () => {
+        const toolsSection = document.querySelector('.features-section') || document.querySelector('.tool-category');
+        if (toolsSection) toolsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+}
+
+// ── Why-cards and nav mega-panel CTA smart button ─────────────
+document.querySelectorAll('.why-card').forEach(card => {
+    card.style.cursor = 'default'; // informational only, no nav
+});
+
+const ndpSmartBtn = document.getElementById('ndpSmartBtn');
+if (ndpSmartBtn) {
+    ndpSmartBtn.addEventListener('click', () => {
+        // Close mega dropdown then open smart optimize
+        document.querySelectorAll('.nav-dropdown.open').forEach(d => d.classList.remove('open'));
+        document.getElementById('soLauncher')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+}
+
+// ── Home FAQ accordion (in addition to contact page FAQ) ──────
+document.querySelectorAll('.faq-home-section .faq-q').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const item   = this.closest('.faq-item');
+        const isOpen = item.classList.contains('open');
+        // close all in same section
+        this.closest('.faq-home-grid').querySelectorAll('.faq-item.open').forEach(i => {
+            i.classList.remove('open');
+            i.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
+        });
+        if (!isOpen) {
+            item.classList.add('open');
+            this.setAttribute('aria-expanded', 'true');
+        }
+    });
+});
+
 // ── Dropdown nav ──────────────────────────────────────────────
 (function initDropdowns() {
     document.querySelectorAll('.nav-dropdown').forEach(dropdown => {
@@ -939,40 +979,65 @@ qualitySlider.addEventListener('input', () => {
     if (compressFile) updateCompressPreview();
 });
 
-function updateCompressPreview() {
+function getCompressSettings() {
+    const mime    = document.getElementById('compressFormat')?.value || 'image/jpeg';
     const quality = parseInt(qualitySlider.value) / 100;
+    const maxW    = parseInt(document.getElementById('compressMaxW')?.value) || 0;
+    const extMap  = { 'image/jpeg': 'jpg', 'image/webp': 'webp', 'image/png': 'png' };
+    const ext     = extMap[mime] || 'jpg';
+    return { mime, quality, maxW, ext };
+}
+
+function updateCompressPreview() {
+    const { mime, quality, maxW } = getCompressSettings();
+    const src = URL.createObjectURL(compressFile);
     const img = new Image();
     img.onload = () => {
+        URL.revokeObjectURL(src); // clean up
+        let w = img.naturalWidth, h = img.naturalHeight;
+        if (maxW && w > maxW) { h = Math.round(h * maxW / w); w = maxW; }
         const canvas = document.createElement('canvas');
-        canvas.width = img.naturalWidth;
-        canvas.height = img.naturalHeight;
-        canvas.getContext('2d').drawImage(img, 0, 0);
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
         canvas.toBlob(blob => {
             if (!blob) return;
             const pct = ((compressFile.size - blob.size) / compressFile.size * 100).toFixed(1);
             compSize.textContent = formatBytes(blob.size);
             savedPct.textContent = pct > 0 ? pct + '%' : '0%';
-        }, 'image/jpeg', quality);
+        }, mime, quality);
     };
-    img.src = URL.createObjectURL(compressFile);
+    img.onerror = () => URL.revokeObjectURL(src);
+    img.src = src;
 }
+
+// Re-run preview when format or maxW changes
+document.getElementById('compressFormat')?.addEventListener('change', () => { if (compressFile) updateCompressPreview(); });
+document.getElementById('compressMaxW')?.addEventListener('input', () => { if (compressFile) updateCompressPreview(); });
 
 compressBtn.addEventListener('click', () => {
     if (!compressFile) return;
-    const quality = parseInt(qualitySlider.value) / 100;
+    const { mime, quality, maxW, ext } = getCompressSettings();
+    const src = URL.createObjectURL(compressFile);
     const img = new Image();
     img.onload = () => {
+        URL.revokeObjectURL(src);
+        let w = img.naturalWidth, h = img.naturalHeight;
+        if (maxW && w > maxW) { h = Math.round(h * maxW / w); w = maxW; }
         const canvas = document.createElement('canvas');
-        canvas.width = img.naturalWidth;
-        canvas.height = img.naturalHeight;
-        canvas.getContext('2d').drawImage(img, 0, 0);
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
         canvas.toBlob(blob => {
-            const name = compressFile.name.replace(/\.[^.]+$/, '') + '-compressed.jpg';
-            triggerDownload(URL.createObjectURL(blob), name);
+            if (!blob) return;
+            const blobUrl = URL.createObjectURL(blob);
+            const name = compressFile.name.replace(/\.[^.]+$/, '') + '-compressed.' + ext;
+            triggerDownload(blobUrl, name);
+            // Don't revoke immediately — browser needs it for the download
+            setTimeout(() => URL.revokeObjectURL(blobUrl), 10000);
             compressSuccess.style.display = 'block';
-        }, 'image/jpeg', quality);
+        }, mime, quality);
     };
-    img.src = URL.createObjectURL(compressFile);
+    img.onerror = () => URL.revokeObjectURL(src);
+    img.src = src;
 });
 
 document.getElementById('compressClear').addEventListener('click', () => {
@@ -1461,6 +1526,7 @@ setupDrop(shareDrop, shareUpload, files => {
     buildFileInfo(shareFileInfo, shareFile);
     shareResult.style.display = 'none';
     document.getElementById('shareClearRow').style.display = 'flex';
+    document.getElementById('shareApiCard').style.display = 'block'; // show API key card
     updateShareBtn();
 });
 
@@ -1469,6 +1535,7 @@ document.getElementById('shareClear').addEventListener('click', () => {
     shareImg.src = '';
     sharePreview.style.display = 'none';
     document.getElementById('shareClearRow').style.display = 'none';
+    document.getElementById('shareApiCard').style.display = 'none';
     shareResult.style.display = 'none';
     shareProgress.style.display = 'none';
     shareUpload.value = '';
@@ -1574,6 +1641,70 @@ document.querySelectorAll('.share-copy-btn[data-copy]').forEach(btn => {
         });
     });
 });
+
+// ── Share Anywhere buttons — on each tool, routes canvas/result to Share tab ──────────────────
+(function initShareAnywhereBtns() {
+    // Map tool name → function that returns a File to share, or null
+    const toolFileGetters = {
+        compress:  () => compressFile,
+        resize:    () => resizeFile,
+        convert:   () => convertFile,
+        watermark: () => wmFile,
+        merge:     () => mergeFile1 || mergeFile2,
+        sticker:   () => stickerFile,
+        gif:       () => null, // handled specially
+        videogif:  () => null, // handled specially
+        screenshot:() => ssFile,
+    };
+
+    document.querySelectorAll('.share-anywhere-btn[data-tool]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const tool = btn.dataset.tool;
+            let file = null;
+
+            // For gif/videogif use blob URL; for others grab the file
+            if (tool === 'gif' && typeof gifBlobUrl !== 'undefined' && gifBlobUrl) {
+                // Fetch blob URL and convert to File
+                fetch(gifBlobUrl)
+                    .then(r => r.blob())
+                    .then(blob => {
+                        file = new File([blob], 'animated.gif', { type: 'image/gif' });
+                        routeToShare(file);
+                    });
+                return;
+            }
+            if (tool === 'videogif' && typeof videogifBlobUrl !== 'undefined' && videogifBlobUrl) {
+                fetch(videogifBlobUrl)
+                    .then(r => r.blob())
+                    .then(blob => {
+                        file = new File([blob], 'video-to-gif.gif', { type: 'image/gif' });
+                        routeToShare(file);
+                    });
+                return;
+            }
+
+            const getter = toolFileGetters[tool];
+            if (getter) file = getter();
+            if (!file) { alert('No file to share yet. Process an image first.'); return; }
+            routeToShare(file);
+        });
+    });
+
+    function routeToShare(file) {
+        // Pre-load file into share tab then navigate
+        shareFile = file;
+        const existingUrl = shareImg.src;
+        if (existingUrl && existingUrl.startsWith('blob:')) URL.revokeObjectURL(existingUrl);
+        shareImg.src = URL.createObjectURL(file);
+        sharePreview.style.display = 'block';
+        buildFileInfo(shareFileInfo, file);
+        shareResult.style.display = 'none';
+        document.getElementById('shareClearRow').style.display = 'flex';
+        document.getElementById('shareApiCard').style.display = 'block';
+        updateShareBtn();
+        activateTab('share');
+    }
+})();
 
 // ══════════════════════════════════════════════════════════════
 // 9. PDF → Image
@@ -2576,6 +2707,12 @@ const ssCopyBtn= document.getElementById('ssCopyBtn');
 const ssCanvas = document.getElementById('ssCanvas');
 let ssFile = null;
 let ssCurrentStyle = 'macOS';
+// Expose to window so phase2-5 patches can access it
+Object.defineProperty(window, 'ssCurrentStyle', {
+  get() { return ssCurrentStyle; },
+  set(v) { ssCurrentStyle = v; },
+  configurable: true
+});
 
 if (ssDrop && ssUpload) {
     setupDrop(ssDrop, ssUpload, files => {

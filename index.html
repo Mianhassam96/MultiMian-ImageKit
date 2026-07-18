@@ -3,8 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MultiMian ImageKit – Extract Text • Convert • Compress • Resize • Optimize</title>
-    <meta name="description" content="Free browser-based image toolkit. OCR, PDF converter, compressor, resizer, format converter and watermark. No upload, no install.">
+    <title>MultiMian ImageKit — Free Online Image Toolkit | Compress, Resize, Convert, OCR & More</title>
+    <meta name="description" content="The ultimate free browser-based image toolkit. Compress, resize, convert, crop, watermark, extract text (OCR), make GIFs and more — all in your browser. No uploads. No registration. Privacy first.">
+    <meta name="keywords" content="image compressor, image resizer, image converter, OCR, compress image, resize image, jpg to webp, png to jpg, image to pdf, screenshot studio, free image editor">
+    <meta property="og:title" content="MultiMian ImageKit — The Ultimate Free Browser Image Toolkit">
+    <meta property="og:description" content="13 powerful image tools. Compress, resize, convert, OCR, watermark, GIF maker and more. 100% in-browser. No uploads, no registration.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mianhassam96.github.io/MultiMian-ImageKit/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="MultiMian ImageKit — Free Online Image Toolkit">
+    <meta name="twitter:description" content="13 tools. No uploads. No registration. Privacy first. Works offline.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -13,6 +21,7 @@
     <link rel="stylesheet" href="styles-phase3.css">
     <link rel="stylesheet" href="styles-phase4.css">
     <link rel="stylesheet" href="styles-phase5.css">
+    <link rel="stylesheet" href="styles-premium.css">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#16a34a">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -66,116 +75,120 @@
 <header id="site-header">
     <div class="header-inner">
 
-        <!-- Logo — text only, no icon -->
+        <!-- Logo -->
         <a href="#" class="logo-wrap" onclick="activateTab('home'); return false;" aria-label="MultiMian ImageKit">
             <span class="logo-name">
                 <span class="logo-multi">Multi</span><span class="logo-mian">Mian</span><span class="logo-kit">ImageKit</span>
             </span>
         </a>
 
-        <!-- Dropdown Nav -->
-        <nav class="tabs-nav" id="tabsNav" aria-label="Tools">
+        <!-- Desktop Nav -->
+        <nav class="tabs-nav" id="tabsNav" aria-label="Main navigation">
             <button class="tab-btn" data-tab="home">Home</button>
 
-            <!-- 🖼 Image Tools -->
+            <!-- Tools mega-dropdown -->
             <div class="nav-dropdown">
-                <button class="nav-menu-btn" data-group="image">
-                    🖼 Image Tools <span class="nav-chevron">▾</span>
+                <button class="nav-menu-btn" data-group="tools">
+                    Tools <span class="nav-chevron">▾</span>
                 </button>
-                <div class="nav-dropdown-panel">
-                    <div class="ndp-header">🖼 Image Tools</div>
-                    <button class="ndp-item" data-tab="screenshot">
-                        <span class="ndp-icon">✨</span>
-                        <span class="ndp-text"><strong>Screenshot Studio</strong><small>Frames, shadows &amp; gradients</small></span>
-                    </button>
-                    <button class="ndp-item" data-tab="ocr">
-                        <span class="ndp-icon">🔤</span>
-                        <span class="ndp-text"><strong>Image → Text</strong><small>OCR extraction</small></span>
-                    </button>
-                    <button class="ndp-item" data-tab="compress">
-                        <span class="ndp-icon">🗜</span>
-                        <span class="ndp-text"><strong>Compress</strong><small>Reduce file size</small></span>
-                    </button>
-                    <button class="ndp-item" data-tab="resize">
-                        <span class="ndp-icon">✂️</span>
-                        <span class="ndp-text"><strong>Resize</strong><small>Custom &amp; social presets</small></span>
-                    </button>
-                    <button class="ndp-item" data-tab="convert">
-                        <span class="ndp-icon">🔄</span>
-                        <span class="ndp-text"><strong>Format Convert</strong><small>JPG ↔ PNG ↔ WebP</small></span>
-                    </button>
-                    <button class="ndp-item" data-tab="watermark">
-                        <span class="ndp-icon">💧</span>
-                        <span class="ndp-text"><strong>Watermark</strong><small>Text overlay &amp; tile</small></span>
-                    </button>
-                    <button class="ndp-item" data-tab="merge">
-                        <span class="ndp-icon">🔗</span>
-                        <span class="ndp-text"><strong>Merge Images</strong><small>Side-by-side or stacked</small></span>
-                    </button>
-                    <button class="ndp-item" data-tab="share">
-                        <span class="ndp-icon">🌐</span>
-                        <span class="ndp-text"><strong>Share Image</strong><small>Get public link + QR</small></span>
-                    </button>
+                <div class="nav-dropdown-panel nav-mega-panel">
+                    <div class="ndp-col">
+                        <div class="ndp-col-header">🖼 Image Tools</div>
+                        <button class="ndp-item" data-tab="screenshot">
+                            <span class="ndp-icon">✨</span>
+                            <span class="ndp-text"><strong>Screenshot Studio</strong><small>Frames, shadows &amp; gradients</small></span>
+                            <span class="ndp-badge ndp-hot">Hot</span>
+                        </button>
+                        <button class="ndp-item" data-tab="compress">
+                            <span class="ndp-icon">🗜</span>
+                            <span class="ndp-text"><strong>Compress Image</strong><small>Reduce file size up to 90%</small></span>
+                            <span class="ndp-badge ndp-popular">Popular</span>
+                        </button>
+                        <button class="ndp-item" data-tab="resize">
+                            <span class="ndp-icon">✂️</span>
+                            <span class="ndp-text"><strong>Resize Image</strong><small>Custom &amp; social presets</small></span>
+                        </button>
+                        <button class="ndp-item" data-tab="convert">
+                            <span class="ndp-icon">🔄</span>
+                            <span class="ndp-text"><strong>Convert Format</strong><small>JPG ↔ PNG ↔ WebP</small></span>
+                        </button>
+                        <button class="ndp-item" data-tab="watermark">
+                            <span class="ndp-icon">💧</span>
+                            <span class="ndp-text"><strong>Add Watermark</strong><small>Text overlay &amp; tile</small></span>
+                        </button>
+                        <button class="ndp-item" data-tab="merge">
+                            <span class="ndp-icon">🔗</span>
+                            <span class="ndp-text"><strong>Merge Images</strong><small>Side-by-side or stacked</small></span>
+                        </button>
+                        <button class="ndp-item" data-tab="share">
+                            <span class="ndp-icon">🌐</span>
+                            <span class="ndp-text"><strong>Share Image</strong><small>Public link + QR code</small></span>
+                        </button>
+                    </div>
+                    <div class="ndp-col">
+                        <div class="ndp-col-header">🔤 Extract &amp; Convert</div>
+                        <button class="ndp-item" data-tab="ocr">
+                            <span class="ndp-icon">🔤</span>
+                            <span class="ndp-text"><strong>Image → Text (OCR)</strong><small>10+ languages supported</small></span>
+                        </button>
+                        <button class="ndp-item" data-tab="pdf">
+                            <span class="ndp-icon">📝</span>
+                            <span class="ndp-text"><strong>Text Studio</strong><small>Write, export TXT/PDF/DOCX</small></span>
+                        </button>
+                        <button class="ndp-item" data-tab="pdf2img">
+                            <span class="ndp-icon">🖼</span>
+                            <span class="ndp-text"><strong>PDF → Image</strong><small>Pages to PNG/JPG + ZIP</small></span>
+                        </button>
+                        <div class="ndp-col-header" style="margin-top:12px;">🎬 Media Tools</div>
+                        <button class="ndp-item" data-tab="gif">
+                            <span class="ndp-icon">🎞</span>
+                            <span class="ndp-text"><strong>Image → GIF</strong><small>Multi-frame animated GIF</small></span>
+                        </button>
+                        <button class="ndp-item" data-tab="videogif">
+                            <span class="ndp-icon">🎬</span>
+                            <span class="ndp-text"><strong>Video → GIF</strong><small>Clip to GIF converter</small></span>
+                        </button>
+                        <button class="ndp-item" data-tab="sticker">
+                            <span class="ndp-icon">🎨</span>
+                            <span class="ndp-text"><strong>Image → Sticker</strong><small>512×512 for WhatsApp / Telegram</small></span>
+                        </button>
+                    </div>
+                    <div class="ndp-col ndp-col-cta">
+                        <div class="ndp-cta-card">
+                            <div class="ndp-cta-icon">⚡</div>
+                            <h4>Smart Optimize</h4>
+                            <p>Drop any image. We compress, convert and download automatically.</p>
+                            <button class="ndp-cta-btn" id="ndpSmartBtn">Try it free →</button>
+                        </div>
+                        <div class="ndp-stats-mini">
+                            <div><strong>13</strong><span>Tools</span></div>
+                            <div><strong>0</strong><span>Uploads</span></div>
+                            <div><strong>100%</strong><span>Free</span></div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- 📄 PDF Tools -->
-            <div class="nav-dropdown">
-                <button class="nav-menu-btn" data-group="pdf">
-                    📄 PDF Tools <span class="nav-chevron">▾</span>
-                </button>
-                <div class="nav-dropdown-panel">
-                    <div class="ndp-header">📄 PDF Tools</div>
-                    <button class="ndp-item" data-tab="pdf">
-                        <span class="ndp-icon">📝</span>
-                        <span class="ndp-text"><strong>Text Studio</strong><small>Write, Text↔PDF, export</small></span>
-                    </button>
-                    <button class="ndp-item" data-tab="pdf2img">
-                        <span class="ndp-icon">🖼</span>
-                        <span class="ndp-text"><strong>PDF → Image</strong><small>Pages to PNG / JPG + ZIP</small></span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- 🎬 Media Tools -->
-            <div class="nav-dropdown">
-                <button class="nav-menu-btn" data-group="media">
-                    🎬 Media Tools <span class="nav-chevron">▾</span>
-                </button>
-                <div class="nav-dropdown-panel">
-                    <div class="ndp-header">🎬 Media Converter Tools</div>
-                    <button class="ndp-item" data-tab="gif">
-                        <span class="ndp-icon">🎞</span>
-                        <span class="ndp-text"><strong>Image → GIF</strong><small>Multi-frame animated GIF</small></span>
-                    </button>
-                    <button class="ndp-item" data-tab="videogif">
-                        <span class="ndp-icon">🎬</span>
-                        <span class="ndp-text"><strong>Video → GIF</strong><small>Clip to GIF converter</small></span>
-                    </button>
-                    <button class="ndp-item" data-tab="sticker">
-                        <span class="ndp-icon">🎨</span>
-                        <span class="ndp-text"><strong>Image → Sticker</strong><small>512×512 PNG / WebP</small></span>
-                    </button>
-                </div>
-            </div>
-        </nav>
-
-        <!-- About / Contact links -->
-        <div class="nav-static-links">
             <button class="tab-btn" data-tab="about">About</button>
             <button class="tab-btn" data-tab="contact">Contact</button>
-        </div>
+            <a href="https://github.com/Mianhassam96/MultiMian-ImageKit" target="_blank" rel="noopener" class="nav-github-btn" aria-label="View on GitHub">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.38.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.54-1.38-1.33-1.75-1.33-1.75-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.49 1 .11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.13 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58C20.57 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                GitHub
+            </a>
+        </nav>
 
-        <!-- Right: toggle + hamburger -->
+        <!-- Right controls -->
         <div class="header-right">
-            <button id="cmdPaletteBtn" class="cmd-palette-btn" aria-label="Command palette (Ctrl+K)" title="Command palette (Ctrl+K)">
-                <span>⌘K</span>
+            <button id="cmdPaletteBtn" class="cmd-palette-btn" aria-label="Command palette (Ctrl+K)" title="Search tools (Ctrl+K)">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                <span>Search</span>
+                <kbd>⌘K</kbd>
             </button>
-            <button id="darkToggle" class="dark-toggle" aria-label="Toggle theme">
+            <button id="darkToggle" class="dark-toggle" aria-label="Toggle dark mode">
                 <span class="toggle-track"><span class="toggle-thumb"></span></span>
                 <span id="toggleIcon">🌙</span>
             </button>
-            <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+            <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
                 <span></span><span></span><span></span>
             </button>
         </div>
@@ -187,14 +200,14 @@
         <button class="tab-btn" data-tab="home">🏠 Home</button>
         <div class="drawer-group-label">🖼 Image Tools</div>
         <button class="tab-btn" data-tab="screenshot">✨ Screenshot Studio</button>
-        <button class="tab-btn" data-tab="ocr">🔤 Image → Text (OCR)</button>
-        <button class="tab-btn" data-tab="compress">🗜 Compress</button>
-        <button class="tab-btn" data-tab="resize">✂️ Resize</button>
+        <button class="tab-btn" data-tab="compress">🗜 Compress Image</button>
+        <button class="tab-btn" data-tab="resize">✂️ Resize Image</button>
         <button class="tab-btn" data-tab="convert">🔄 Convert Format</button>
         <button class="tab-btn" data-tab="watermark">💧 Watermark</button>
         <button class="tab-btn" data-tab="merge">🔗 Merge Images</button>
         <button class="tab-btn" data-tab="share">🌐 Share Link</button>
-        <div class="drawer-group-label">📄 PDF Tools</div>
+        <div class="drawer-group-label">🔤 Extract &amp; Convert</div>
+        <button class="tab-btn" data-tab="ocr">🔤 Image → Text (OCR)</button>
         <button class="tab-btn" data-tab="pdf">📝 Text Studio</button>
         <button class="tab-btn" data-tab="pdf2img">🖼 PDF → Image</button>
         <div class="drawer-group-label">🎬 Media Tools</div>
@@ -204,6 +217,10 @@
         <div class="drawer-group-label">Info</div>
         <button class="tab-btn" data-tab="about">ℹ️ About</button>
         <button class="tab-btn" data-tab="contact">✉️ Contact</button>
+        <a href="https://github.com/Mianhassam96/MultiMian-ImageKit" target="_blank" rel="noopener" class="drawer-github-link">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.38.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.54-1.38-1.33-1.75-1.33-1.75-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.49 1 .11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.13 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58C20.57 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
+            View on GitHub
+        </a>
     </div>
 </header>
 
@@ -218,64 +235,44 @@
         <!-- Session Stats Bar -->
         <div class="session-bar" id="sessionBar" style="display:none;">
             <span class="session-bar-icon">⚡</span>
-            <span id="sessionBarText">You've optimized <strong id="sessionCount">0</strong> files this session</span>
+            <span id="sessionBarText">You've processed <strong id="sessionCount">0</strong> files this session</span>
             <button class="session-bar-close" onclick="document.getElementById('sessionBar').style.display='none'">×</button>
         </div>
 
-        <!-- Smart Optimize Launcher -->
-        <div class="so-launcher" id="soLauncher" style="display:block;">
-            <div class="so-launcher-card">
-                <div class="so-launcher-icon">🚀</div>
-                <div class="so-launcher-text">
-                    <h3>Smart Optimize — One Click</h3>
-                    <p>Drop any image. We analyze, compress, convert to the best format and download — automatically.</p>
-                </div>
-                <button class="so-launch-btn" id="smartOptimizeBtn">
-                    <span>⚡</span> Smart Optimize
-                </button>
-            </div>
-        </div>
-
-        <!-- Hero -->
+        <!-- ── HERO ── -->
         <div class="hero">
             <div class="hero-eyebrow">
                 <span class="eyebrow-dot"></span>
-                Free &nbsp;·&nbsp; In-Browser &nbsp;·&nbsp; No Upload &nbsp;·&nbsp; No Signup
+                Free &nbsp;·&nbsp; Browser-Based &nbsp;·&nbsp; No Uploads &nbsp;·&nbsp; Privacy First
                 <span class="eyebrow-dot"></span>
             </div>
             <h1 class="hero-title">
-                <span class="ht-line1">The Fastest Way to</span>
-                <span class="ht-line2">Prepare Images <span class="ht-gradient">for Anywhere</span></span>
+                <span class="ht-line1">The Ultimate</span>
+                <span class="ht-line2">Browser-Based <span class="ht-gradient">Image Toolkit</span></span>
             </h1>
-            <p class="hero-desc" id="heroTaglineRotator">Fast image workflows for creators.</p>
+            <p class="hero-sub">Edit, Compress, Convert, Resize, Watermark, Extract Text &amp; More —<br>All in Your Browser. No Uploads. No Watermarks. Privacy First.</p>
             <div class="hero-btns">
-                <button class="hero-cta hero-cta-primary" data-tab="screenshot">
-                    <span class="btn-icon">✨</span> Screenshot Studio
+                <button class="hero-cta hero-cta-primary" data-tab="compress">
+                    <span class="btn-icon">🚀</span> Start Editing
                     <span class="btn-arrow">→</span>
                 </button>
-                <button class="hero-cta hero-cta-ghost" data-tab="compress">
-                    <span class="btn-icon">🗜</span> Make Images Load Faster
+                <button class="hero-cta hero-cta-ghost" id="heroBrowseBtn">
+                    <span class="btn-icon">📂</span> Browse All Tools
                 </button>
             </div>
-            <p class="hero-note">No file leaves your device &nbsp;·&nbsp; Works offline &nbsp;·&nbsp; Open source</p>
+
+            <!-- Trust badges -->
+            <div class="trust-badges">
+                <span class="trust-badge"><span class="tb-check">✓</span> 100% Browser Processing</span>
+                <span class="trust-badge"><span class="tb-check">✓</span> Privacy First</span>
+                <span class="trust-badge"><span class="tb-check">✓</span> No Registration</span>
+                <span class="trust-badge"><span class="tb-check">✓</span> Free Forever</span>
+                <span class="trust-badge"><span class="tb-check">✓</span> Works Offline</span>
+                <span class="trust-badge"><span class="tb-check">✓</span> Open Source</span>
+            </div>
         </div>
 
-        <!-- Pain points strip -->
-        <div class="pain-strip">
-            <span class="pain-item">😤 Blurry uploads?</span>
-            <span class="pain-sep">·</span>
-            <span class="pain-item">📦 Oversized files?</span>
-            <span class="pain-sep">·</span>
-            <span class="pain-item">🖼 Ugly screenshots?</span>
-            <span class="pain-sep">·</span>
-            <span class="pain-item">🐌 Slow websites?</span>
-            <span class="pain-sep">·</span>
-            <span class="pain-item">✂️ Manual resizing?</span>
-            <span class="pain-sep">·</span>
-            <span class="pain-item">📄 Poor thumbnails?</span>
-        </div>
-
-        <!-- Stats -->
+        <!-- ── STATS ROW ── -->
         <div class="stats-row">
             <div class="stat-item">
                 <span class="stat-val" data-count="13">0</span>
@@ -283,322 +280,302 @@
             </div>
             <div class="stat-divider"></div>
             <div class="stat-item">
-                <span class="stat-val" data-count="10">0</span><span class="stat-val-plus">+</span>
-                <span class="stat-lbl">OCR Languages</span>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-item">
                 <span class="stat-val">100%</span>
-                <span class="stat-lbl">In-Browser</span>
+                <span class="stat-lbl">Client-Side</span>
             </div>
             <div class="stat-divider"></div>
             <div class="stat-item">
                 <span class="stat-val">0</span>
-                <span class="stat-lbl">Server Uploads</span>
+                <span class="stat-lbl">Uploads Required</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+                <span class="stat-val">PWA</span>
+                <span class="stat-lbl">Ready</span>
             </div>
         </div>
 
-        <!-- Achievement Dashboard -->
+        <!-- Achievement Dashboard (shown after use) -->
         <div class="achievement-dashboard" id="achievementDash" style="display:none;">
-            <div class="ach-item" id="achMbSaved">
-                <span class="ach-val" id="achMbVal">0</span>
-                <span class="ach-unit">MB</span>
-                <span class="ach-lbl">Saved</span>
-            </div>
+            <div class="ach-item"><span class="ach-val" id="achMbVal">0</span><span class="ach-unit">MB</span><span class="ach-lbl">Saved</span></div>
             <div class="ach-divider"></div>
-            <div class="ach-item" id="achExports">
-                <span class="ach-val" id="achExportsVal">0</span>
-                <span class="ach-lbl">Exports</span>
-            </div>
+            <div class="ach-item"><span class="ach-val" id="achExportsVal">0</span><span class="ach-lbl">Exports</span></div>
             <div class="ach-divider"></div>
-            <div class="ach-item">
-                <span class="ach-val" id="achWorkflowsVal">0</span>
-                <span class="ach-lbl">Workflows</span>
-            </div>
+            <div class="ach-item"><span class="ach-val" id="achWorkflowsVal">0</span><span class="ach-lbl">Workflows</span></div>
             <div class="ach-divider"></div>
-            <div class="ach-item">
-                <span class="ach-val" id="achStreakVal">0</span>
-                <span class="ach-lbl">Day Streak</span>
+            <div class="ach-item"><span class="ach-val" id="achStreakVal">0</span><span class="ach-lbl">Day Streak</span></div>
+        </div>
+
+        <!-- ── SMART OPTIMIZE LAUNCHER ── -->
+        <div class="so-launcher" id="soLauncher" style="display:block;">
+            <div class="so-launcher-card">
+                <div class="so-launcher-icon">⚡</div>
+                <div class="so-launcher-text">
+                    <h3>Smart Optimize — One Click</h3>
+                    <p>Drop any image. We analyze, compress, convert to the best format and download automatically.</p>
+                </div>
+                <button class="so-launch-btn" id="smartOptimizeBtn">
+                    <span>🚀</span> Smart Optimize
+                </button>
             </div>
         </div>
 
-        <!-- Workflow Cards + Feature Cards -->
         <div class="features-section">
 
-            <!-- ⭐ Workflow Cards — Outcome-focused -->
-            <div class="section-label">
-                <span class="sl-line"></span>
-                <span>Quick Workflows</span>
-                <span class="sl-line"></span>
+        <!-- ── WHY IMAGEKIT ── -->
+        <div class="section-label">
+            <span class="sl-line"></span><span>Why MultiMian ImageKit?</span><span class="sl-line"></span>
+        </div>
+        <div class="why-grid">
+            <div class="why-card">
+                <div class="why-icon">🔒</div>
+                <h3>Private by Default</h3>
+                <p>Every tool runs entirely in your browser. No file is ever sent to any server. What you process stays on your device.</p>
             </div>
-            <div class="workflow-grid">
-                <div class="workflow-card wf-screenshot" data-tab="screenshot">
-                    <div class="wf-badge">⭐ Signature</div>
-                    <div class="wf-icon">✨</div>
-                    <h3>Screenshot Studio</h3>
-                    <p>Turn raw screenshots into beautiful, shareable visuals with frames, shadows &amp; gradients.</p>
-                    <div class="wf-steps">
-                        <span>Upload</span><span class="wf-arrow">→</span>
-                        <span>Style</span><span class="wf-arrow">→</span>
-                        <span>Export</span>
-                    </div>
-                </div>
-                <div class="workflow-card wf-website" data-tab="compress">
-                    <div class="wf-icon">🚀</div>
-                    <h3>Make Images Load Faster</h3>
-                    <p>Compress &amp; convert to WebP. See exactly how much size you save before downloading.</p>
-                    <div class="wf-steps">
-                        <span>Upload</span><span class="wf-arrow">→</span>
-                        <span>Compress</span><span class="wf-arrow">→</span>
-                        <span>Save 80%+</span>
-                    </div>
-                </div>
-                <div class="workflow-card wf-social" data-tab="resize">
-                    <div class="wf-icon">📱</div>
-                    <h3>Resize for Socials</h3>
-                    <p>One click to Instagram, YouTube, Twitter &amp; Facebook sizes. Aspect-ratio locked.</p>
-                    <div class="wf-steps">
-                        <span>Upload</span><span class="wf-arrow">→</span>
-                        <span>Pick Preset</span><span class="wf-arrow">→</span>
-                        <span>Download</span>
-                    </div>
-                </div>
-                <div class="workflow-card wf-scan" data-tab="ocr">
-                    <div class="wf-icon">🧾</div>
-                    <h3>Extract Text Instantly</h3>
-                    <p>OCR any image or scanned document in 10+ languages. Export as TXT or PDF.</p>
-                    <div class="wf-steps">
-                        <span>Upload</span><span class="wf-arrow">→</span>
-                        <span>OCR</span><span class="wf-arrow">→</span>
-                        <span>Copy / Export</span>
-                    </div>
-                </div>
-                <div class="workflow-card wf-protect" data-tab="watermark">
-                    <div class="wf-icon">💧</div>
-                    <h3>Protect My Work</h3>
-                    <p>Add text watermarks with custom position, opacity &amp; color. Tile across entire image.</p>
-                    <div class="wf-steps">
-                        <span>Upload</span><span class="wf-arrow">→</span>
-                        <span>Watermark</span><span class="wf-arrow">→</span>
-                        <span>Download</span>
-                    </div>
-                </div>
-                <div class="workflow-card wf-sticker" data-tab="sticker">
-                    <div class="wf-icon">🎨</div>
-                    <h3>Make WhatsApp Stickers</h3>
-                    <p>Resize to 512×512 sticker format. Export PNG or WebP for WhatsApp, Telegram &amp; Discord.</p>
-                    <div class="wf-steps">
-                        <span>Upload</span><span class="wf-arrow">→</span>
-                        <span>Style</span><span class="wf-arrow">→</span>
-                        <span>Share</span>
-                    </div>
-                </div>
+            <div class="why-card">
+                <div class="why-icon">⚡</div>
+                <h3>Instant Results</h3>
+                <p>No upload waiting, no queue. Results are generated in real-time using Canvas API, Tesseract.js, PDF.js and more.</p>
             </div>
-
-            <!-- All Tools Grid -->
-            <div class="section-label" style="margin-top:64px;">
-                <span class="sl-line"></span>
-                <span>All Tools</span>
-                <span class="sl-line"></span>
+            <div class="why-card">
+                <div class="why-icon">📡</div>
+                <h3>Works Offline</h3>
+                <p>Install as a PWA and use all 13 tools without any internet connection. Works anywhere, anytime.</p>
             </div>
-
-            <!-- 🖼 Image Tools -->
-            <div class="tool-category">
-                <div class="tool-category-header tc-image">
-                    <span class="tc-icon">🖼</span>
-                    <span>Image Tools</span>
-                </div>
-                <div class="home-grid">
-                    <div class="home-card" data-tab="screenshot">
-                        <div class="card-glow"></div>
-                        <div class="card-top">
-                            <span class="card-icon-wrap ci-screenshot">✨</span>
-                            <span class="card-badge card-badge-new">⭐ New</span>
-                        </div>
-                        <h3>Screenshot Studio</h3>
-                        <p>Beautiful frames, shadows &amp; gradients. Turn raw screenshots into shareable visuals.</p>
-                        <div class="card-footer">
-                            <span class="card-tech">Canvas API</span>
-                            <span class="card-arrow">→</span>
-                        </div>
-                    </div>
-                    <div class="home-card" data-tab="ocr">
-                        <div class="card-glow"></div>
-                        <div class="card-top">
-                            <span class="card-icon-wrap ci-ocr">🔤</span>
-                            <span class="card-badge">Popular</span>
-                        </div>
-                        <h3>Extract Text Instantly</h3>
-                        <p>OCR any image in 10+ languages. Copy, download .txt or export as PDF.</p>
-                        <div class="card-footer">
-                            <span class="card-tech">Tesseract.js</span>
-                            <span class="card-arrow">→</span>
-                        </div>
-                    </div>
-                    <div class="home-card" data-tab="compress">
-                        <div class="card-glow"></div>
-                        <div class="card-top">
-                            <span class="card-icon-wrap ci-compress">🗜</span>
-                        </div>
-                        <h3>Make Images Load Faster</h3>
-                        <p>Reduce file size with live before/after comparison. See savings before you download.</p>
-                        <div class="card-footer">
-                            <span class="card-tech">Canvas API</span>
-                            <span class="card-arrow">→</span>
-                        </div>
-                    </div>
-                    <div class="home-card" data-tab="resize">
-                        <div class="card-glow"></div>
-                        <div class="card-top">
-                            <span class="card-icon-wrap ci-resize">✂️</span>
-                        </div>
-                        <h3>Resize for Socials</h3>
-                        <p>Exact dimensions with aspect-ratio lock. Instagram, YouTube, Twitter &amp; Facebook presets.</p>
-                        <div class="card-footer">
-                            <span class="card-tech">Canvas API</span>
-                            <span class="card-arrow">→</span>
-                        </div>
-                    </div>
-                    <div class="home-card" data-tab="convert">
-                        <div class="card-glow"></div>
-                        <div class="card-top">
-                            <span class="card-icon-wrap ci-convert">🔄</span>
-                        </div>
-                        <h3>Convert for Any Platform</h3>
-                        <p>JPG ↔ PNG ↔ WebP with quality control. Instant download, no re-upload.</p>
-                        <div class="card-footer">
-                            <span class="card-tech">Canvas API</span>
-                            <span class="card-arrow">→</span>
-                        </div>
-                    </div>
-                    <div class="home-card" data-tab="watermark">
-                        <div class="card-glow"></div>
-                        <div class="card-top">
-                            <span class="card-icon-wrap ci-wm">💧</span>
-                        </div>
-                        <h3>Protect My Work</h3>
-                        <p>Text watermarks with custom font, color, opacity &amp; 6 positions including tile.</p>
-                        <div class="card-footer">
-                            <span class="card-tech">Canvas API</span>
-                            <span class="card-arrow">→</span>
-                        </div>
-                    </div>
-                    <div class="home-card home-card-featured" data-tab="merge">
-                        <div class="card-glow"></div>
-                        <div class="card-top">
-                            <span class="card-icon-wrap ci-merge">🔗</span>
-                        </div>
-                        <h3>Combine Screenshots</h3>
-                        <p>Merge two images side-by-side or stacked. Export as JPG, PNG or PDF.</p>
-                        <div class="card-footer">
-                            <span class="card-tech">Canvas + jsPDF</span>
-                            <span class="card-arrow">→</span>
-                        </div>
-                    </div>
-                    <div class="home-card home-card-featured" data-tab="share">
-                        <div class="card-glow"></div>
-                        <div class="card-top">
-                            <span class="card-icon-wrap ci-share">🌐</span>
-                            <span class="card-badge card-badge-new">New ⭐</span>
-                        </div>
-                        <h3>Share Anywhere</h3>
-                        <p>Upload and get a permanent public link. Share on WhatsApp, Telegram, Twitter and more.</p>
-                        <div class="card-footer">
-                            <span class="card-tech">ImgBB API</span>
-                            <span class="card-arrow">→</span>
-                        </div>
-                    </div>
-                </div>
+            <div class="why-card">
+                <div class="why-icon">🆓</div>
+                <h3>100% Free</h3>
+                <p>No subscriptions, no watermarks, no file size limits. All 13 tools are free forever.</p>
             </div>
-
-            <!-- 📄 PDF Tools -->
-            <div class="tool-category">
-                <div class="tool-category-header tc-pdf">
-                    <span class="tc-icon">📄</span>
-                    <span>PDF Tools</span>
-                </div>
-                <div class="home-grid">
-                    <div class="home-card" data-tab="pdf">
-                        <div class="card-glow"></div>
-                        <div class="card-top">
-                            <span class="card-icon-wrap ci-pdf">📝</span>
-                            <span class="card-badge card-badge-new">New ⭐</span>
-                        </div>
-                        <h3>Text Studio</h3>
-                        <p>Write, format &amp; export text. Convert text ↔ PDF. Export as TXT, RTF, DOCX or PDF.</p>
-                        <div class="card-footer">
-                            <span class="card-tech">jsPDF + PDF.js</span>
-                            <span class="card-arrow">→</span>
-                        </div>
-                    </div>
-                    <div class="home-card" data-tab="pdf2img">
-                        <div class="card-glow"></div>
-                        <div class="card-top">
-                            <span class="card-icon-wrap ci-pdf2img">🖼</span>
-                            <span class="card-badge card-badge-new">New ⭐</span>
-                        </div>
-                        <h3>PDF → Image</h3>
-                        <p>Convert PDF pages to PNG or JPG. Download individual pages or all as a ZIP.</p>
-                        <div class="card-footer">
-                            <span class="card-tech">PDF.js + JSZip</span>
-                            <span class="card-arrow">→</span>
-                        </div>
-                    </div>
-                </div>
+            <div class="why-card">
+                <div class="why-icon">📱</div>
+                <h3>Mobile Friendly</h3>
+                <p>Fully responsive design. Works great on phones, tablets and desktops alike.</p>
             </div>
-
-            <!-- 🎬 Media Tools -->
-            <div class="tool-category">
-                <div class="tool-category-header tc-media">
-                    <span class="tc-icon">🎬</span>
-                    <span>Media Converter Tools</span>
-                </div>
-                <div class="home-grid">
-                    <div class="home-card" data-tab="gif">
-                        <div class="card-glow"></div>
-                        <div class="card-top">
-                            <span class="card-icon-wrap ci-gif">🎞</span>
-                            <span class="card-badge card-badge-new">New ⭐</span>
-                        </div>
-                        <h3>Image → GIF</h3>
-                        <p>Upload multiple images, reorder frames, set delay and export an animated GIF.</p>
-                        <div class="card-footer">
-                            <span class="card-tech">gif.js</span>
-                            <span class="card-arrow">→</span>
-                        </div>
-                    </div>
-                    <div class="home-card" data-tab="videogif">
-                        <div class="card-glow"></div>
-                        <div class="card-top">
-                            <span class="card-icon-wrap ci-videogif">🎬</span>
-                            <span class="card-badge card-badge-new">New ⭐</span>
-                        </div>
-                        <h3>Video → GIF</h3>
-                        <p>Upload a short video, select start/end time, adjust frame rate and export GIF.</p>
-                        <div class="card-footer">
-                            <span class="card-tech">Canvas + gif.js</span>
-                            <span class="card-arrow">→</span>
-                        </div>
-                    </div>
-                    <div class="home-card" data-tab="sticker">
-                        <div class="card-glow"></div>
-                        <div class="card-top">
-                            <span class="card-icon-wrap ci-sticker">🎨</span>
-                            <span class="card-badge card-badge-new">New ⭐</span>
-                        </div>
-                        <h3>Make WhatsApp Stickers</h3>
-                        <p>Resize to 512×512 sticker format. Export as PNG or WebP for WhatsApp, Telegram &amp; Discord.</p>
-                        <div class="card-footer">
-                            <span class="card-tech">Canvas API</span>
-                            <span class="card-arrow">→</span>
-                        </div>
-                    </div>
-                </div>
+            <div class="why-card">
+                <div class="why-icon">🔓</div>
+                <h3>Open Source</h3>
+                <p>Fully open source on GitHub. Inspect the code, contribute, or self-host your own instance.</p>
             </div>
-
         </div>
 
-        <!-- Batch Queue -->
+        <!-- ── TOOL CATEGORIES ── -->
+        <div class="section-label" style="margin-top:72px;">
+            <span class="sl-line"></span><span>All Tools</span><span class="sl-line"></span>
+        </div>
+
+        <!-- Image Tools -->
+        <div class="tool-category">
+            <div class="tool-category-header tc-image">
+                <span class="tc-icon">🖼</span>
+                <div>
+                    <span class="tc-name">Image Tools</span>
+                    <span class="tc-desc">Edit, enhance, and transform images</span>
+                </div>
+            </div>
+            <div class="home-grid">
+                <div class="home-card" data-tab="screenshot">
+                    <div class="card-glow"></div>
+                    <div class="card-top">
+                        <span class="card-icon-wrap ci-screenshot">✨</span>
+                        <span class="card-badge card-badge-hot">⭐ Signature</span>
+                    </div>
+                    <h3>Screenshot Studio</h3>
+                    <p>Beautiful frames, shadows &amp; gradients. Turn raw screenshots into shareable visuals.</p>
+                    <div class="card-meta">
+                        <span class="card-meta-pill">⚡ Fast</span>
+                        <span class="card-meta-pill">📡 Offline</span>
+                    </div>
+                    <div class="card-footer"><span class="card-tech">Canvas API</span><span class="card-arrow">→</span></div>
+                </div>
+                <div class="home-card" data-tab="compress">
+                    <div class="card-glow"></div>
+                    <div class="card-top">
+                        <span class="card-icon-wrap ci-compress">🗜</span>
+                        <span class="card-badge card-badge-popular">Most Used</span>
+                    </div>
+                    <h3>Compress Image</h3>
+                    <p>Reduce file size up to 90% with live before/after comparison. See savings before downloading.</p>
+                    <div class="card-meta">
+                        <span class="card-meta-pill">⚡ Fast</span>
+                        <span class="card-meta-pill">📡 Offline</span>
+                    </div>
+                    <div class="card-footer"><span class="card-tech">Canvas API</span><span class="card-arrow">→</span></div>
+                </div>
+                <div class="home-card" data-tab="resize">
+                    <div class="card-glow"></div>
+                    <div class="card-top"><span class="card-icon-wrap ci-resize">✂️</span></div>
+                    <h3>Resize Image</h3>
+                    <p>Exact dimensions with aspect-ratio lock. Instagram, YouTube, Twitter &amp; Facebook presets.</p>
+                    <div class="card-meta">
+                        <span class="card-meta-pill">⚡ Instant</span>
+                        <span class="card-meta-pill">📡 Offline</span>
+                    </div>
+                    <div class="card-footer"><span class="card-tech">Canvas API</span><span class="card-arrow">→</span></div>
+                </div>
+                <div class="home-card" data-tab="convert">
+                    <div class="card-glow"></div>
+                    <div class="card-top"><span class="card-icon-wrap ci-convert">🔄</span></div>
+                    <h3>Convert Format</h3>
+                    <p>JPG ↔ PNG ↔ WebP with quality control. Instant download, no re-upload needed.</p>
+                    <div class="card-meta">
+                        <span class="card-meta-pill">⚡ Instant</span>
+                        <span class="card-meta-pill">📡 Offline</span>
+                    </div>
+                    <div class="card-footer"><span class="card-tech">Canvas API</span><span class="card-arrow">→</span></div>
+                </div>
+                <div class="home-card" data-tab="watermark">
+                    <div class="card-glow"></div>
+                    <div class="card-top"><span class="card-icon-wrap ci-wm">💧</span></div>
+                    <h3>Add Watermark</h3>
+                    <p>Text watermarks with custom font, color, opacity &amp; 6 positions including tile.</p>
+                    <div class="card-meta">
+                        <span class="card-meta-pill">⚡ Fast</span>
+                        <span class="card-meta-pill">📡 Offline</span>
+                    </div>
+                    <div class="card-footer"><span class="card-tech">Canvas API</span><span class="card-arrow">→</span></div>
+                </div>
+                <div class="home-card" data-tab="merge">
+                    <div class="card-glow"></div>
+                    <div class="card-top"><span class="card-icon-wrap ci-merge">🔗</span></div>
+                    <h3>Merge Images</h3>
+                    <p>Combine two images side-by-side or stacked. Export as JPG, PNG or PDF.</p>
+                    <div class="card-meta">
+                        <span class="card-meta-pill">⚡ Fast</span>
+                        <span class="card-meta-pill">📡 Offline</span>
+                    </div>
+                    <div class="card-footer"><span class="card-tech">Canvas + jsPDF</span><span class="card-arrow">→</span></div>
+                </div>
+                <div class="home-card" data-tab="ocr">
+                    <div class="card-glow"></div>
+                    <div class="card-top">
+                        <span class="card-icon-wrap ci-ocr">🔤</span>
+                        <span class="card-badge">Popular</span>
+                    </div>
+                    <h3>Extract Text (OCR)</h3>
+                    <p>Extract text from any image in 10+ languages. Copy, download .txt or export as PDF.</p>
+                    <div class="card-meta">
+                        <span class="card-meta-pill">🌐 Online</span>
+                        <span class="card-meta-pill">10+ langs</span>
+                    </div>
+                    <div class="card-footer"><span class="card-tech">Tesseract.js</span><span class="card-arrow">→</span></div>
+                </div>
+                <div class="home-card" data-tab="share">
+                    <div class="card-glow"></div>
+                    <div class="card-top">
+                        <span class="card-icon-wrap ci-share">🌐</span>
+                        <span class="card-badge card-badge-new">New</span>
+                    </div>
+                    <h3>Share Anywhere</h3>
+                    <p>Get a permanent public link + QR code. Share on WhatsApp, Telegram, Twitter and more.</p>
+                    <div class="card-meta">
+                        <span class="card-meta-pill">🔗 Link</span>
+                        <span class="card-meta-pill">QR Code</span>
+                    </div>
+                    <div class="card-footer"><span class="card-tech">ImgBB API</span><span class="card-arrow">→</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PDF Tools -->
+        <div class="tool-category">
+            <div class="tool-category-header tc-pdf">
+                <span class="tc-icon">📄</span>
+                <div>
+                    <span class="tc-name">PDF Tools</span>
+                    <span class="tc-desc">Work with PDF files and documents</span>
+                </div>
+            </div>
+            <div class="home-grid">
+                <div class="home-card" data-tab="pdf">
+                    <div class="card-glow"></div>
+                    <div class="card-top">
+                        <span class="card-icon-wrap ci-pdf">📝</span>
+                        <span class="card-badge card-badge-new">New</span>
+                    </div>
+                    <h3>Text Studio</h3>
+                    <p>Write, format &amp; export text. Convert text ↔ PDF. Export as TXT, RTF, DOCX or PDF.</p>
+                    <div class="card-meta">
+                        <span class="card-meta-pill">📡 Offline</span>
+                        <span class="card-meta-pill">4 formats</span>
+                    </div>
+                    <div class="card-footer"><span class="card-tech">jsPDF + PDF.js</span><span class="card-arrow">→</span></div>
+                </div>
+                <div class="home-card" data-tab="pdf2img">
+                    <div class="card-glow"></div>
+                    <div class="card-top">
+                        <span class="card-icon-wrap ci-pdf2img">🖼</span>
+                        <span class="card-badge card-badge-new">New</span>
+                    </div>
+                    <h3>PDF → Image</h3>
+                    <p>Convert PDF pages to PNG or JPG. Download individual pages or all pages as a ZIP.</p>
+                    <div class="card-meta">
+                        <span class="card-meta-pill">📦 ZIP export</span>
+                        <span class="card-meta-pill">📡 Offline</span>
+                    </div>
+                    <div class="card-footer"><span class="card-tech">PDF.js + JSZip</span><span class="card-arrow">→</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Media Tools -->
+        <div class="tool-category">
+            <div class="tool-category-header tc-media">
+                <span class="tc-icon">🎬</span>
+                <div>
+                    <span class="tc-name">Media Converter Tools</span>
+                    <span class="tc-desc">Create GIFs and stickers from images or video</span>
+                </div>
+            </div>
+            <div class="home-grid">
+                <div class="home-card" data-tab="gif">
+                    <div class="card-glow"></div>
+                    <div class="card-top">
+                        <span class="card-icon-wrap ci-gif">🎞</span>
+                        <span class="card-badge card-badge-new">New</span>
+                    </div>
+                    <h3>Image → GIF</h3>
+                    <p>Upload multiple images, reorder frames, set delay and export an animated GIF.</p>
+                    <div class="card-meta">
+                        <span class="card-meta-pill">📡 Offline</span>
+                        <span class="card-meta-pill">Drag reorder</span>
+                    </div>
+                    <div class="card-footer"><span class="card-tech">gif.js</span><span class="card-arrow">→</span></div>
+                </div>
+                <div class="home-card" data-tab="videogif">
+                    <div class="card-glow"></div>
+                    <div class="card-top">
+                        <span class="card-icon-wrap ci-videogif">🎬</span>
+                        <span class="card-badge card-badge-new">New</span>
+                    </div>
+                    <h3>Video → GIF</h3>
+                    <p>Upload a short video, trim the clip, adjust frame rate and export animated GIF.</p>
+                    <div class="card-meta">
+                        <span class="card-meta-pill">📡 Offline</span>
+                        <span class="card-meta-pill">Trim &amp; crop</span>
+                    </div>
+                    <div class="card-footer"><span class="card-tech">Canvas + gif.js</span><span class="card-arrow">→</span></div>
+                </div>
+                <div class="home-card" data-tab="sticker">
+                    <div class="card-glow"></div>
+                    <div class="card-top">
+                        <span class="card-icon-wrap ci-sticker">🎨</span>
+                        <span class="card-badge card-badge-new">New</span>
+                    </div>
+                    <h3>Image → Sticker</h3>
+                    <p>Resize to 512×512 sticker format. Export PNG or WebP for WhatsApp, Telegram &amp; Discord.</p>
+                    <div class="card-meta">
+                        <span class="card-meta-pill">📡 Offline</span>
+                        <span class="card-meta-pill">512×512</span>
+                    </div>
+                    <div class="card-footer"><span class="card-tech">Canvas API</span><span class="card-arrow">→</span></div>
+                </div>
+            </div>
+        </div>
+
+        </div><!-- end features-section -->
+
+        <!-- Batch Queue (hidden until files added) -->
         <div class="batch-section" id="batchSection">
             <div class="section-label" style="margin-top:64px;">
                 <span class="sl-line"></span>
@@ -702,56 +679,83 @@
 
         <!-- How it works -->
         <div class="how-section">
-            <div class="section-label">
-                <span class="sl-line"></span>
-                <span>How It Works</span>
-                <span class="sl-line"></span>
+            <div class="section-label" style="margin-top:72px;">
+                <span class="sl-line"></span><span>How It Works</span><span class="sl-line"></span>
             </div>
             <div class="how-steps">
                 <div class="how-step">
                     <div class="how-num"><span>1</span></div>
-                    <h4>Choose Your Goal</h4>
-                    <p>Pick a workflow card or open any tool from the nav. No learning curve.</p>
+                    <h4>Pick a Tool</h4>
+                    <p>Choose from 13 browser-based tools. Search with <kbd>Ctrl+K</kbd> or browse by category.</p>
                 </div>
                 <div class="how-connector"><span></span></div>
                 <div class="how-step">
                     <div class="how-num"><span>2</span></div>
                     <h4>Drop Your File</h4>
-                    <p>Drag &amp; drop or click to upload. JPG, PNG, WebP, PDF, Video and more.</p>
+                    <p>Drag &amp; drop or click to upload. JPG, PNG, WebP, PDF, Video — all supported.</p>
                 </div>
                 <div class="how-connector"><span></span></div>
                 <div class="how-step">
                     <div class="how-num"><span>3</span></div>
                     <h4>Download Instantly</h4>
-                    <p>Adjust settings, hit the action button and download in seconds.</p>
+                    <p>Adjust settings and download in seconds. No waiting. No accounts. Always free.</p>
                 </div>
             </div>
         </div>
 
-        <!-- Privacy + trust -->
+        <!-- FAQ -->
+        <div class="faq-home-section">
+            <div class="section-label" style="margin-top:72px;">
+                <span class="sl-line"></span><span>Frequently Asked Questions</span><span class="sl-line"></span>
+            </div>
+            <div class="faq-home-grid">
+                <div class="faq-item">
+                    <button class="faq-q" aria-expanded="false">Is MultiMian ImageKit really free?</button>
+                    <div class="faq-a">Yes, 100% free forever. All 13 tools have no subscriptions, no watermarks, and no file size limits.</div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-q" aria-expanded="false">Do my images get uploaded to a server?</button>
+                    <div class="faq-a">No. Every tool runs entirely in your browser. Your files never leave your device — except the Share tool, which uploads to ImgBB only when you explicitly click Upload.</div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-q" aria-expanded="false">Can I use it offline?</button>
+                    <div class="faq-a">Yes. Install ImageKit as a PWA and all tools work without any internet connection. Look for the install prompt at the bottom of the page.</div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-q" aria-expanded="false">Which browsers are supported?</button>
+                    <div class="faq-a">Chrome, Edge, Firefox, and Safari — on desktop and mobile. Chrome and Edge give the best performance for Canvas API operations.</div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-q" aria-expanded="false">What image formats are supported?</button>
+                    <div class="faq-a">Input: JPG, PNG, WebP, GIF, BMP, TIFF, SVG. Output: JPG, PNG, WebP, GIF, and PDF depending on the tool.</div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-q" aria-expanded="false">Is the source code available?</button>
+                    <div class="faq-a">Yes. MultiMian ImageKit is fully open source on GitHub. You can inspect, contribute, or self-host your own instance anytime.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trust strip -->
         <div class="trust-section">
-            <div class="trust-item">
-                <span class="trust-icon">🔒</span>
-                <span>Your files never leave your device</span>
-            </div>
+            <div class="trust-item"><span class="trust-icon">🔒</span><span>Files never leave your device</span></div>
             <div class="trust-sep"></div>
-            <div class="trust-item">
-                <span class="trust-icon">⚡</span>
-                <span>Instant processing, no waiting</span>
-            </div>
+            <div class="trust-item"><span class="trust-icon">⚡</span><span>Instant processing</span></div>
             <div class="trust-sep"></div>
-            <div class="trust-item">
-                <span class="trust-icon">🌐</span>
-                <span>Works in Chrome, Edge, Firefox, Safari</span>
-            </div>
+            <div class="trust-item"><span class="trust-icon">🌐</span><span>Chrome · Edge · Firefox · Safari</span></div>
+            <div class="trust-sep"></div>
+            <div class="trust-item"><span class="trust-icon">📡</span><span>Works offline as PWA</span></div>
+            <div class="trust-sep"></div>
+            <div class="trust-item"><span class="trust-icon">🔓</span><span>Open Source on GitHub</span></div>
         </div>
 
         <!-- Tech pills -->
         <div class="tech-section">
-            <p class="tech-title">Built With</p>
+            <p class="tech-title">Built With Open Web Technologies</p>
             <div class="tech-pills">
                 <span>HTML5</span><span>CSS3</span><span>Vanilla JS</span>
-                <span>Tesseract.js</span><span>jsPDF</span><span>Canvas API</span>
+                <span>Tesseract.js</span><span>jsPDF</span><span>PDF.js</span>
+                <span>gif.js</span><span>JSZip</span><span>Canvas API</span><span>Service Worker</span>
             </div>
         </div>
 
@@ -886,12 +890,13 @@
         <div class="btn-row">
             <button id="ssBtn" class="primary-btn" disabled>✨ Download Studio Shot</button>
             <button id="ssCopyBtn" class="secondary-btn" disabled>📋 Copy to Clipboard</button>
+            <button class="secondary-btn share-anywhere-btn" data-tool="screenshot" disabled id="ssShareBtn">🌐 Share</button>
         </div>
         <p class="success-msg" id="ssSuccess" style="display:none;">✔ Screenshot exported successfully</p>
     </section>
 
     <!-- ══ OCR Tab ══ -->
-    <section id="tab-ocr" class="tab-section active">
+    <section id="tab-ocr" class="tab-section">
         <div class="section-header">
             <div class="section-icon">🔤</div>
             <div>
@@ -1276,6 +1281,7 @@
 
         <div class="btn-row">
             <button id="compressBtn" class="primary-btn" disabled>🗜 Compress &amp; Download</button>
+            <button class="secondary-btn share-anywhere-btn" data-tool="compress" disabled id="compressShareBtn">🌐 Share</button>
         </div>
         <div id="compressSavingsAnim" class="savings-anim" style="display:none;">
             <div class="savings-anim-inner">
@@ -1346,6 +1352,7 @@
 
         <div class="btn-row">
             <button id="resizeBtn" class="primary-btn" disabled>✂️ Resize &amp; Download</button>
+            <button class="secondary-btn share-anywhere-btn" data-tool="resize" disabled id="resizeShareBtn">🌐 Share</button>
         </div>
         <p class="success-msg" id="resizeSuccess" style="display:none;">✔ Image resized successfully</p>
     </section>
@@ -1398,6 +1405,7 @@
 
         <div class="btn-row">
             <button id="convertBtn" class="primary-btn" disabled>🔄 Convert &amp; Download</button>
+            <button class="secondary-btn share-anywhere-btn" data-tool="convert" disabled id="convertShareBtn">🌐 Share</button>
         </div>
         <p class="success-msg" id="convertSuccess" style="display:none;">✔ Image converted successfully</p>
     </section>
@@ -1470,6 +1478,7 @@
 
         <div class="btn-row">
             <button id="wmBtn" class="primary-btn" disabled>💧 Apply &amp; Download</button>
+            <button class="secondary-btn share-anywhere-btn" data-tool="watermark" disabled id="wmShareBtn">🌐 Share</button>
         </div>
         <p class="success-msg" id="wmSuccess" style="display:none;">✔ Watermarked image downloaded</p>
     </section>
@@ -1553,6 +1562,7 @@
 
         <div class="btn-row">
             <button id="mergeBtn" class="primary-btn" disabled>🔗 Merge &amp; Download</button>
+            <button class="secondary-btn share-anywhere-btn" data-tool="merge" disabled id="mergeShareBtn">🌐 Share</button>
         </div>
         <p class="success-msg" id="mergeSuccess" style="display:none;">✔ Merged file downloaded</p>
     </section>
@@ -1583,7 +1593,7 @@
         </div>
     </div>
 
-    <div class="card" id="shareApiCard">
+    <div class="card" id="shareApiCard" style="display:none;">
         <div class="options-panel">
             <div class="opt-group" style="flex:1; min-width:220px;">
                 <label>ImgBB API Key <a href="https://api.imgbb.com/" target="_blank" rel="noopener" class="link" style="font-size:0.85em; text-transform:none; font-weight:500;">Get free key ↗</a></label>
@@ -1806,6 +1816,7 @@
                 <div class="action-row" style="margin-top:12px;">
                     <button id="gifDownload" class="primary-btn">⬇ Download GIF</button>
                     <button id="gifCopyClipboard" class="secondary-btn">📋 Copy to Clipboard</button>
+                    <button class="secondary-btn share-anywhere-btn" data-tool="gif" id="gifShareBtn">🌐 Share</button>
                 </div>
             </div>
             <p class="success-msg" id="gifSuccess" style="display:none;">✔ GIF created successfully</p>
@@ -1939,6 +1950,7 @@
                 <div class="action-row" style="margin-top:12px;">
                     <button id="videogifDownload" class="primary-btn">⬇ Download GIF</button>
                     <button id="videogifCopyClipboard" class="secondary-btn">📋 Copy to Clipboard</button>
+                    <button class="secondary-btn share-anywhere-btn" data-tool="videogif" id="videogifShareBtn">🌐 Share</button>
                 </div>
             </div>
             <p class="success-msg" id="videogifSuccess" style="display:none;">✔ GIF created successfully</p>
@@ -2004,6 +2016,7 @@
 
         <div class="btn-row">
             <button id="stickerBtn" class="primary-btn" disabled>🎨 Download Sticker</button>
+            <button class="secondary-btn share-anywhere-btn" data-tool="sticker" disabled id="stickerShareBtn">🌐 Share</button>
         </div>
         <p class="success-msg" id="stickerSuccess" style="display:none;">✔ Sticker downloaded</p>
     </section>
@@ -2261,24 +2274,75 @@
 
 <footer id="site-footer">
     <div class="footer-inner">
-        <div class="footer-left">
-            <span class="footer-logo">
-                <span class="fl-multi">Multi</span><span class="fl-mian">Mian</span><span class="fl-kit"> ImageKit</span>
-            </span>
-            <span class="footer-tagline">The fastest way to prepare images for anywhere.</span>
+        <div class="footer-brand">
+            <div class="footer-logo">
+                <span class="fl-multi">Multi</span><span class="fl-mian">Mian</span><span class="fl-kit">ImageKit</span>
+            </div>
+            <p class="footer-tagline">The ultimate free browser-based image toolkit. 13 tools. No uploads. Privacy first.</p>
+            <div class="footer-social">
+                <a href="https://github.com/Mianhassam96/MultiMian-ImageKit" target="_blank" rel="noopener" class="fsoc-btn" aria-label="GitHub">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.38.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.54-1.38-1.33-1.75-1.33-1.75-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.49 1 .11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.13 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58C20.57 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                </a>
+                <a href="https://wa.me/923258831437" target="_blank" rel="noopener" class="fsoc-btn" aria-label="WhatsApp">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+                </a>
+                <a href="mailto:mianhassam96@gmail.com" class="fsoc-btn" aria-label="Email">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                </a>
+            </div>
         </div>
-        <div class="footer-center">
-            <span class="footer-copy">&copy; 2026 MultiMian &nbsp;|&nbsp; Built with modern web technologies.</span>
+
+        <div class="footer-col">
+            <h4 class="footer-col-title">Image Tools</h4>
+            <ul class="footer-links">
+                <li><button class="footer-link-btn" onclick="activateTab('screenshot')">Screenshot Studio</button></li>
+                <li><button class="footer-link-btn" onclick="activateTab('compress')">Compress Image</button></li>
+                <li><button class="footer-link-btn" onclick="activateTab('resize')">Resize Image</button></li>
+                <li><button class="footer-link-btn" onclick="activateTab('convert')">Convert Format</button></li>
+                <li><button class="footer-link-btn" onclick="activateTab('watermark')">Add Watermark</button></li>
+                <li><button class="footer-link-btn" onclick="activateTab('merge')">Merge Images</button></li>
+                <li><button class="footer-link-btn" onclick="activateTab('ocr')">Extract Text (OCR)</button></li>
+                <li><button class="footer-link-btn" onclick="activateTab('share')">Share Image</button></li>
+            </ul>
         </div>
-        <div class="footer-right">
-            <button onclick="activateTab('about')" class="footer-link footer-link-btn">About</button>
-            <button onclick="activateTab('contact')" class="footer-link footer-link-btn">Contact</button>
-            <a href="https://github.com/Mianhassam96/MultiMian-ImageKit" target="_blank" rel="noopener" class="footer-link">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.38.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.54-1.38-1.33-1.75-1.33-1.75-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.49 1 .11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.13 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58C20.57 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
-                GitHub
-            </a>
-            <a href="#" class="scroll-top" aria-label="Back to top">↑</a>
+
+        <div class="footer-col">
+            <h4 class="footer-col-title">More Tools</h4>
+            <ul class="footer-links">
+                <li><button class="footer-link-btn" onclick="activateTab('pdf')">Text Studio</button></li>
+                <li><button class="footer-link-btn" onclick="activateTab('pdf2img')">PDF → Image</button></li>
+                <li><button class="footer-link-btn" onclick="activateTab('gif')">Image → GIF</button></li>
+                <li><button class="footer-link-btn" onclick="activateTab('videogif')">Video → GIF</button></li>
+                <li><button class="footer-link-btn" onclick="activateTab('sticker')">Image → Sticker</button></li>
+            </ul>
+            <h4 class="footer-col-title" style="margin-top:20px;">Resources</h4>
+            <ul class="footer-links">
+                <li><a href="https://github.com/Mianhassam96/MultiMian-ImageKit" target="_blank" rel="noopener" class="footer-link-btn">GitHub Repository</a></li>
+                <li><a href="https://github.com/Mianhassam96/MultiMian-ImageKit/issues" target="_blank" rel="noopener" class="footer-link-btn">Report a Bug</a></li>
+                <li><a href="https://github.com/Mianhassam96/MultiMian-ImageKit/issues" target="_blank" rel="noopener" class="footer-link-btn">Request a Feature</a></li>
+            </ul>
         </div>
+
+        <div class="footer-col">
+            <h4 class="footer-col-title">About</h4>
+            <ul class="footer-links">
+                <li><button class="footer-link-btn" onclick="activateTab('about')">About ImageKit</button></li>
+                <li><button class="footer-link-btn" onclick="activateTab('contact')">Contact Us</button></li>
+                <li><a href="https://multimian.com" target="_blank" rel="noopener" class="footer-link-btn">multimian.com</a></li>
+            </ul>
+            <div class="footer-badges">
+                <span class="footer-badge">🔒 Privacy First</span>
+                <span class="footer-badge">⚡ No Uploads</span>
+                <span class="footer-badge">🆓 Free Forever</span>
+                <span class="footer-badge">📡 PWA Ready</span>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span>&copy; 2026 MultiMian ImageKit &nbsp;·&nbsp; Built with ♥ using pure HTML, CSS &amp; Vanilla JS</span>
+        <span>&nbsp;·&nbsp;</span>
+        <a href="https://github.com/Mianhassam96/MultiMian-ImageKit/blob/main/LICENSE" target="_blank" rel="noopener" class="footer-link-btn">MIT License</a>
+        <button class="scroll-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑ Top</button>
     </div>
 </footer>
 

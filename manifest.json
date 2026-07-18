@@ -2,7 +2,7 @@
   "name": "MultiMian ImageKit",
   "short_name": "ImageKit",
   "description": "Fast image workflows for creators. Compress, convert, beautify, optimize — all in-browser.",
-  "start_url": "/",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#080b12",
   "theme_color": "#16a34a",

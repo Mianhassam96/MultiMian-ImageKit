@@ -1,11 +1,27 @@
-// MultiMian ImageKit — Service Worker v2.0
-const CACHE = 'imagekit-v2';
+// MultiMian ImageKit — Service Worker v4.0
+const CACHE = 'imagekit-v4';
 const STATIC = [
-  '/',
-  '/index.html',
-  '/styles.css',
-  '/script.js',
-  '/manifest.json'
+  './',
+  './index.html',
+  './styles.css',
+  './styles-phase2.css',
+  './styles-phase3.css',
+  './styles-phase4.css',
+  './styles-phase5.css',
+  './styles-premium.css',
+  './script.js',
+  './phase2.js',
+  './phase3.js',
+  './phase4.js',
+  './phase5.js',
+  './manifest.json',
+  './favicon.svg',
+  './favicon.png',
+  './favicon-32x32.png',
+  './favicon-16x16.png',
+  './apple-touch-icon.png',
+  './icon-192.png',
+  './icon-512.png'
 ];
 
 self.addEventListener('install', e => {

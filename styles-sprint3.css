@@ -1,0 +1,159 @@
+/* ══════════════════════════════════════════════════════════════
+   MultiMian ImageKit — Sprint 3
+   Crop Tool · Mobile Bottom Nav
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Crop Tool ─────────────────────────────────────────────── */
+.crop-canvas-wrap { overflow: hidden; }
+
+.crop-stage {
+  position: relative;
+  display: inline-flex;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  background: var(--surface3);
+  cursor: crosshair;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+}
+
+#cropCanvas {
+  display: block;
+  max-width: 100%;
+  border-radius: var(--radius-sm);
+  touch-action: none;
+}
+
+.crop-info-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 10px;
+  font-size: 0.8em;
+  font-weight: 600;
+  color: var(--text2);
+  padding: 8px 0 4px;
+  border-top: 1px solid var(--border);
+}
+
+#cropSizeLabel {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 3px 12px;
+  color: var(--accent2);
+}
+
+#cropRatioLabel {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 3px 12px;
+  color: var(--text3);
+}
+
+/* ── Mobile Bottom Nav ─────────────────────────────────────── */
+.mobile-bottom-nav {
+  display: none; /* hidden on desktop */
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 5000;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+  padding: 6px 0 max(6px, env(safe-area-inset-bottom));
+  grid-template-columns: repeat(5, 1fr);
+  align-items: center;
+  justify-items: center;
+}
+
+/* Show only on mobile */
+@media (max-width: 768px) {
+  .mobile-bottom-nav { display: grid; }
+
+  /* Add padding so content isn't hidden behind bottom nav */
+  main { padding-bottom: 70px; }
+  #site-footer { margin-bottom: 70px; }
+}
+
+.mbn-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px 4px;
+  border-radius: 10px;
+  min-width: 52px;
+  transition: all 0.15s;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: var(--text3);
+}
+
+.mbn-item:active { transform: scale(0.92); }
+
+.mbn-item span:last-child {
+  font-size: 0.6em;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  color: var(--text3);
+  transition: color 0.15s;
+}
+
+.mbn-icon {
+  width: 22px;
+  height: 22px;
+  stroke: var(--text3);
+  transition: stroke 0.15s;
+  flex-shrink: 0;
+}
+
+.mbn-active .mbn-icon,
+.mbn-active span:last-child {
+  stroke: var(--accent2);
+  color: var(--accent2);
+}
+
+/* Center FAB-style button */
+.mbn-item-center {
+  background: linear-gradient(135deg, var(--accent2), var(--accent2-dark));
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  min-width: 50px;
+  margin-top: -16px;
+  box-shadow: 0 4px 16px rgba(37,99,235,0.4);
+  padding: 0;
+  gap: 0;
+  justify-content: center;
+}
+
+.mbn-item-center:hover { transform: scale(1.08); box-shadow: 0 6px 20px rgba(37,99,235,0.5); }
+.mbn-item-center:active { transform: scale(0.95); }
+
+.mbn-center-icon {
+  font-size: 1.3em;
+  line-height: 1;
+}
+
+/* Hide the label on center item */
+.mbn-item-center + * { display: none; }
+
+/* ── Tool count badge update (14 tools) ────────────────────── */
+.stat-val[data-count="14"] { color: var(--text); }
+
+/* ── Crop card in home grid ────────────────────────────────── */
+.ci-crop {
+  background: linear-gradient(135deg, rgba(22,163,74,0.15), rgba(16,185,129,0.15));
+  color: #10b981;
+}
+
+/* ── Keyboard shortcut for crop ────────────────────────────── */
+/* 9 → crop (added to keyboard shortcuts system) */

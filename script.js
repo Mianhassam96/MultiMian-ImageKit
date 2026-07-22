@@ -1665,9 +1665,10 @@ document.querySelectorAll('.share-copy-btn[data-copy]').forEach(btn => {
         watermark: () => wmFile,
         merge:     () => mergeFile1 || mergeFile2,
         sticker:   () => stickerFile,
+        crop:      () => window._cropFile || null,
         gif:       () => null, // handled specially
         videogif:  () => null, // handled specially
-        screenshot:() => ssFile,
+        screenshot:() => window.ssFile || null,
     };
 
     document.querySelectorAll('.share-anywhere-btn[data-tool]').forEach(btn => {

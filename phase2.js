@@ -47,6 +47,7 @@ const WorkflowEngine = (() => {
     ocr:         [{ tab:'compress', icon:'🗜', name:'Compress Original', desc:'Reduce the source image size' }, { tab:'screenshot', icon:'✨', name:'Beautify Screenshot', desc:'Add frame and background' }],
     merge:       [{ tab:'compress', icon:'🗜', name:'Compress Result', desc:'Reduce merged image size' }, { tab:'share', icon:'🌐', name:'Share Public Link', desc:'Get a shareable URL + QR code' }],
     sticker:     [{ tab:'share', icon:'🌐', name:'Share Public Link', desc:'Get a shareable URL + QR code' }, { tab:'compress', icon:'🗜', name:'Compress It', desc:'Reduce sticker file size' }],
+    crop:        [{ tab:'compress', icon:'🗜', name:'Compress It', desc:'Reduce size after cropping' }, { tab:'share', icon:'🌐', name:'Share Public Link', desc:'Get a shareable URL + QR code' }, { tab:'watermark', icon:'💧', name:'Add Watermark', desc:'Protect before sharing' }],
     gif:         [{ tab:'share', icon:'🌐', name:'Share Public Link', desc:'Get a shareable URL + QR code' }],
     videogif:    [{ tab:'share', icon:'🌐', name:'Share Public Link', desc:'Get a shareable URL + QR code' }],
   };
@@ -172,6 +173,7 @@ const RecentWorkspace = (() => {
     { name: 'Image → GIF', desc: 'Multi-frame animated GIF', icon: '🎞', tab: 'gif', tags: ['gif','animate','frames'] },
     { name: 'Video → GIF', desc: 'Clip to GIF converter', icon: '🎬', tab: 'videogif', tags: ['video','gif','clip','convert'] },
     { name: 'Image → Sticker', desc: '512×512 PNG / WebP', icon: '🎨', tab: 'sticker', tags: ['sticker','whatsapp','telegram','512'] },
+    { name: 'Crop Image', desc: 'Free, ratio & social presets', icon: '✂️', tab: 'crop', tags: ['crop','trim','cut','square','ratio'] },
     { name: 'Toggle Dark Mode', desc: 'Switch light/dark theme', icon: '🌙', action: () => document.getElementById('darkToggle').click(), tags: ['dark','light','theme'] },
     { name: 'Go Home', desc: 'Back to home page', icon: '🏠', tab: 'home', tags: ['home','start'] },
     { name: 'About', desc: 'About MultiMian ImageKit', icon: 'ℹ️', tab: 'about', tags: ['about','info'] },

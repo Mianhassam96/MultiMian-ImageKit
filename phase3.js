@@ -107,7 +107,7 @@ const SmartOptimize = (() => {
     if (!btn || !drop) return;
 
     btn.addEventListener('click', () => {
-      document.getElementById('soLauncher').style.display = 'flex';
+      if (modal) modal.style.display = 'flex';
     });
 
     if (typeof setupDrop === 'function') {

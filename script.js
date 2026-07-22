@@ -99,6 +99,19 @@ document.querySelectorAll('.hero-cta[data-tab], .home-card[data-tab]').forEach(e
     el.addEventListener('click', () => activateTab(el.dataset.tab));
 });
 
+// ── Inject "Launch →" button into every home card ─────────────
+document.querySelectorAll('.home-card[data-tab]').forEach(card => {
+    const btn = document.createElement('button');
+    btn.className = 'card-launch-btn';
+    btn.textContent = 'Launch Tool →';
+    btn.setAttribute('aria-label', 'Launch ' + (card.querySelector('h3')?.textContent || 'tool'));
+    btn.addEventListener('click', e => {
+        e.stopPropagation();
+        activateTab(card.dataset.tab);
+    });
+    card.appendChild(btn);
+});
+
 // ── Browse All Tools button — smooth scroll to tools grid ─────
 const heroBrowseBtn = document.getElementById('heroBrowseBtn');
 if (heroBrowseBtn) {
@@ -116,9 +129,9 @@ document.querySelectorAll('.why-card').forEach(card => {
 const ndpSmartBtn = document.getElementById('ndpSmartBtn');
 if (ndpSmartBtn) {
     ndpSmartBtn.addEventListener('click', () => {
-        // Close mega dropdown then open smart optimize
         document.querySelectorAll('.nav-dropdown.open').forEach(d => d.classList.remove('open'));
-        document.getElementById('soLauncher')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        const modal = document.getElementById('soModal');
+        if (modal) modal.style.display = 'flex';
     });
 }
 

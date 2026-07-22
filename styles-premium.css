@@ -419,3 +419,124 @@
   max-width: 1000px; margin: 0 auto; padding: 0 24px;
   position: relative; z-index: 1;
 }
+
+/* ══════════════════════════════════════════════════════════════
+   Sprint 2 — Bug Fixes + Polish
+   ══════════════════════════════════════════════════════════════ */
+
+/* M2 Fix: hero-sub responsive rules (replaces dead .hero-desc rules) */
+.hero-sub {
+  font-size: 1.05em;
+  color: var(--text2);
+  max-width: 600px;
+  margin: 0 auto 32px;
+  line-height: 1.75;
+  text-align: center;
+  animation: fadeUp 0.6s 0.3s ease both;
+}
+@media (max-width: 768px) {
+  .hero-sub { font-size: 0.95em; max-width: 100%; padding: 0 8px; }
+}
+@media (max-width: 480px) {
+  .hero-sub { font-size: 0.88em; }
+}
+
+/* M5 Fix: single authoritative max-width for tool sections */
+.tab-section:not(.home-section) {
+  width: 92%;
+  max-width: 700px !important;
+  margin: 36px auto 90px;
+}
+
+/* ── Hero tagline rotator transition ──────────────────────── */
+#heroTaglineRotator {
+  display: inline-block;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  min-height: 1.75em;
+}
+
+/* ── Smart Optimize launcher — keep visible ───────────────── */
+.so-launcher { display: block !important; }
+
+/* ── Card launch button on hover ──────────────────────────── */
+.home-card {
+  position: relative;
+  padding-bottom: 52px;
+}
+.home-card .card-footer {
+  position: absolute;
+  bottom: 16px; left: 20px; right: 20px;
+}
+.home-card .card-launch-btn {
+  display: none;
+  position: absolute;
+  bottom: 16px; left: 20px; right: 20px;
+  background: linear-gradient(135deg, var(--accent2), var(--accent2-dark));
+  color: #fff; border: none; border-radius: var(--radius-sm);
+  padding: 8px 14px; font-size: 0.8em; font-weight: 700;
+  cursor: pointer; font-family: 'Plus Jakarta Sans', sans-serif;
+  transition: opacity 0.2s, transform 0.15s;
+  text-align: center;
+}
+.home-card:hover .card-launch-btn {
+  display: block;
+  animation: fadeUp 0.18s ease;
+}
+.home-card:hover .card-footer {
+  display: none;
+}
+
+/* ── Tool section smooth entry animation ──────────────────── */
+.tab-section.active {
+  animation: tabReveal 0.3s cubic-bezier(.22,1,.36,1);
+}
+@keyframes tabReveal {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Loading skeleton pulse ───────────────────────────────── */
+.skeleton {
+  background: linear-gradient(90deg, var(--surface2) 25%, var(--surface3) 50%, var(--surface2) 75%);
+  background-size: 200% 100%;
+  animation: skeletonPulse 1.4s ease infinite;
+  border-radius: var(--radius-sm);
+}
+@keyframes skeletonPulse {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── Drop zone enhanced feedback ─────────────────────────── */
+.drop-zone {
+  transition: border-color 0.2s, background 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+.drop-zone:hover, .drop-zone.dragover {
+  border-color: var(--accent2);
+  background: var(--accent2-light);
+  transform: scale(1.008);
+  box-shadow: 0 0 0 4px rgba(37,99,235,0.08);
+}
+
+/* ── Better mobile touch targets ─────────────────────────── */
+@media (max-width: 768px) {
+  .primary-btn  { padding: 14px 24px; min-height: 48px; }
+  .secondary-btn{ padding: 11px 18px; min-height: 44px; }
+  .preset-btn   { padding: 8px 14px; }
+  .drop-zone    { padding: 28px 20px; }
+  .tab-section:not(.home-section) { width: 96%; margin: 20px auto 60px; }
+  .stats-row { margin-bottom: 40px; }
+  .why-grid  { gap: 10px; }
+}
+
+/* ── Section label responsive ─────────────────────────────── */
+@media (max-width: 600px) {
+  .section-label { font-size: 0.68em; padding: 0 16px; }
+}
+
+/* ── Tool category responsive ─────────────────────────────── */
+@media (max-width: 500px) {
+  .tool-category-header { gap: 10px; }
+  .tc-icon { font-size: 1.3em; }
+  .tc-name { font-size: 0.9em; }
+}

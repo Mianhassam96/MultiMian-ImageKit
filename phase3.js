@@ -549,7 +549,7 @@ const IdentitySystem = (() => {
   const SHORTCUTS = {
     '1': 'screenshot', '2': 'ocr', '3': 'compress',
     '4': 'resize', '5': 'convert', '6': 'watermark',
-    '7': 'merge', '8': 'share', '0': 'home',
+    '7': 'merge', '8': 'share', '9': 'crop', '0': 'home',
   };
   document.addEventListener('keydown', e => {
     // Skip if typing in input/textarea

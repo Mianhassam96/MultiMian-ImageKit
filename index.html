@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="styles-phase4.css">
     <link rel="stylesheet" href="styles-phase5.css">
     <link rel="stylesheet" href="styles-premium.css">
+    <link rel="stylesheet" href="styles-sprint3.css">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#16a34a">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -150,6 +151,11 @@
                             <span class="ndp-icon">🌐</span>
                             <span class="ndp-text"><strong>Share Image</strong><small>Public link + QR code</small></span>
                         </button>
+                        <button class="ndp-item" data-tab="crop">
+                            <span class="ndp-icon">✂️</span>
+                            <span class="ndp-text"><strong>Crop Image</strong><small>Free, ratio & social presets</small></span>
+                            <span class="ndp-badge ndp-hot">New</span>
+                        </button>
                     </div>
                     <div class="ndp-col">
                         <div class="ndp-col-header">🔤 Extract &amp; Convert</div>
@@ -232,6 +238,7 @@
         <button class="tab-btn" data-tab="watermark">💧 Watermark</button>
         <button class="tab-btn" data-tab="merge">🔗 Merge Images</button>
         <button class="tab-btn" data-tab="share">🌐 Share Link</button>
+        <button class="tab-btn" data-tab="crop">✂️ Crop Image</button>
         <div class="drawer-group-label">🔤 Extract &amp; Convert</div>
         <button class="tab-btn" data-tab="ocr">🔤 Image → Text (OCR)</button>
         <button class="tab-btn" data-tab="pdf">📝 Text Studio</button>
@@ -301,7 +308,7 @@
         <!-- ── STATS ROW ── -->
         <div class="stats-row">
             <div class="stat-item">
-                <span class="stat-val" data-count="13">0</span>
+                <span class="stat-val" data-count="14">0</span>
                 <span class="stat-lbl">Tools</span>
             </div>
             <div class="stat-divider"></div>
@@ -485,6 +492,20 @@
                         <span class="card-meta-pill">10+ langs</span>
                     </div>
                     <div class="card-footer"><span class="card-tech">Tesseract.js</span><span class="card-arrow">→</span></div>
+                </div>
+                <div class="home-card" data-tab="crop">
+                    <div class="card-glow"></div>
+                    <div class="card-top">
+                        <span class="card-icon-wrap ci-crop">✂️</span>
+                        <span class="card-badge card-badge-hot">New</span>
+                    </div>
+                    <h3>Crop Image</h3>
+                    <p>Free crop, fixed ratios or social presets. Drag handles to adjust. Download instantly.</p>
+                    <div class="card-meta">
+                        <span class="card-meta-pill">⚡ Instant</span>
+                        <span class="card-meta-pill">📡 Offline</span>
+                    </div>
+                    <div class="card-footer"><span class="card-tech">Canvas API</span><span class="card-arrow">→</span></div>
                 </div>
                 <div class="home-card" data-tab="share">
                     <div class="card-glow"></div>
@@ -2047,6 +2068,96 @@
         <p class="success-msg" id="stickerSuccess" style="display:none;">✔ Sticker downloaded</p>
     </section>
 
+    <!-- ══ Crop Tab ══ -->
+    <section id="tab-crop" class="tab-section">
+        <div class="section-header">
+            <div class="section-icon">✂️</div>
+            <div>
+                <h2>Crop Image</h2>
+                <p>Drag to select the crop area — free, fixed ratio, or social media presets</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="drop-zone" id="cropDrop">
+                <span class="drop-icon">✂️</span>
+                <p>Drop image here or <label for="cropUpload" class="link">click to upload</label></p>
+                <p class="drop-hint">JPG, PNG, WebP — drag the handles to select your crop area</p>
+                <input type="file" id="cropUpload" accept="image/*" hidden>
+            </div>
+            <div id="cropClearRow" class="clear-row" style="display:none;">
+                <button id="cropClear" class="clear-btn">✕ Clear &amp; Upload New</button>
+            </div>
+        </div>
+
+        <!-- Ratio presets -->
+        <div id="cropRatioCard" class="card" style="display:none;">
+            <div class="options-panel">
+                <div class="opt-group">
+                    <label>Aspect Ratio</label>
+                    <select id="cropRatio">
+                        <option value="free">Free (drag any shape)</option>
+                        <option value="1:1">1:1 — Square</option>
+                        <option value="4:3">4:3 — Standard</option>
+                        <option value="16:9">16:9 — Widescreen</option>
+                        <option value="9:16">9:16 — Portrait / Story</option>
+                        <option value="3:2">3:2 — Photo</option>
+                        <option value="2:3">2:3 — Portrait Photo</option>
+                        <option value="4:5">4:5 — Instagram Portrait</option>
+                    </select>
+                </div>
+                <div class="opt-group">
+                    <label>Output Format</label>
+                    <select id="cropFormat">
+                        <option value="image/png">PNG</option>
+                        <option value="image/jpeg">JPG</option>
+                        <option value="image/webp">WebP</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Social presets -->
+            <div class="presets-row" style="margin-top:12px;">
+                <span class="presets-label">Social Presets</span>
+                <button class="preset-btn" data-crop-ratio="1:1" data-crop-label="Instagram Post">Instagram Post</button>
+                <button class="preset-btn" data-crop-ratio="9:16" data-crop-label="Instagram Story">Instagram Story</button>
+                <button class="preset-btn" data-crop-ratio="16:9" data-crop-label="YouTube Thumbnail">YouTube Thumb</button>
+                <button class="preset-btn" data-crop-ratio="4:5" data-crop-label="Instagram Portrait">IG Portrait</button>
+                <button class="preset-btn" data-crop-ratio="1:1" data-crop-label="Profile Photo">Profile Photo</button>
+                <button class="preset-btn" data-crop-ratio="16:9" data-crop-label="Twitter Header">Twitter Header</button>
+            </div>
+        </div>
+
+        <!-- Crop canvas -->
+        <div id="cropCanvasWrap" class="card crop-canvas-wrap" style="display:none;">
+            <p class="preview-label">Drag the corners or edges to adjust crop area</p>
+            <div class="crop-stage" id="cropStage">
+                <canvas id="cropCanvas"></canvas>
+                <!-- Overlay handles injected by JS -->
+            </div>
+            <!-- Live size readout -->
+            <div class="crop-info-row" id="cropInfoRow">
+                <span id="cropSizeLabel">–</span>
+                <span id="cropRatioLabel">–</span>
+            </div>
+        </div>
+
+        <!-- Preview -->
+        <div id="cropPreviewWrap" class="card" style="display:none;">
+            <p class="preview-label">Crop Preview</p>
+            <div style="text-align:center;">
+                <canvas id="cropPreviewCanvas" style="max-width:100%; border-radius:8px; border:1px solid var(--border);"></canvas>
+            </div>
+        </div>
+
+        <div class="btn-row">
+            <button id="cropBtn" class="primary-btn" disabled>✂️ Download Cropped Image</button>
+            <button id="cropResetBtn" class="secondary-btn" disabled>↺ Reset</button>
+            <button class="secondary-btn share-anywhere-btn" data-tool="crop" disabled id="cropShareBtn">🌐 Share</button>
+        </div>
+        <p class="success-msg" id="cropSuccess" style="display:none;">✔ Cropped image downloaded</p>
+    </section>
+
     <!-- ══ About Section ══ -->
     <section id="tab-about" class="tab-section">
 
@@ -2077,7 +2188,7 @@
             <div class="about-card">
                 <div class="about-card-icon">🆓</div>
                 <h3>Completely Free</h3>
-                <p>No subscriptions, no watermarks, no limits. All 13 tools are free forever. Built with love for the community.</p>
+                <p>No subscriptions, no watermarks, no limits. All 14 tools are free forever. Built with love for the community.</p>
             </div>
         </div>
 
@@ -2372,6 +2483,29 @@
     </div>
 </footer>
 
+<!-- ══ Mobile Bottom Nav ══ -->
+<nav class="mobile-bottom-nav" id="mobileBottomNav" aria-label="Quick navigation">
+    <button class="mbn-item" data-tab="home" aria-label="Home">
+        <svg class="mbn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>Home</span>
+    </button>
+    <button class="mbn-item" data-tab="compress" aria-label="Compress">
+        <svg class="mbn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <span>Compress</span>
+    </button>
+    <button class="mbn-item mbn-item-center" data-tab="screenshot" aria-label="Screenshot Studio">
+        <span class="mbn-center-icon">✨</span>
+    </button>
+    <button class="mbn-item" data-tab="crop" aria-label="Crop">
+        <svg class="mbn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 2 6 6 2 6"/><polyline points="18 22 18 18 22 18"/><rect x="6" y="6" width="12" height="12"/></svg>
+        <span>Crop</span>
+    </button>
+    <button class="mbn-item" id="mbnMoreBtn" aria-label="All tools">
+        <svg class="mbn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        <span>All Tools</span>
+    </button>
+</nav>
+
 <!-- Core libs needed immediately -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" defer></script>
@@ -2382,5 +2516,40 @@
 <script src="phase3.js" defer></script>
 <script src="phase4.js" defer></script>
 <script src="phase5.js" defer></script>
+<script src="crop.js" defer></script>
+<script>
+// Mobile bottom nav wiring
+document.addEventListener('DOMContentLoaded', function() {
+    // Bottom nav tab buttons
+    document.querySelectorAll('.mbn-item[data-tab]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (typeof activateTab === 'function') activateTab(btn.dataset.tab);
+        });
+    });
+    // "All Tools" opens hamburger drawer
+    const mbnMore = document.getElementById('mbnMoreBtn');
+    if (mbnMore) {
+        mbnMore.addEventListener('click', () => {
+            const drawer = document.getElementById('mobileDrawer');
+            const ham = document.getElementById('hamburger');
+            if (drawer && ham) {
+                const open = drawer.classList.toggle('open');
+                ham.classList.toggle('open', open);
+                ham.setAttribute('aria-expanded', open);
+            }
+        });
+    }
+    // Highlight active bottom nav item
+    const origActivate = window.activateTab;
+    if (origActivate) {
+        window.activateTab = function(tabId) {
+            origActivate(tabId);
+            document.querySelectorAll('.mbn-item').forEach(b => {
+                b.classList.toggle('mbn-active', b.dataset.tab === tabId);
+            });
+        };
+    }
+});
+</script>
 </body>
 </html>

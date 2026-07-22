@@ -157,3 +157,73 @@
 
 /* ── Keyboard shortcut for crop ────────────────────────────── */
 /* 9 → crop (added to keyboard shortcuts system) */
+
+/* ══════════════════════════════════════════════════════════════
+   Sprint 4 — Favicon Generator · Passport Photo
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Favicon Generator ─────────────────────────────────────── */
+.favicon-sizes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+  gap: 12px;
+  padding: 4px 0;
+}
+.favicon-size-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 8px;
+  transition: border-color 0.2s, transform 0.15s;
+}
+.favicon-size-item:hover {
+  border-color: var(--accent2);
+  transform: translateY(-2px);
+}
+.favicon-preview-canvas {
+  border-radius: 6px;
+  image-rendering: pixelated;
+  max-width: 64px;
+  max-height: 64px;
+  display: block;
+}
+.favicon-size-label {
+  font-size: 0.66em;
+  font-weight: 600;
+  color: var(--text3);
+  text-align: center;
+}
+
+/* ── Passport Photo ────────────────────────────────────────── */
+#passportCanvas {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow);
+}
+
+/* ── Home card icon colors for new tools ──────────────────── */
+.ci-favicon {
+  background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(139,92,246,0.15));
+  color: #6366f1;
+}
+.ci-passport {
+  background: linear-gradient(135deg, rgba(245,158,11,0.15), rgba(234,88,12,0.15));
+  color: #f59e0b;
+}
+
+/* ── Tool utilities category header ───────────────────────── */
+.tc-util { border-bottom-color: rgba(99,102,241,0.3); }
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .favicon-sizes-grid {
+    grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+    gap: 8px;
+  }
+}

@@ -176,6 +176,16 @@
                             <span class="ndp-icon">🎞</span>
                             <span class="ndp-text"><strong>Image → GIF</strong><small>Multi-frame animated GIF</small></span>
                         </button>
+                        <button class="ndp-item" data-tab="favicon">
+                            <span class="ndp-icon">🌐</span>
+                            <span class="ndp-text"><strong>Favicon Generator</strong><small>All sizes as ZIP</small></span>
+                            <span class="ndp-badge ndp-hot">New</span>
+                        </button>
+                        <button class="ndp-item" data-tab="passport">
+                            <span class="ndp-icon">🪪</span>
+                            <span class="ndp-text"><strong>Passport Photo</strong><small>Fixed ratios + print layout</small></span>
+                            <span class="ndp-badge ndp-hot">New</span>
+                        </button>
                         <button class="ndp-item" data-tab="videogif">
                             <span class="ndp-icon">🎬</span>
                             <span class="ndp-text"><strong>Video → GIF</strong><small>Clip to GIF converter</small></span>
@@ -193,7 +203,7 @@
                             <button class="ndp-cta-btn" id="ndpSmartBtn">Try it free →</button>
                         </div>
                         <div class="ndp-stats-mini">
-                            <div><strong>13</strong><span>Tools</span></div>
+                            <div><strong>16</strong><span>Tools</span></div>
                             <div><strong>0</strong><span>Uploads</span></div>
                             <div><strong>100%</strong><span>Free</span></div>
                         </div>
@@ -243,6 +253,8 @@
         <button class="tab-btn" data-tab="ocr">🔤 Image → Text (OCR)</button>
         <button class="tab-btn" data-tab="pdf">📝 Text Studio</button>
         <button class="tab-btn" data-tab="pdf2img">🖼 PDF → Image</button>
+        <button class="tab-btn" data-tab="favicon">🌐 Favicon Generator</button>
+        <button class="tab-btn" data-tab="passport">🪪 Passport Photo</button>
         <div class="drawer-group-label">🎬 Media Tools</div>
         <button class="tab-btn" data-tab="gif">🎞 Image → GIF</button>
         <button class="tab-btn" data-tab="videogif">🎬 Video → GIF</button>
@@ -308,7 +320,7 @@
         <!-- ── STATS ROW ── -->
         <div class="stats-row">
             <div class="stat-item">
-                <span class="stat-val" data-count="14">0</span>
+                <span class="stat-val" data-count="16">0</span>
                 <span class="stat-lbl">Tools</span>
             </div>
             <div class="stat-divider"></div>
@@ -561,6 +573,47 @@
                         <span class="card-meta-pill">📡 Offline</span>
                     </div>
                     <div class="card-footer"><span class="card-tech">PDF.js + JSZip</span><span class="card-arrow">→</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Utilities -->
+        <div class="tool-category">
+            <div class="tool-category-header tc-util">
+                <span class="tc-icon">🛠</span>
+                <div>
+                    <span class="tc-name">Utilities</span>
+                    <span class="tc-desc">Specialized tools for common creative tasks</span>
+                </div>
+            </div>
+            <div class="home-grid">
+                <div class="home-card" data-tab="favicon">
+                    <div class="card-glow"></div>
+                    <div class="card-top">
+                        <span class="card-icon-wrap ci-favicon">🌐</span>
+                        <span class="card-badge card-badge-hot">New</span>
+                    </div>
+                    <h3>Favicon Generator</h3>
+                    <p>Upload any image — get all favicon sizes (16, 32, 48, 64, 180, 192, 512px) as a ZIP.</p>
+                    <div class="card-meta">
+                        <span class="card-meta-pill">⚡ Instant</span>
+                        <span class="card-meta-pill">📡 Offline</span>
+                    </div>
+                    <div class="card-footer"><span class="card-tech">Canvas + JSZip</span><span class="card-arrow">→</span></div>
+                </div>
+                <div class="home-card" data-tab="passport">
+                    <div class="card-glow"></div>
+                    <div class="card-top">
+                        <span class="card-icon-wrap ci-passport">🪪</span>
+                        <span class="card-badge card-badge-hot">New</span>
+                    </div>
+                    <h3>Passport Photo</h3>
+                    <p>Crop to official passport ratio, set background color, and export a print-ready layout.</p>
+                    <div class="card-meta">
+                        <span class="card-meta-pill">⚡ Instant</span>
+                        <span class="card-meta-pill">📡 Offline</span>
+                    </div>
+                    <div class="card-footer"><span class="card-tech">Canvas API</span><span class="card-arrow">→</span></div>
                 </div>
             </div>
         </div>
@@ -2158,6 +2211,134 @@
         <p class="success-msg" id="cropSuccess" style="display:none;">✔ Cropped image downloaded</p>
     </section>
 
+    <!-- ══ Favicon Generator Tab ══ -->
+    <section id="tab-favicon" class="tab-section">
+        <div class="section-header">
+            <div class="section-icon">🌐</div>
+            <div>
+                <h2>Favicon Generator</h2>
+                <p>Upload any image — get all favicon sizes as a ready-to-use ZIP</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="drop-zone" id="faviconDrop">
+                <span class="drop-icon">🌐</span>
+                <p>Drop image here or <label for="faviconUpload" class="link">click to upload</label></p>
+                <p class="drop-hint">Best results with a square image (PNG or SVG recommended)</p>
+                <input type="file" id="faviconUpload" accept="image/*" hidden>
+            </div>
+            <div id="faviconPreview" class="preview-box" style="display:none; margin-top:14px;">
+                <img id="faviconImg" alt="Preview" style="max-height:140px;">
+                <div class="file-info" id="faviconFileInfo"></div>
+            </div>
+            <div id="faviconClearRow" class="clear-row" style="display:none;">
+                <button id="faviconClear" class="clear-btn">✕ Clear &amp; Upload New</button>
+            </div>
+        </div>
+        <div id="faviconSizesCard" class="card" style="display:none;">
+            <p style="font-size:0.82em; color:var(--text2); margin-bottom:14px;">The following sizes will be generated and bundled into a ZIP:</p>
+            <div class="favicon-sizes-grid" id="faviconSizesGrid"></div>
+        </div>
+        <div class="btn-row">
+            <button id="faviconBtn" class="primary-btn" disabled>🌐 Download All as ZIP</button>
+            <button id="faviconDownloadSvg" class="secondary-btn" disabled>⬇ Download SVG</button>
+        </div>
+        <div id="faviconProgress" style="display:none; margin-top:14px;">
+            <div class="progress-bar"><div class="progress-fill" id="faviconProgressFill"></div><span id="faviconProgressLabel">Generating…</span></div>
+        </div>
+        <p class="success-msg" id="faviconSuccess" style="display:none;">✔ Favicons downloaded — extract the ZIP to your project root</p>
+    </section>
+
+    <!-- ══ Passport Photo Tab ══ -->
+    <section id="tab-passport" class="tab-section">
+        <div class="section-header">
+            <div class="section-icon">🪪</div>
+            <div>
+                <h2>Passport Photo Maker</h2>
+                <p>Crop to official dimensions, set background color, export print-ready layout</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="drop-zone" id="passportDrop">
+                <span class="drop-icon">🪪</span>
+                <p>Drop your photo here or <label for="passportUpload" class="link">click to upload</label></p>
+                <p class="drop-hint">JPG, PNG, WebP — front-facing portrait works best</p>
+                <input type="file" id="passportUpload" accept="image/*" hidden>
+            </div>
+            <div id="passportPreview" class="preview-box" style="display:none; margin-top:14px;">
+                <img id="passportImg" alt="Preview">
+                <div class="file-info" id="passportFileInfo"></div>
+            </div>
+            <div id="passportClearRow" class="clear-row" style="display:none;">
+                <button id="passportClear" class="clear-btn">✕ Clear &amp; Upload New</button>
+            </div>
+        </div>
+        <div id="passportOptions" class="card" style="display:none;">
+            <div class="options-panel">
+                <div class="opt-group">
+                    <label>Photo Standard</label>
+                    <select id="passportStandard">
+                        <option value="35x45">🇬🇧 UK / EU — 35×45mm</option>
+                        <option value="51x51">🇺🇸 US — 2×2 inch (51×51mm)</option>
+                        <option value="35x35">🇨🇳 China — 35×45mm</option>
+                        <option value="40x60">🇮🇳 India — 40×60mm</option>
+                        <option value="35x45_pk">🇵🇰 Pakistan — 35×45mm</option>
+                        <option value="custom">Custom Size</option>
+                    </select>
+                </div>
+                <div class="opt-group" id="passportCustomW" style="display:none;">
+                    <label>Width (mm)</label>
+                    <input type="number" id="passportW" value="35" min="10" max="200">
+                </div>
+                <div class="opt-group" id="passportCustomH" style="display:none;">
+                    <label>Height (mm)</label>
+                    <input type="number" id="passportH" value="45" min="10" max="200">
+                </div>
+                <div class="opt-group">
+                    <label>Background</label>
+                    <select id="passportBg">
+                        <option value="white">White</option>
+                        <option value="offwhite">Off-White</option>
+                        <option value="lightblue">Light Blue</option>
+                        <option value="gray">Light Gray</option>
+                        <option value="custom">Custom Color</option>
+                    </select>
+                </div>
+                <div class="opt-group" id="passportCustomBgGroup" style="display:none;">
+                    <label>Custom Color</label>
+                    <input type="color" id="passportCustomBg" value="#ffffff">
+                </div>
+                <div class="opt-group">
+                    <label>Print Layout</label>
+                    <select id="passportLayout">
+                        <option value="single">Single Photo</option>
+                        <option value="2x2">2×2 Grid (4 photos)</option>
+                        <option value="3x4">3×4 Grid (12 photos)</option>
+                        <option value="4x6">4×6 on 6×4" print</option>
+                    </select>
+                </div>
+                <div class="opt-group">
+                    <label>Output DPI</label>
+                    <select id="passportDpi">
+                        <option value="300">300 DPI (print quality)</option>
+                        <option value="150">150 DPI (screen)</option>
+                        <option value="600">600 DPI (high quality)</option>
+                    </select>
+                </div>
+            </div>
+            <!-- Live preview -->
+            <div style="text-align:center; margin-top:16px;">
+                <p class="preview-label">Preview</p>
+                <canvas id="passportCanvas" style="max-width:100%; border-radius:8px; border:1px solid var(--border); max-height:400px;"></canvas>
+            </div>
+        </div>
+        <div class="btn-row">
+            <button id="passportBtn" class="primary-btn" disabled>🪪 Download Photo</button>
+            <button id="passportPdfBtn" class="secondary-btn" disabled>📄 Download as PDF</button>
+        </div>
+        <p class="success-msg" id="passportSuccess" style="display:none;">✔ Passport photo downloaded</p>
+    </section>
+
     <!-- ══ About Section ══ -->
     <section id="tab-about" class="tab-section">
 
@@ -2188,7 +2369,7 @@
             <div class="about-card">
                 <div class="about-card-icon">🆓</div>
                 <h3>Completely Free</h3>
-                <p>No subscriptions, no watermarks, no limits. All 14 tools are free forever. Built with love for the community.</p>
+                <p>No subscriptions, no watermarks, no limits. All 16 tools are free forever. Built with love for the community.</p>
             </div>
         </div>
 
@@ -2517,6 +2698,7 @@
 <script src="phase4.js" defer></script>
 <script src="phase5.js" defer></script>
 <script src="crop.js" defer></script>
+<script src="tools-sprint4.js" defer></script>
 <script>
 // Mobile bottom nav wiring
 document.addEventListener('DOMContentLoaded', function() {

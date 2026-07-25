@@ -1,5 +1,5 @@
-// MultiMian ImageKit — Service Worker v6.0
-const CACHE = 'imagekit-v6';
+// MultiMian ImageKit — Service Worker v7.0
+const CACHE = 'imagekit-v7';
 const STATIC = [
   './',
   './index.html',
@@ -10,11 +10,13 @@ const STATIC = [
   './styles-phase5.css',
   './styles-premium.css',
   './styles-sprint3.css',
+  './styles-phase6.css',
   './script.js',
   './phase2.js',
   './phase3.js',
   './phase4.js',
   './phase5.js',
+  './phase6.js',
   './crop.js',
   './tools-sprint4.js',
   './manifest.json',

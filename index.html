@@ -7,15 +7,24 @@
     <meta name="description" content="The ultimate free browser-based image toolkit. Compress, resize, convert, crop, watermark, extract text (OCR), make GIFs and more — all in your browser. No uploads. No registration. Privacy first.">
     <meta name="keywords" content="image compressor, image resizer, image converter, OCR, compress image, resize image, jpg to webp, png to jpg, image to pdf, screenshot studio, free image editor">
     <meta property="og:title" content="MultiMian ImageKit — The Ultimate Free Browser Image Toolkit">
-    <meta property="og:description" content="16 powerful image tools. Compress, resize, crop, convert, OCR, watermark, GIF maker, favicon generator and more. 100% in-browser. No uploads, no registration.">
+    <meta property="og:description" content="17 powerful image tools. Compress, resize, crop, convert, OCR, watermark, GIF maker, QR generator and more. 100% in-browser. No uploads, no registration.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://mianhassam96.github.io/MultiMian-ImageKit/">
+    <meta property="og:image" content="https://mianhassam96.github.io/MultiMian-ImageKit/social-preview.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="MultiMian ImageKit — Free Online Image Toolkit">
-    <meta name="twitter:description" content="13 tools. No uploads. No registration. Privacy first. Works offline.">
+    <meta name="twitter:description" content="17 tools. No uploads. No registration. Privacy first. Works offline.">
+    <meta name="twitter:image" content="https://mianhassam96.github.io/MultiMian-ImageKit/social-preview.png">
+    <!-- Preconnect + Font with display:swap -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap&font-display=swap" rel="stylesheet">
+    <!-- Preload critical resources -->
+    <link rel="preload" href="styles.css" as="style">
+    <link rel="preload" href="script.js" as="script">
+    <link rel="sitemap" type="application/xml" href="sitemap.xml">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="styles-phase2.css">
     <link rel="stylesheet" href="styles-phase3.css">
@@ -24,6 +33,7 @@
     <link rel="stylesheet" href="styles-premium.css">
     <link rel="stylesheet" href="styles-sprint3.css">
     <link rel="stylesheet" href="styles-phase6.css">
+    <link rel="stylesheet" href="styles-sprint7.css">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#16a34a">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -44,7 +54,7 @@
       "@type": "WebApplication",
       "name": "MultiMian ImageKit",
       "url": "https://mianhassam96.github.io/MultiMian-ImageKit/",
-      "description": "Free browser-based image toolkit. Compress, resize, convert, watermark, OCR, GIF maker and more. 13 tools. No uploads. Privacy first.",
+      "description": "Free browser-based image toolkit. Compress, resize, convert, watermark, OCR, GIF maker, QR generator and more. 17 tools. No uploads. Privacy first.",
       "applicationCategory": "MultimediaApplication",
       "operatingSystem": "Web Browser",
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
@@ -485,6 +495,23 @@
 
         <!-- ── ANALYTICS PANEL ── -->
         <div class="analytics-panel-wrap" id="analyticsPanel"></div>
+
+        <!-- ── INTERACTIVE PLAYGROUND ── -->
+        <div class="playground-section" id="playgroundSection">
+            <div class="playground-card" id="playgroundDrop">
+                <p class="playground-title">🚀 Try It Right Now</p>
+                <p class="playground-subtitle">Drop any image or pick a sample — see instant results without searching for a file</p>
+                <div class="playground-sample-images" id="playgroundSamples"></div>
+                <p class="playground-or">— or —</p>
+                <label for="playgroundUpload" style="cursor:pointer;">
+                    <span class="hero-cta hero-cta-ghost" style="display:inline-flex; cursor:pointer;">
+                        <span>📂</span> Upload Your Own Image
+                    </span>
+                </label>
+                <input type="file" id="playgroundUpload" accept="image/*" hidden>
+                <p class="playground-drop-hint">Drag &amp; drop works too · No upload · Instant processing</p>
+            </div>
+        </div>
 
         <!-- ── SMART OPTIMIZE LAUNCHER ── -->
         <div class="so-launcher" id="soLauncher" style="display:block;">
@@ -3003,6 +3030,7 @@
 <script src="crop.js" defer></script>
 <script src="tools-sprint4.js" defer></script>
 <script src="phase6.js" defer></script>
+<script src="phase7.js" defer></script>
 <script>
 // Mobile bottom nav wiring
 document.addEventListener('DOMContentLoaded', function() {

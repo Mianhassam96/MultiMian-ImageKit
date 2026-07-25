@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head><title>OG Image Generator</title>
+<style>body{font-family:system-ui;padding:24px;background:#0f172a;color:#fff;}</style>
+</head>
+<body>
+<h2 style="color:#6ee7b7">MultiMian ImageKit — OG Preview Generator</h2>
+<p style="color:#94a3b8">Click the button below to generate and download social-preview.png (1200×630)</p>
+<button onclick="generate()" style="background:#16a34a;color:#fff;border:none;border-radius:8px;padding:12px 24px;font-size:16px;font-weight:600;cursor:pointer;margin:8px 4px;">⬇ Generate & Download</button>
+<canvas id="c" width="1200" height="630" style="margin-top:20px;max-width:100%;border-radius:12px;display:block;"></canvas>
+<script>
+function generate() {
+  const c = document.getElementById('c');
+  const ctx = c.getContext('2d');
+  const W = 1200, H = 630;
+
+  // Background gradient
+  const bg = ctx.createLinearGradient(0, 0, W, H);
+  bg.addColorStop(0, '#080b12');
+  bg.addColorStop(0.5, '#0f172a');
+  bg.addColorStop(1, '#080b12');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, W, H);
+
+  // Glow orbs
+  const g1 = ctx.createRadialGradient(300, 200, 0, 300, 200, 400);
+  g1.addColorStop(0, 'rgba(22,163,74,0.25)');
+  g1.addColorStop(1, 'transparent');
+  ctx.fillStyle = g1; ctx.fillRect(0, 0, W, H);
+
+  const g2 = ctx.createRadialGradient(900, 400, 0, 900, 400, 350);
+  g2.addColorStop(0, 'rgba(99,102,241,0.2)');
+  g2.addColorStop(1, 'transparent');
+  ctx.fillStyle = g2; ctx.fillRect(0, 0, W, H);
+
+  // Left side — Logo + tagline
+  ctx.font = 'bold 56px system-ui';
+  ctx.fillStyle = '#ffffff';
+  ctx.fillText('MultiMian', 72, 180);
+
+  // Gradient text for "ImageKit"
+  const logoGrad = ctx.createLinearGradient(72, 200, 500, 200);
+  logoGrad.addColorStop(0, '#6ee7b7');
+  logoGrad.addColorStop(0.5, '#60a5fa');
+  logoGrad.addColorStop(1, '#a78bfa');
+  ctx.fillStyle = logoGrad;
+  ctx.font = 'bold 56px system-ui';
+  ctx.fillText('ImageKit', 340, 180);
+
+  ctx.font = '500 26px system-ui';
+  ctx.fillStyle = 'rgba(255,255,255,0.6)';
+  ctx.fillText('The privacy-first browser-based image toolkit', 72, 230);
+
+  // Trust badges
+  const badges = ['🔒 No Uploads', '⚡ Instant', '📡 Offline PWA', '🆓 Free Forever'];
+  badges.forEach((b, i) => {
+    const x = 72 + i * 240;
+    ctx.fillStyle = 'rgba(255,255,255,0.08)';
+    roundRect(ctx, x, 270, 220, 44, 22);
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    ctx.font = '600 16px system-ui';
+    ctx.fillStyle = 'rgba(255,255,255,0.8)';
+    ctx.fillText(b, x + 14, 298);
+  });
+
+  // Tool count stat
+  ctx.font = 'bold 96px system-ui';
+  const numGrad = ctx.createLinearGradient(72, 380, 300, 480);
+  numGrad.addColorStop(0, '#16a34a');
+  numGrad.addColorStop(1, '#0ea5e9');
+  ctx.fillStyle = numGrad;
+  ctx.fillText('17', 72, 460);
+  ctx.font = '600 28px system-ui';
+  ctx.fillStyle = 'rgba(255,255,255,0.5)';
+  ctx.fillText('Free Tools', 72, 500);
+
+  // Divider
+  ctx.fillStyle = 'rgba(255,255,255,0.1)';
+  ctx.fillRect(280, 380, 2, 140);
+
+  // Tool icons grid
+  const tools = ['🗜','✂️','🔄','✂️','💧','🔤','🌐','⬛','🪪','📝','🖼','🎞','🎬','🎨','✨','🔗','📦'];
+  let tx = 320, ty = 395;
+  tools.forEach((icon, i) => {
+    if (i > 0 && i % 9 === 0) { tx = 320; ty += 64; }
+    ctx.font = '32px serif'; ctx.fillText(icon, tx, ty + 36); tx += 90;
+  });
+
+  ctx.font = '600 20px system-ui';
+  ctx.fillStyle = 'rgba(255,255,255,0.4)';
+  ctx.fillText('mianhassam96.github.io/MultiMian-ImageKit/', 72, 580);
+
+  // Bottom gradient line
+  const line = ctx.createLinearGradient(0, 0, W, 0);
+  line.addColorStop(0, '#16a34a'); line.addColorStop(0.33, '#0ea5e9');
+  line.addColorStop(0.66, '#6366f1'); line.addColorStop(1, '#a78bfa');
+  ctx.fillStyle = line; ctx.fillRect(0, 618, W, 4);
+
+  // Download
+  c.toBlob(blob => {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'social-preview.png';
+    a.click();
+  }, 'image/png');
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath(); ctx.moveTo(x+r,y);
+  ctx.lineTo(x+w-r,y); ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+  ctx.lineTo(x+w,y+h-r); ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+  ctx.lineTo(x+r,y+h); ctx.quadraticCurveTo(x,y+h,x,y+h-r);
+  ctx.lineTo(x,y+r); ctx.quadraticCurveTo(x,y,x+r,y); ctx.closePath();
+}
+
+// Auto-render preview
+window.onload = () => generate();
+</script>
+</body>
+</html>

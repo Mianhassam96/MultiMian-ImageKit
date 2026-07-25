@@ -3081,3 +3081,147 @@ document.querySelectorAll('.tab-btn[data-tab="home"]').forEach(b => {
         }
     });
 });
+
+// ══════════════════════════════════════════════════════════════
+// QR Code Generator
+// ══════════════════════════════════════════════════════════════
+(function initQRTool() {
+  const typeEl      = document.getElementById('qrType');
+  const generateBtn = document.getElementById('qrGenerateBtn');
+  const downloadBtn = document.getElementById('qrDownloadBtn');
+  const copyBtn     = document.getElementById('qrCopyBtn');
+  const previewWrap = document.getElementById('qrPreviewWrap');
+  const previewEl   = document.getElementById('qrPreview');
+  const qrInfo      = document.getElementById('qrInfo');
+  const successMsg  = document.getElementById('qrSuccess');
+
+  if (!typeEl || !generateBtn) return;
+
+  const inputGroups = {
+    url:'qrInputUrl', text:'qrInputText', email:'qrInputEmail',
+    phone:'qrInputPhone', wifi:'qrInputWifi', vcard:'qrInputVcard',
+  };
+
+  typeEl.addEventListener('change', () => {
+    Object.values(inputGroups).forEach(id => {
+      const el = document.getElementById(id); if (el) el.style.display = 'none';
+    });
+    const active = document.getElementById(inputGroups[typeEl.value]);
+    if (active) active.style.display = 'block';
+  });
+
+  function buildContent() {
+    switch (typeEl.value) {
+      case 'url':   return document.getElementById('qrUrl')?.value.trim() || '';
+      case 'text':  return document.getElementById('qrText')?.value.trim() || '';
+      case 'phone': return 'tel:' + (document.getElementById('qrPhone')?.value.trim() || '');
+      case 'email': {
+        const e = document.getElementById('qrEmail')?.value.trim() || '';
+        const s = document.getElementById('qrEmailSubject')?.value.trim() || '';
+        return s ? `mailto:${e}?subject=${encodeURIComponent(s)}` : `mailto:${e}`;
+      }
+      case 'wifi': {
+        const ssid = document.getElementById('qrWifiSsid')?.value.trim() || '';
+        const pass = document.getElementById('qrWifiPass')?.value.trim() || '';
+        const sec  = document.getElementById('qrWifiSec')?.value || 'WPA';
+        return `WIFI:T:${sec};S:${ssid};P:${pass};;`;
+      }
+      case 'vcard': {
+        const n = document.getElementById('qrVcardName')?.value.trim()  || '';
+        const p = document.getElementById('qrVcardPhone')?.value.trim() || '';
+        const em= document.getElementById('qrVcardEmail')?.value.trim() || '';
+        const u = document.getElementById('qrVcardUrl')?.value.trim()   || '';
+        const o = document.getElementById('qrVcardOrg')?.value.trim()   || '';
+        return `BEGIN:VCARD\nVERSION:3.0\nFN:${n}\nTEL:${p}\nEMAIL:${em}\nURL:${u}\nORG:${o}\nEND:VCARD`;
+      }
+      default: return '';
+    }
+  }
+
+  let currentContent = '';
+
+  generateBtn.addEventListener('click', () => {
+    const content = buildContent();
+    if (!content || content === 'tel:' || content === 'mailto:') {
+      alert('Please fill in the required field.'); return;
+    }
+    const size = parseInt(document.getElementById('qrSize')?.value || 256);
+    const dark = document.getElementById('qrColorDark')?.value  || '#000000';
+    const light= document.getElementById('qrColorLight')?.value || '#ffffff';
+    const eccMap = { L: QRCode.CorrectLevel.L, M: QRCode.CorrectLevel.M, Q: QRCode.CorrectLevel.Q, H: QRCode.CorrectLevel.H };
+    const ecc  = eccMap[document.getElementById('qrEcc')?.value || 'M'];
+
+    previewEl.innerHTML = '';
+    try {
+      new QRCode(previewEl, { text: content, width: Math.min(size, 512), height: Math.min(size, 512), colorDark: dark, colorLight: light, correctLevel: ecc });
+      currentContent = content;
+      previewWrap.style.display = 'block';
+      downloadBtn.disabled = false;
+      copyBtn.disabled = false;
+      successMsg.style.display = 'none';
+      qrInfo.innerHTML = `<span>📐 <strong>${size}×${size}px</strong></span><span>🔧 <strong>ECC ${document.getElementById('qrEcc')?.value}</strong></span><span>📄 <strong>${(document.getElementById('qrOutputFormat')?.value||'png').toUpperCase()}</strong></span>`;
+      previewWrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    } catch (err) { alert('QR generation failed: ' + err.message); }
+  });
+
+  downloadBtn.addEventListener('click', () => {
+    if (!currentContent) return;
+    const format = document.getElementById('qrOutputFormat')?.value || 'png';
+    const size   = parseInt(document.getElementById('qrSize')?.value || 256);
+    const dark   = document.getElementById('qrColorDark')?.value  || '#000000';
+    const light  = document.getElementById('qrColorLight')?.value || '#ffffff';
+    const eccMap = { L: QRCode.CorrectLevel.L, M: QRCode.CorrectLevel.M, Q: QRCode.CorrectLevel.Q, H: QRCode.CorrectLevel.H };
+    const ecc    = eccMap[document.getElementById('qrEcc')?.value || 'M'];
+    const tempDiv = document.createElement('div');
+    new QRCode(tempDiv, { text: currentContent, width: size, height: size, colorDark: dark, colorLight: light, correctLevel: ecc });
+
+    setTimeout(() => {
+      const src = tempDiv.querySelector('canvas') || tempDiv.querySelector('img');
+      if (!src) { alert('Download failed — try again.'); return; }
+      const canvas = document.createElement('canvas');
+      canvas.width = canvas.height = size;
+      const ctx = canvas.getContext('2d');
+      const img = new Image();
+      img.onload = () => {
+        ctx.drawImage(img, 0, 0, size, size);
+        if (format === 'svg') {
+          const dataUrl = canvas.toDataURL('image/png');
+          const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><rect width="${size}" height="${size}" fill="${light}"/><image href="${dataUrl}" width="${size}" height="${size}"/></svg>`;
+          const blob = new Blob([svg], { type: 'image/svg+xml' });
+          const url = URL.createObjectURL(blob);
+          triggerDownload(url, `qrcode-${size}x${size}.svg`);
+          setTimeout(() => URL.revokeObjectURL(url), 10000);
+        } else {
+          canvas.toBlob(blob => {
+            const url = URL.createObjectURL(blob);
+            triggerDownload(url, `qrcode-${size}x${size}.png`);
+            setTimeout(() => URL.revokeObjectURL(url), 10000);
+          }, 'image/png');
+        }
+        successMsg.style.display = 'block';
+        if (typeof SessionTracker !== 'undefined') SessionTracker.increment('QR code saved!');
+      };
+      img.src = src.src || src.toDataURL();
+    }, 250);
+  });
+
+  copyBtn.addEventListener('click', async () => {
+    const imgEl = previewEl.querySelector('canvas') || previewEl.querySelector('img');
+    if (!imgEl) return;
+    try {
+      const canvas = document.createElement('canvas');
+      const size   = parseInt(document.getElementById('qrSize')?.value || 256);
+      canvas.width = canvas.height = size;
+      const ctx = canvas.getContext('2d');
+      const src = new Image();
+      src.onload = async () => {
+        ctx.drawImage(src, 0, 0, size, size);
+        const blob = await new Promise(res => canvas.toBlob(res, 'image/png'));
+        await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+        copyBtn.textContent = '✅ Copied!';
+        setTimeout(() => { copyBtn.textContent = '📋 Copy to Clipboard'; }, 2500);
+      };
+      src.src = imgEl.src || imgEl.toDataURL();
+    } catch { copyBtn.textContent = '❌ Not supported'; setTimeout(() => { copyBtn.textContent = '📋 Copy to Clipboard'; }, 2000); }
+  });
+})();

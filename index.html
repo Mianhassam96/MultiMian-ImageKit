@@ -187,6 +187,16 @@
                             <span class="ndp-text"><strong>Passport Photo</strong><small>Fixed ratios + print layout</small></span>
                             <span class="ndp-badge ndp-hot">New</span>
                         </button>
+                        <button class="ndp-item" data-tab="qr">
+                            <span class="ndp-icon">⬛</span>
+                            <span class="ndp-text"><strong>QR Code Generator</strong><small>URL, WiFi, vCard &amp; more</small></span>
+                            <span class="ndp-badge ndp-hot">New</span>
+                        </button>
+                        <button class="ndp-item" data-tab="qr">
+                            <span class="ndp-icon">⬛</span>
+                            <span class="ndp-text"><strong>QR Code Generator</strong><small>URL, WiFi, vCard &amp; more</small></span>
+                            <span class="ndp-badge ndp-hot">New</span>
+                        </button>
                         <button class="ndp-item" data-tab="videogif">
                             <span class="ndp-icon">🎬</span>
                             <span class="ndp-text"><strong>Video → GIF</strong><small>Clip to GIF converter</small></span>
@@ -204,7 +214,7 @@
                             <button class="ndp-cta-btn" id="ndpSmartBtn">Try it free →</button>
                         </div>
                         <div class="ndp-stats-mini">
-                            <div><strong>16</strong><span>Tools</span></div>
+                            <div><strong>17</strong><span>Tools</span></div>
                             <div><strong>0</strong><span>Uploads</span></div>
                             <div><strong>100%</strong><span>Free</span></div>
                         </div>
@@ -256,6 +266,7 @@
         <button class="tab-btn" data-tab="pdf2img">🖼 PDF → Image</button>
         <button class="tab-btn" data-tab="favicon">🌐 Favicon Generator</button>
         <button class="tab-btn" data-tab="passport">🪪 Passport Photo</button>
+        <button class="tab-btn" data-tab="qr">⬛ QR Code Generator</button>
         <div class="drawer-group-label">🎬 Media Tools</div>
         <button class="tab-btn" data-tab="gif">🎞 Image → GIF</button>
         <button class="tab-btn" data-tab="videogif">🎬 Video → GIF</button>
@@ -321,7 +332,7 @@
         <!-- ── STATS ROW ── -->
         <div class="stats-row">
             <div class="stat-item">
-                <span class="stat-val" data-count="16">0</span>
+                <span class="stat-val" data-count="17">0</span>
                 <span class="stat-lbl">Tools</span>
             </div>
             <div class="stat-divider"></div>
@@ -711,6 +722,20 @@
                 </div>
             </div>
             <div class="home-grid">
+                <div class="home-card" data-tab="qr">
+                    <div class="card-glow"></div>
+                    <div class="card-top">
+                        <span class="card-icon-wrap ci-qr">⬛</span>
+                        <span class="card-badge card-badge-hot">New</span>
+                    </div>
+                    <h3>QR Code Generator</h3>
+                    <p>Generate QR codes for URLs, text, WiFi, email, phone and vCard. Download PNG or SVG.</p>
+                    <div class="card-meta">
+                        <span class="card-meta-pill">⚡ Instant</span>
+                        <span class="card-meta-pill">📡 Offline</span>
+                    </div>
+                    <div class="card-footer"><span class="card-tech">QRCode.js</span><span class="card-arrow">→</span></div>
+                </div>
                 <div class="home-card" data-tab="favicon">
                     <div class="card-glow"></div>
                     <div class="card-top">
@@ -724,6 +749,20 @@
                         <span class="card-meta-pill">📡 Offline</span>
                     </div>
                     <div class="card-footer"><span class="card-tech">Canvas + JSZip</span><span class="card-arrow">→</span></div>
+                </div>
+                <div class="home-card" data-tab="qr">
+                    <div class="card-glow"></div>
+                    <div class="card-top">
+                        <span class="card-icon-wrap ci-qr">⬛</span>
+                        <span class="card-badge card-badge-hot">New</span>
+                    </div>
+                    <h3>QR Code Generator</h3>
+                    <p>Generate QR codes for URLs, text, WiFi, email, phone and vCard. Download PNG or SVG.</p>
+                    <div class="card-meta">
+                        <span class="card-meta-pill">⚡ Instant</span>
+                        <span class="card-meta-pill">📡 Offline</span>
+                    </div>
+                    <div class="card-footer"><span class="card-tech">QRCode.js</span><span class="card-arrow">→</span></div>
                 </div>
                 <div class="home-card" data-tab="passport">
                     <div class="card-glow"></div>
@@ -2463,6 +2502,143 @@
         <p class="success-msg" id="passportSuccess" style="display:none;">✔ Passport photo downloaded</p>
     </section>
 
+    <!-- ══ QR Code Generator Tab ══ -->
+    <section id="tab-qr" class="tab-section">
+        <div class="section-header">
+            <div class="section-icon">⬛</div>
+            <div>
+                <h2>QR Code Generator</h2>
+                <p>Generate QR codes for URLs, text, email, phone or WiFi — download as PNG or SVG</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="options-panel">
+                <div class="opt-group" style="flex:2; min-width:240px;">
+                    <label>Content Type</label>
+                    <select id="qrType">
+                        <option value="url">🌐 URL / Website</option>
+                        <option value="text">📝 Plain Text</option>
+                        <option value="email">✉️ Email Address</option>
+                        <option value="phone">📞 Phone Number</option>
+                        <option value="wifi">📶 WiFi Network</option>
+                        <option value="vcard">👤 Contact (vCard)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Dynamic input fields -->
+            <div id="qrInputUrl" class="qr-input-group" style="margin-top:12px;">
+                <div class="opt-group" style="width:100%;">
+                    <label>Website URL</label>
+                    <input type="url" id="qrUrl" placeholder="https://example.com" class="qr-text-input">
+                </div>
+            </div>
+            <div id="qrInputText" class="qr-input-group" style="display:none; margin-top:12px;">
+                <div class="opt-group" style="width:100%;">
+                    <label>Text Content</label>
+                    <textarea id="qrText" rows="3" placeholder="Enter any text…" class="qr-text-input qr-textarea"></textarea>
+                </div>
+            </div>
+            <div id="qrInputEmail" class="qr-input-group" style="display:none; margin-top:12px;">
+                <div class="opt-group" style="width:100%;">
+                    <label>Email Address</label>
+                    <input type="email" id="qrEmail" placeholder="you@example.com" class="qr-text-input">
+                </div>
+                <div class="opt-group" style="width:100%; margin-top:8px;">
+                    <label>Subject (optional)</label>
+                    <input type="text" id="qrEmailSubject" placeholder="Email subject" class="qr-text-input">
+                </div>
+            </div>
+            <div id="qrInputPhone" class="qr-input-group" style="display:none; margin-top:12px;">
+                <div class="opt-group" style="width:100%;">
+                    <label>Phone Number</label>
+                    <input type="tel" id="qrPhone" placeholder="+1234567890" class="qr-text-input">
+                </div>
+            </div>
+            <div id="qrInputWifi" class="qr-input-group" style="display:none; margin-top:12px;">
+                <div class="opt-group" style="flex:2;">
+                    <label>Network Name (SSID)</label>
+                    <input type="text" id="qrWifiSsid" placeholder="MyWiFiNetwork" class="qr-text-input">
+                </div>
+                <div class="opt-group" style="flex:2;">
+                    <label>Password</label>
+                    <input type="text" id="qrWifiPass" placeholder="password" class="qr-text-input">
+                </div>
+                <div class="opt-group">
+                    <label>Security</label>
+                    <select id="qrWifiSec">
+                        <option value="WPA">WPA/WPA2</option>
+                        <option value="WEP">WEP</option>
+                        <option value="nopass">None</option>
+                    </select>
+                </div>
+            </div>
+            <div id="qrInputVcard" class="qr-input-group" style="display:none; margin-top:12px;">
+                <div class="options-panel" style="padding:0; background:none; border:none;">
+                    <div class="opt-group"><label>Full Name</label><input type="text" id="qrVcardName" placeholder="John Doe" class="qr-text-input"></div>
+                    <div class="opt-group"><label>Phone</label><input type="tel" id="qrVcardPhone" placeholder="+1234567890" class="qr-text-input"></div>
+                    <div class="opt-group"><label>Email</label><input type="email" id="qrVcardEmail" placeholder="john@example.com" class="qr-text-input"></div>
+                    <div class="opt-group"><label>Website</label><input type="url" id="qrVcardUrl" placeholder="https://example.com" class="qr-text-input"></div>
+                    <div class="opt-group"><label>Organization</label><input type="text" id="qrVcardOrg" placeholder="Company name" class="qr-text-input"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Style options -->
+        <div class="card">
+            <div class="options-panel">
+                <div class="opt-group">
+                    <label>Size (px)</label>
+                    <select id="qrSize">
+                        <option value="128">128 (small)</option>
+                        <option value="256" selected>256 (medium)</option>
+                        <option value="512">512 (large)</option>
+                        <option value="1024">1024 (print)</option>
+                    </select>
+                </div>
+                <div class="opt-group">
+                    <label>Foreground Color</label>
+                    <input type="color" id="qrColorDark" value="#000000">
+                </div>
+                <div class="opt-group">
+                    <label>Background Color</label>
+                    <input type="color" id="qrColorLight" value="#ffffff">
+                </div>
+                <div class="opt-group">
+                    <label>Error Correction</label>
+                    <select id="qrEcc">
+                        <option value="L">L — 7%</option>
+                        <option value="M" selected>M — 15%</option>
+                        <option value="Q">Q — 25%</option>
+                        <option value="H">H — 30% (most robust)</option>
+                    </select>
+                </div>
+                <div class="opt-group">
+                    <label>Output Format</label>
+                    <select id="qrOutputFormat">
+                        <option value="png">PNG</option>
+                        <option value="svg">SVG (vector)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Preview -->
+        <div id="qrPreviewWrap" class="card" style="display:none; text-align:center;">
+            <p class="preview-label">QR Code Preview</p>
+            <div id="qrPreview" style="display:inline-block; padding:16px; background:#fff; border-radius:8px; margin:8px auto;"></div>
+            <div class="file-info" id="qrInfo" style="margin-top:10px;"></div>
+        </div>
+
+        <div class="btn-row">
+            <button id="qrGenerateBtn" class="primary-btn">⬛ Generate QR Code</button>
+            <button id="qrDownloadBtn" class="secondary-btn" disabled>⬇ Download</button>
+            <button id="qrCopyBtn" class="secondary-btn" disabled>📋 Copy to Clipboard</button>
+        </div>
+        <p class="success-msg" id="qrSuccess" style="display:none;">✔ QR Code downloaded</p>
+    </section>
+
     <!-- ══ About Section ══ -->
     <section id="tab-about" class="tab-section">
 
@@ -2493,7 +2669,7 @@
             <div class="about-card">
                 <div class="about-card-icon">🆓</div>
                 <h3>Completely Free</h3>
-                <p>No subscriptions, no watermarks, no limits. All 16 tools are free forever. Built with love for the community.</p>
+                <p>No subscriptions, no watermarks, no limits. All 17 tools are free forever. Built with love for the community.</p>
             </div>
         </div>
 
@@ -2756,6 +2932,8 @@
                 <li><button class="footer-link-btn" onclick="activateTab('gif')">Image → GIF</button></li>
                 <li><button class="footer-link-btn" onclick="activateTab('videogif')">Video → GIF</button></li>
                 <li><button class="footer-link-btn" onclick="activateTab('sticker')">Image → Sticker</button></li>
+                <li><button class="footer-link-btn" onclick="activateTab('qr')">QR Code Generator</button></li>
+                <li><a href="tools/compare-formats.html" class="footer-link-btn">Compare Formats Guide</a></li>
             </ul>
             <h4 class="footer-col-title" style="margin-top:20px;">Resources</h4>
             <ul class="footer-links">

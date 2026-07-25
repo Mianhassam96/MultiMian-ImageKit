@@ -7,7 +7,7 @@
     <meta name="description" content="The ultimate free browser-based image toolkit. Compress, resize, convert, crop, watermark, extract text (OCR), make GIFs and more — all in your browser. No uploads. No registration. Privacy first.">
     <meta name="keywords" content="image compressor, image resizer, image converter, OCR, compress image, resize image, jpg to webp, png to jpg, image to pdf, screenshot studio, free image editor">
     <meta property="og:title" content="MultiMian ImageKit — The Ultimate Free Browser Image Toolkit">
-    <meta property="og:description" content="13 powerful image tools. Compress, resize, convert, OCR, watermark, GIF maker and more. 100% in-browser. No uploads, no registration.">
+    <meta property="og:description" content="16 powerful image tools. Compress, resize, crop, convert, OCR, watermark, GIF maker, favicon generator and more. 100% in-browser. No uploads, no registration.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://mianhassam96.github.io/MultiMian-ImageKit/">
     <meta name="twitter:card" content="summary_large_image">
@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="styles-phase5.css">
     <link rel="stylesheet" href="styles-premium.css">
     <link rel="stylesheet" href="styles-sprint3.css">
+    <link rel="stylesheet" href="styles-phase6.css">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#16a34a">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -350,6 +351,129 @@
             <div class="ach-divider"></div>
             <div class="ach-item"><span class="ach-val" id="achStreakVal">0</span><span class="ach-lbl">Day Streak</span></div>
         </div>
+
+        <!-- ══ WORKSPACE DASHBOARD ══ -->
+        <div class="workspace-dashboard" id="workspaceDashboard">
+
+            <!-- Welcome row -->
+            <div class="wd-welcome-row">
+                <div class="wd-greeting" id="wdGreeting">👋 Good morning</div>
+                <div class="wd-whats-new" id="wdWhatsNew">
+                    <span class="wdn-badge">🎉 What's New</span>
+                    <span class="wdn-items" id="wdnItems">✨ Passport Photo · 🌐 Favicon Generator · ✂️ Crop Tool · 📱 Mobile Nav</span>
+                    <a href="tools/index.html" class="wdn-link">View all tools →</a>
+                </div>
+            </div>
+
+            <!-- Dashboard grid -->
+            <div class="wd-grid">
+
+                <!-- Continue Editing -->
+                <div class="wd-card wd-continue" id="wdContinueCard">
+                    <div class="wd-card-header">
+                        <span class="wd-card-icon">📂</span>
+                        <span class="wd-card-title">Continue Editing</span>
+                    </div>
+                    <div class="wd-continue-list" id="wdContinueList">
+                        <div class="wd-empty-state">No recent files yet.<br><small>Start editing to see your history here.</small></div>
+                    </div>
+                </div>
+
+                <!-- Popular Tools -->
+                <div class="wd-card wd-popular">
+                    <div class="wd-card-header">
+                        <span class="wd-card-icon">⭐</span>
+                        <span class="wd-card-title">Popular Tools</span>
+                    </div>
+                    <div class="wd-popular-grid">
+                        <button class="wd-popular-item" data-tab="compress">🗜<span>Compress</span></button>
+                        <button class="wd-popular-item" data-tab="resize">✂️<span>Resize</span></button>
+                        <button class="wd-popular-item" data-tab="crop">✂️<span>Crop</span></button>
+                        <button class="wd-popular-item" data-tab="ocr">🔤<span>OCR</span></button>
+                        <button class="wd-popular-item" data-tab="screenshot">✨<span>Studio</span></button>
+                        <button class="wd-popular-item" data-tab="convert">🔄<span>Convert</span></button>
+                        <button class="wd-popular-item" data-tab="watermark">💧<span>Watermark</span></button>
+                        <button class="wd-popular-item" data-tab="favicon">🌐<span>Favicon</span></button>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="wd-card wd-quick">
+                    <div class="wd-card-header">
+                        <span class="wd-card-icon">⚡</span>
+                        <span class="wd-card-title">Quick Actions</span>
+                    </div>
+                    <div class="wd-quick-list">
+                        <button class="wd-quick-btn" id="wdQaSmartOpt">
+                            <span class="wdq-icon">🚀</span>
+                            <span class="wdq-text">Smart Optimize</span>
+                            <span class="wdq-desc">Auto compress + convert</span>
+                        </button>
+                        <button class="wd-quick-btn" id="wdQaOpenRecent">
+                            <span class="wdq-icon">🕐</span>
+                            <span class="wdq-text">Open Recent</span>
+                            <span class="wdq-desc">Last workspace file</span>
+                        </button>
+                        <button class="wd-quick-btn" id="wdQaUniversalExport">
+                            <span class="wdq-icon">📦</span>
+                            <span class="wdq-text">Universal Export</span>
+                            <span class="wdq-desc">All social sizes as ZIP</span>
+                        </button>
+                        <button class="wd-quick-btn" id="wdQaCmdPalette">
+                            <span class="wdq-icon">⌘</span>
+                            <span class="wdq-text">Search Tools</span>
+                            <span class="wdq-desc">Press Ctrl+K</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Today's Stats -->
+                <div class="wd-card wd-stats">
+                    <div class="wd-card-header">
+                        <span class="wd-card-icon">📊</span>
+                        <span class="wd-card-title">Today's Stats</span>
+                    </div>
+                    <div class="wd-stats-grid">
+                        <div class="wd-stat">
+                            <span class="wd-stat-val" id="wdStatFiles">0</span>
+                            <span class="wd-stat-lbl">Files</span>
+                        </div>
+                        <div class="wd-stat">
+                            <span class="wd-stat-val" id="wdStatMb">0</span>
+                            <span class="wd-stat-lbl">MB Saved</span>
+                        </div>
+                        <div class="wd-stat">
+                            <span class="wd-stat-val" id="wdStatExports">0</span>
+                            <span class="wd-stat-lbl">Exports</span>
+                        </div>
+                        <div class="wd-stat">
+                            <span class="wd-stat-val" id="wdStatStreak">0</span>
+                            <span class="wd-stat-lbl">Day Streak</span>
+                        </div>
+                    </div>
+                    <div class="wd-favorite-tool" id="wdFavTool" style="display:none;">
+                        <span class="wdft-label">Favorite Tool</span>
+                        <span class="wdft-val" id="wdFavToolVal">–</span>
+                    </div>
+                </div>
+
+                <!-- Tip of the Day -->
+                <div class="wd-card wd-tip">
+                    <div class="wd-card-header">
+                        <span class="wd-card-icon">💡</span>
+                        <span class="wd-card-title">Tip of the Day</span>
+                    </div>
+                    <div class="wd-tip-content" id="wdTipContent">
+                        <p id="wdTipText">Press <kbd>Ctrl+K</kbd> to instantly search any tool by name, keyword or description.</p>
+                        <button class="wd-tip-next" id="wdTipNext" aria-label="Next tip">→ Next tip</button>
+                    </div>
+                </div>
+
+            </div>
+        </div><!-- end workspace-dashboard -->
+
+        <!-- ── ANALYTICS PANEL ── -->
+        <div class="analytics-panel-wrap" id="analyticsPanel"></div>
 
         <!-- ── SMART OPTIMIZE LAUNCHER ── -->
         <div class="so-launcher" id="soLauncher" style="display:block;">
@@ -2700,6 +2824,7 @@
 <script src="phase5.js" defer></script>
 <script src="crop.js" defer></script>
 <script src="tools-sprint4.js" defer></script>
+<script src="phase6.js" defer></script>
 <script>
 // Mobile bottom nav wiring
 document.addEventListener('DOMContentLoaded', function() {

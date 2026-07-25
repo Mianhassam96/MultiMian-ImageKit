@@ -50,6 +50,7 @@ const WorkflowEngine = (() => {
     crop:        [{ tab:'compress', icon:'🗜', name:'Compress It', desc:'Reduce size after cropping' }, { tab:'share', icon:'🌐', name:'Share Public Link', desc:'Get a shareable URL + QR code' }, { tab:'watermark', icon:'💧', name:'Add Watermark', desc:'Protect before sharing' }],
     favicon:     [{ tab:'compress', icon:'🗜', name:'Compress Original', desc:'Reduce source image size' }, { tab:'screenshot', icon:'✨', name:'Beautify it', desc:'Add frame and background' }],
     passport:    [{ tab:'share', icon:'🌐', name:'Share Public Link', desc:'Get a shareable URL + QR code' }],
+    qr:          [{ tab:'share', icon:'🌐', name:'Share Public Link', desc:'Share via the Share tool' }, { tab:'compress', icon:'🗜', name:'Compress Image', desc:'Reduce file size' }],
     gif:         [{ tab:'share', icon:'🌐', name:'Share Public Link', desc:'Get a shareable URL + QR code' }],
     videogif:    [{ tab:'share', icon:'🌐', name:'Share Public Link', desc:'Get a shareable URL + QR code' }],
   };
@@ -178,6 +179,7 @@ const RecentWorkspace = (() => {
     { name: 'Crop Image', desc: 'Free, ratio & social presets', icon: '✂️', tab: 'crop', tags: ['crop','trim','cut','square','ratio'] },
     { name: 'Favicon Generator', desc: 'All sizes as ZIP + SVG', icon: '🌐', tab: 'favicon', tags: ['favicon','icon','png','website','pwa'] },
     { name: 'Passport Photo', desc: 'Official sizes + print layout', icon: '🪪', tab: 'passport', tags: ['passport','photo','id','visa','print'] },
+    { name: 'QR Code Generator', desc: 'URL, WiFi, vCard, email, phone', icon: '⬛', tab: 'qr', tags: ['qr','qrcode','scan','barcode','wifi','url','vcard','contact','link'] },
     { name: 'Toggle Dark Mode', desc: 'Switch light/dark theme', icon: '🌙', action: () => document.getElementById('darkToggle').click(), tags: ['dark','light','theme'] },
     { name: 'Go Home', desc: 'Back to home page', icon: '🏠', tab: 'home', tags: ['home','start'] },
     { name: 'About', desc: 'About MultiMian ImageKit', icon: 'ℹ️', tab: 'about', tags: ['about','info'] },

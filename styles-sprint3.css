@@ -227,3 +227,23 @@
     gap: 8px;
   }
 }
+
+/* ── QR Code Generator ─────────────────────────────────────── */
+.qr-text-input {
+  width: 100%; padding: 8px 10px;
+  border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+  font-size: 0.9em; background: var(--surface); color: var(--text);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.qr-text-input:focus { outline: none; border-color: var(--accent2); box-shadow: 0 0 0 3px var(--accent2-light); }
+.qr-textarea { resize: vertical; min-height: 80px; }
+.qr-input-group { margin-top: 12px; }
+#qrPreview img, #qrPreview canvas {
+  max-width: 100%; border-radius: 8px; image-rendering: pixelated;
+}
+.ci-qr {
+  background: linear-gradient(135deg, rgba(15,23,42,0.12), rgba(99,102,241,0.12));
+  color: #4f46e5;
+}
+[data-theme="dark"] .ci-qr { background: rgba(99,102,241,0.18); color: #a5b4fc; }

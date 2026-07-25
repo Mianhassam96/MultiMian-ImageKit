@@ -1,5 +1,5 @@
-// MultiMian ImageKit — Service Worker v7.0
-const CACHE = 'imagekit-v7';
+// MultiMian ImageKit — Service Worker v8.0
+const CACHE = 'imagekit-v8';
 const STATIC = [
   './',
   './index.html',

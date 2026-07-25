@@ -221,6 +221,10 @@ const SuperSearch = (() => {
       aliases: ['id photo','visa','uk','us','india','pakistan','35x45','print'],
       category: 'Utilities', shortcut: ''
     },
+    'qr': {
+      aliases: ['qrcode','scan','barcode','wifi','vcard','contact','url','link'],
+      category: 'Utilities', shortcut: ''
+    },
   };
 
   // Patch the command palette's renderResults to use extended data

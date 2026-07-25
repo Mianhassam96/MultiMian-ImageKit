@@ -1,16 +1,23 @@
-# MultiMian ImageKit
-
 <div align="center">
+
+<img src="https://raw.githubusercontent.com/Mianhassam96/MultiMian-ImageKit/main/favicon.svg" width="80" height="80" alt="MultiMian ImageKit Logo">
+
+# MultiMian ImageKit
 
 **The privacy-first, browser-based creative toolkit for images, PDFs, and media.**
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-mianhassam96.github.io-16a34a?style=for-the-badge&logo=github)](https://mianhassam96.github.io/MultiMian-ImageKit/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
+[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-Open_App-16a34a?style=for-the-badge)](https://mianhassam96.github.io/MultiMian-ImageKit/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-2563eb?style=for-the-badge)](LICENSE)
 [![Tools](https://img.shields.io/badge/Tools-16-6366f1?style=for-the-badge)]()
-[![No Uploads](https://img.shields.io/badge/Uploads-Zero-ec4899?style=for-the-badge)]()
 [![PWA Ready](https://img.shields.io/badge/PWA-Ready-0ea5e9?style=for-the-badge)]()
+[![No Uploads](https://img.shields.io/badge/Uploads-Zero-ec4899?style=for-the-badge)]()
+[![Open Source](https://img.shields.io/badge/Open_Source-MIT-16a34a?style=for-the-badge)](https://github.com/Mianhassam96/MultiMian-ImageKit)
 
-🌐 **[mianhassam96.github.io/MultiMian-ImageKit](https://mianhassam96.github.io/MultiMian-ImageKit/)**
+*Compress · Resize · Crop · Convert · Watermark · OCR · GIF · PDF · Favicon · Passport Photo*
+
+**No uploads. No registration. No watermarks. Works offline. Free forever.**
+
+[🚀 Open App](https://mianhassam96.github.io/MultiMian-ImageKit/) · [🛠 All Tools](https://mianhassam96.github.io/MultiMian-ImageKit/tools/index.html) · [📖 Docs](#getting-started) · [🐛 Report Bug](https://github.com/Mianhassam96/MultiMian-ImageKit/issues) · [💡 Request Feature](https://github.com/Mianhassam96/MultiMian-ImageKit/issues)
 
 </div>
 
@@ -18,55 +25,51 @@
 
 ## Why MultiMian ImageKit?
 
-| | MultiMian ImageKit | Typical Online Tool |
+| | **MultiMian ImageKit** | Typical Online Tool |
 |---|---|---|
-| Files uploaded to server | ✅ Never | ❌ Usually yes |
-| Registration required | ✅ None | ❌ Often required |
-| Watermark on output | ✅ Never | ❌ Sometimes |
-| Works offline | ✅ PWA support | ❌ No |
-| File size limit | ✅ None | ❌ Usually 5–20 MB |
-| Open source | ✅ MIT License | Varies |
-| Cost | ✅ Free forever | Free with limits |
+| Files uploaded to server | ✅ **Never** | ❌ Usually yes |
+| Registration required | ✅ **None** | ❌ Often required |
+| Watermark on output | ✅ **Never** | ❌ Sometimes |
+| Works offline | ✅ **PWA support** | ❌ No |
+| File size limit | ✅ **None** | ❌ Usually 5–20 MB |
+| Open source | ✅ **MIT License** | Varies |
+| Price | ✅ **Free forever** | Free with limits |
 
 ---
 
 ## 🛠 All 16 Tools
 
 ### 🖼 Image Tools
-
-| Tool | Description | Tech |
-|------|-------------|------|
-| ✨ **Screenshot Studio** | Frames, shadows & gradients. macOS, Browser, Tweet, Glass, Code presets | Canvas API |
-| 🗜 **Compress Image** | Reduce size up to 90%. WebP/JPG/PNG output. Live before/after slider | Canvas API |
+| Tool | Description | Technology |
+|------|-------------|-----------|
+| ✨ **Screenshot Studio** | Frames, shadows & gradients. 8 preset scenes, macOS/Browser/Tweet/Glass/Code styles | Canvas API |
+| 🗜 **Compress Image** | Up to 90% size reduction. WebP/JPG/PNG output. Live before/after slider | Canvas API |
 | ✂️ **Resize Image** | Custom dimensions + social presets (Instagram, YouTube, Twitter, Facebook) | Canvas API |
-| ✂️ **Crop Image** | Free crop, ratio lock (1:1, 16:9, 4:3), rule-of-thirds grid, social presets | Canvas API |
+| ✂️ **Crop Image** | Free crop, ratio lock (1:1, 16:9, 4:3, 9:16), rule-of-thirds grid, social presets | Canvas API |
 | 🔄 **Convert Format** | JPG ↔ PNG ↔ WebP with quality slider | Canvas API |
 | 💧 **Watermark** | Text overlay, 6 positions + tile, custom font/color/opacity | Canvas API |
-| 🔗 **Merge Images** | Side-by-side or stacked. Export JPG, PNG or PDF | Canvas + jsPDF |
-| 🔗 **Share Anywhere** | ImgBB upload → permanent link + QR code + social share | ImgBB API |
-| 🔤 **Extract Text (OCR)** | 10+ languages. Copy, TXT or PDF export | Tesseract.js |
+| 🔗 **Merge Images** | Side-by-side or stacked. Export as JPG, PNG or PDF | Canvas + jsPDF |
+| 🌐 **Share Anywhere** | ImgBB upload → permanent public link + QR code + social share | ImgBB API |
+| 🔤 **Extract Text (OCR)** | 10+ languages. Copy, download TXT or export as PDF | Tesseract.js |
 
 ### 📄 PDF & Document Tools
-
-| Tool | Description | Tech |
-|------|-------------|------|
-| 📝 **Text Studio** | Write, format & export as TXT, RTF, DOCX, PDF. Read .txt/.rtf/.docx | jsPDF + PDF.js |
-| 🖼 **PDF to Image** | Convert pages to PNG/JPG. Individual or ZIP download. Up to 3x scale | PDF.js + JSZip |
+| Tool | Description | Technology |
+|------|-------------|-----------|
+| 📝 **Text Studio** | Write, format & export as TXT, RTF, DOCX, PDF. Open existing files | jsPDF + PDF.js |
+| 🖼 **PDF → Image** | Convert every page to PNG/JPG. Individual or ZIP download, up to 3× scale | PDF.js + JSZip |
 
 ### 🎬 Media Tools
-
-| Tool | Description | Tech |
-|------|-------------|------|
-| 🎞 **Image to GIF** | Multi-frame animated GIF, drag-reorder, per-frame delay | gif.js |
-| 🎬 **Video to GIF** | Clip trimmer, frame rate control, ping-pong mode | Canvas + gif.js |
-| 🎨 **Image to Sticker** | 512×512 PNG/WebP for WhatsApp, Telegram & Discord | Canvas API |
+| Tool | Description | Technology |
+|------|-------------|-----------|
+| 🎞 **Image → GIF** | Multi-frame animated GIF, drag-to-reorder, per-frame delay | gif.js |
+| 🎬 **Video → GIF** | Clip trimmer, frame rate control, ping-pong mode | Canvas + gif.js |
+| 🎨 **Image → Sticker** | 512×512 PNG/WebP for WhatsApp, Telegram & Discord | Canvas API |
 
 ### 🛠 Utilities
-
-| Tool | Description | Tech |
-|------|-------------|------|
-| 🌐 **Favicon Generator** | 8 sizes (16–512px) + SVG + HTML snippet + manifest.json as ZIP | Canvas + JSZip |
-| 🪪 **Passport Photo Maker** | UK/EU, US, India, Pakistan standards. Print layouts at 300 DPI | Canvas API |
+| Tool | Description | Technology |
+|------|-------------|-----------|
+| 🌐 **Favicon Generator** | 8 sizes (16–512 px) + SVG + HTML/manifest snippets bundled as ZIP | Canvas + JSZip |
+| 🪪 **Passport Photo Maker** | UK/EU, US, India, Pakistan standards · Print layouts · 300 DPI · PDF export | Canvas + jsPDF |
 
 ---
 
@@ -74,105 +77,160 @@
 
 | Feature | Description |
 |---------|-------------|
-| ⌘K **Command Palette** | Search all tools and actions instantly |
-| 📦 **Universal Export Pack** | 1 image → 9 social sizes + WebP + favicon as ZIP |
-| 🏥 **Image Health Score** | Score out of 100 with one-click fixes |
-| 🔗 **Shared Asset Pipeline** | Upload once, continue through multiple tools |
-| ⚡ **Workflow Engine** | Smart "continue with this file" suggestions after each action |
-| 🕐 **Recent Workspace** | Last 6 exports with thumbnails |
-| 📱 **PWA Install** | Install as desktop/mobile app, works offline |
-| 🚀 **Smart Optimize** | One-click analyze + compress + convert automatically |
-| 🎨 **Screenshot Annotations** | Add text, arrows, highlights, blur and emoji layers |
-| 🗂 **Batch Processing** | Process multiple images with one operation |
+| ⌘K **Command Palette** | Fuzzy search across all tools, aliases, categories and keyboard shortcuts |
+| 🏠 **Workspace Dashboard** | Continue Editing, Popular Tools, Quick Actions, Today's Stats, Tip of the Day |
+| 📊 **Analytics Dashboard** | Exports, MB saved, streaks, favorite tool, format breakdown, progress bar |
+| 📦 **Universal Export Pack** | 1 image → 9 social sizes + WebP + favicon as a single ZIP |
+| 🏥 **Image Health Score** | Score/100 with specific issues and one-click fixes |
+| 🔗 **Asset Pipeline** | Upload once, continue through multiple tools without re-uploading |
+| ⚡ **Workflow Engine** | Smart "continue with this file" suggestions after every action |
+| 🕐 **Recent Workspace** | Last 6 exports with thumbnails and timestamps |
+| 📱 **PWA Install** | Install as desktop/mobile app, works fully offline |
+| 🚀 **Smart Optimize** | One-click analyze + compress + convert + download automatically |
+| 🎨 **Screenshot Annotations** | Add text, arrows, highlights, blur and emoji layers on the canvas |
+| 🗂 **Batch Processing** | Process multiple images with a single operation |
+| 📱 **Mobile Bottom Nav** | Persistent quick-access nav bar on phones |
+| 🎯 **Keyboard Shortcuts** | `1–9` for tools, `0` for home, `Ctrl+K` for search |
+
+---
+
+## 🗂 Project Structure
+
+```
+MultiMian-ImageKit/
+├── index.html              # Main app (SPA — all 16 tools)
+├── script.js               # Core tool logic (OCR, compress, resize, etc.)
+├── phase2.js               # Command palette, asset pipeline, PWA
+├── phase3.js               # Smart Optimize, batch, keyboard shortcuts
+├── phase4.js               # Lazy loading, achievements, design system
+├── phase5.js               # Accessibility, SS annotation layers
+├── phase6.js               # Workspace dashboard, super search, analytics
+├── crop.js                 # Crop tool (interactive canvas handles)
+├── tools-sprint4.js        # Favicon generator + passport photo
+├── styles.css              # Core design system
+├── styles-phase*.css       # Phase-specific styles
+├── styles-premium.css      # Sprint 1 premium UI
+├── styles-sprint3.css      # Sprint 3–4 tools + mobile nav
+├── styles-phase6.css       # Sprint 5 dashboard + analytics
+├── sw.js                   # Service Worker v7 (offline/PWA)
+├── manifest.json           # PWA manifest
+├── sitemap.xml             # SEO sitemap (28 URLs)
+├── tools/                  # SEO landing pages
+│   ├── index.html          # Tools hub
+│   ├── compress-image.html
+│   ├── resize-image.html
+│   ├── crop-image.html
+│   ├── convert-image.html
+│   ├── watermark.html
+│   ├── ocr.html
+│   ├── pdf-to-image.html
+│   ├── passport-photo.html
+│   └── favicon-generator.html
+├── assets/
+│   ├── css/landing.css     # Shared landing page styles
+│   └── js/landing.js       # Shared landing page JS
+└── docs/                   # Documentation
+```
 
 ---
 
 ## 💻 Tech Stack
 
-- **HTML5, CSS3, Vanilla JS** (ES6+, no frameworks)
-- [Tesseract.js](https://github.com/naptha/tesseract.js) — OCR
-- [jsPDF](https://github.com/parallax/jsPDF) — PDF generation
-- [PDF.js](https://mozilla.github.io/pdf.js/) — PDF parsing
-- [gif.js](https://github.com/jnordberg/gif.js) — GIF encoding
-- [JSZip](https://stuk.github.io/jszip/) — ZIP generation
-- [QRCode.js](https://github.com/davidshimjs/qrcodejs) — QR codes
-- **Canvas API** — all image manipulation
-- **Service Worker** — PWA + offline (v4)
-- **Web Workers** — background processing
+| Library | Purpose |
+|---------|---------|
+| [Tesseract.js](https://github.com/naptha/tesseract.js) | OCR — text extraction from images |
+| [jsPDF](https://github.com/parallax/jsPDF) | PDF generation |
+| [PDF.js](https://mozilla.github.io/pdf.js/) | PDF parsing and rendering |
+| [gif.js](https://github.com/jnordberg/gif.js) | GIF encoding |
+| [JSZip](https://stuk.github.io/jszip/) | ZIP file generation |
+| [QRCode.js](https://github.com/davidshimjs/qrcodejs) | QR code generation |
+| **Canvas API** | All image manipulation |
+| **Service Worker** | PWA + offline support (v7) |
+| **Web Workers** | Background compression |
+
+No build tools · No frameworks · No dependencies to install · Pure HTML/CSS/Vanilla JS
 
 ---
 
 ## 🚀 Getting Started
 
-No installation needed. Just open the link:
+**Option 1 — Use the live app (recommended):**
 
-**[https://mianhassam96.github.io/MultiMian-ImageKit/](https://mianhassam96.github.io/MultiMian-ImageKit/)**
+👉 **[mianhassam96.github.io/MultiMian-ImageKit](https://mianhassam96.github.io/MultiMian-ImageKit/)**
 
-Or clone and run locally:
+**Option 2 — Run locally:**
 
 ```bash
 git clone https://github.com/Mianhassam96/MultiMian-ImageKit.git
 cd MultiMian-ImageKit
-# Open index.html in any modern browser
+# Open index.html in Chrome, Edge, Firefox or Safari
+# No build step, no npm install — just open and go
 ```
+
+**Option 3 — Install as PWA:**
+
+1. Open the live app in Chrome or Edge
+2. Click the install prompt at the bottom of the page (or use browser menu → Install)
+3. All 16 tools now work offline
 
 ---
 
 ## 🌐 Browser Support
 
-| Browser | Support |
-|---------|---------|
-| Chrome 90+ | ✅ Full support |
-| Edge 90+ | ✅ Full support |
-| Firefox 88+ | ✅ Full support |
-| Safari 14+ | ✅ Full support |
-| Mobile Chrome | ✅ Full support |
-| Mobile Safari | ✅ Full support |
+| Browser | Version | Status |
+|---------|---------|--------|
+| Chrome | 90+ | ✅ Full |
+| Edge | 90+ | ✅ Full |
+| Firefox | 88+ | ✅ Full |
+| Safari | 14+ | ✅ Full |
+| Mobile Chrome | Any | ✅ Full |
+| Mobile Safari | iOS 14+ | ✅ Full |
 
 ---
 
 ## 🗺 Roadmap
 
-- [x] Sprint 1 — Premium homepage, mega nav, trust section, FAQ, footer
-- [x] Sprint 2 — Bug fixes, responsive polish, SEO structured data, launch buttons
-- [x] Sprint 3 — Crop tool, mobile bottom nav, OCR, GIF maker, PDF tools
-- [x] Sprint 4 — Favicon generator, passport photo maker, video to GIF, sticker tool
-- [ ] **Sprint 5 (in progress)** — 9 SEO tool landing pages, tools hub index, sitemap update, README overhaul
-- [ ] Sprint 6 — AI-assisted Smart Optimize, background remover
-- [ ] Sprint 7 — Browser extension
-- [ ] Sprint 8 — Batch queue UI, collaborative share links
+### ✅ Completed
+- **Sprint 1** — Premium homepage, mega nav, why section, FAQ, footer, trust badges
+- **Sprint 2** — Bug fixes, responsive polish, SEO structured data, launch buttons
+- **Sprint 3** — Crop tool, mobile bottom nav, keyboard shortcuts
+- **Sprint 4** — Favicon generator, passport photo maker, 16 tools total
+- **Sprint 5** — 9 SEO tool landing pages, tools hub, workspace dashboard, super search, analytics
+- **Sprint 6 (in progress)** — README v2, QR generator, community files, format comparison page
 
-### Sprint 5 Progress
-
-- [x] `tools/compress-image.html` — landing page
-- [x] `tools/resize-image.html` — landing page
-- [x] `tools/crop-image.html` — landing page
-- [x] `tools/convert-image.html` — landing page
-- [x] `tools/watermark.html` — landing page
-- [x] `tools/ocr.html` — landing page
-- [x] `tools/pdf-to-image.html` — landing page
-- [x] `tools/passport-photo.html` — landing page
-- [x] `tools/favicon-generator.html` — landing page
-- [x] `tools/index.html` — tools hub page
-- [x] `sitemap.xml` — updated with all 10 landing page URLs
-- [x] Shared `assets/css/landing.css` + `assets/js/landing.js`
-- [x] README overhaul (tools count fixed to 16)
+### 🔮 Planned
+- **Sprint 7** — Background remover, AI upscale, AI enhance
+- **Sprint 8** — Browser extension, blog, documentation center
+- **Sprint 9** — Public API, plugin system
 
 ---
 
 ## 🤝 Contributing
 
-Issues, feature requests and PRs are welcome.  
+Contributions, issues and feature requests are welcome!
+
+1. Fork the repository
+2. Create your feature branch: `git checkout -b feat/my-feature`
+3. Commit your changes: `git commit -m 'feat: add my feature'`
+4. Push to the branch: `git push origin feat/my-feature`
+5. Open a Pull Request
+
+→ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines  
 → [Open an Issue](https://github.com/Mianhassam96/MultiMian-ImageKit/issues)
 
 ---
 
 ## 📄 License
 
-MIT License — Free for personal and commercial use.
+MIT License — Free for personal and commercial use.  
+See [LICENSE](LICENSE) for full text.
 
 ---
 
 <div align="center">
-Built with ♥ by <a href="https://multimian.com">Mian Hassam</a>
+
+Built with ♥ by [Mian Hassam](https://multimian.com)
+
+⭐ **Star this repo** if you find it useful — it helps others discover the project!
+
 </div>

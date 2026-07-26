@@ -4,7 +4,7 @@
 
 # MultiMian ImageKit
 
-**The privacy-first, browser-based creative toolkit for images, PDFs, and media.**
+**The privacy-first, browser-based creative toolkit for images, PDFs, and media. ***
 
 [![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-Open_App-16a34a?style=for-the-badge)](https://mianhassam96.github.io/MultiMian-ImageKit/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2563eb?style=for-the-badge)](LICENSE)
@@ -77,7 +77,7 @@
 
 | Feature | Description |
 |---------|-------------|
-| ⌘K **Command Palette** | Fuzzy search across all tools, aliases, categories and keyboard shortcuts |
+| ⌘K **Command Palette** | Fuzzy search across all tools, aliases, categories, and keyboard shortcuts |
 | 🏠 **Workspace Dashboard** | Continue Editing, Popular Tools, Quick Actions, Today's Stats, Tip of the Day |
 | 📊 **Analytics Dashboard** | Exports, MB saved, streaks, favorite tool, format breakdown, progress bar |
 | 📦 **Universal Export Pack** | 1 image → 9 social sizes + WebP + favicon as a single ZIP |
@@ -87,61 +87,13 @@
 | 🕐 **Recent Workspace** | Last 6 exports with thumbnails and timestamps |
 | 📱 **PWA Install** | Install as desktop/mobile app, works fully offline |
 | 🚀 **Smart Optimize** | One-click analyze + compress + convert + download automatically |
-| 🎨 **Screenshot Annotations** | Add text, arrows, highlights, blur and emoji layers on the canvas |
+| 🎨 **Screenshot Annotations** | Add text, arrows, highlights, blur, and emoji layers on the canvas |
 | 🗂 **Batch Processing** | Process multiple images with a single operation |
 | 📱 **Mobile Bottom Nav** | Persistent quick-access nav bar on phones |
 | 🎯 **Keyboard Shortcuts** | `1–9` for tools, `0` for home, `Ctrl+K` for search |
 
 ---
 
-## 🗂 Project Structure
-
-```
-MultiMian-ImageKit/
-├── index.html              # Main app (SPA — all 16 tools)
-├── script.js               # Core tool logic (OCR, compress, resize, etc.)
-├── phase2.js               # Command palette, asset pipeline, PWA
-├── phase3.js               # Smart Optimize, batch, keyboard shortcuts
-├── phase4.js               # Lazy loading, achievements, design system
-├── phase5.js               # Accessibility, SS annotation layers
-├── phase6.js               # Workspace dashboard, super search, analytics
-├── crop.js                 # Crop tool (interactive canvas handles)
-├── tools-sprint4.js        # Favicon generator + passport photo
-├── styles.css              # Core design system
-├── styles-phase*.css       # Phase-specific styles
-├── styles-premium.css      # Sprint 1 premium UI
-├── styles-sprint3.css      # Sprint 3–4 tools + mobile nav
-├── styles-phase6.css       # Sprint 5 dashboard + analytics
-├── sw.js                   # Service Worker v7 (offline/PWA)
-├── manifest.json           # PWA manifest
-├── sitemap.xml             # SEO sitemap (28 URLs)
-├── tools/                  # SEO landing pages
-│   ├── index.html          # Tools hub
-│   ├── compress-image.html
-│   ├── resize-image.html
-│   ├── crop-image.html
-│   ├── convert-image.html
-│   ├── watermark.html
-│   ├── ocr.html
-│   ├── pdf-to-image.html
-│   ├── passport-photo.html
-│   └── favicon-generator.html
-├── assets/
-│   ├── css/landing.css     # Shared landing page
-
-## 💻 Tech Stack
-
-| Library | Purpose |
-|---------|---------|
-| [Tesseract.js](https://github.com/naptha/tesseract.js) | OCR — text extraction from images |
-| [jsPDF](https://github.com/parallax/jsPDF) | PDF generation |
-| [PDF.js](https://mozilla.github.io/pdf.js/) | PDF parsing and rendering |
-| [gif.js](https://github.com/jnordberg/gif.js) | GIF encoding |
-| [JSZip](https://stuk.github.io/jszip/) | ZIP file generation |
-| [QRCode.js](https://github.com/davidshimjs/qrcodejs) | QR code generation |
-| **Canvas API** | All image manipulation |
-| **Service Worker** | PWA + offline support (v7) |
-| **Web Workers** | Background compression |
 
 No build tools · No frameworks · No dependencies to install · Pure HTML/CSS/Vanilla JS
 

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Offline Mode — MultiMian ImageKit Docs</title>
+<meta name="description" content="How to install MultiMian ImageKit as a PWA and use all 17 tools without internet connection.">
+<link rel="canonical" href="https://mianhassam96.github.io/MultiMian-ImageKit/docs/offline-mode.html">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/landing.css"><link rel="stylesheet" href="../styles-sprint7.css">
+</head>
+<body>
+<header class="lp-header"><div class="lp-header-inner"><a href="../index.html" class="lp-logo"><span class="lp-logo-multi">Multi</span><span class="lp-logo-mian">Mian</span><span class="lp-logo-kit">ImageKit</span></a><nav class="lp-nav"><a href="../index.html">Home</a><a href="../tools/index.html">Tools</a><a href="index.html">Docs</a></nav><div class="lp-header-right"><button id="lpDarkBtn" class="lp-dark-btn">🌙</button><a href="../index.html" class="lp-launch-btn">🚀 Open App</a></div></div></header>
+<nav class="lp-breadcrumb"><a href="../index.html">Home</a><span>›</span><a href="index.html">Docs</a><span>›</span><span>Offline Mode</span></nav>
+<div class="docs-layout">
+  <aside class="docs-sidebar"><div class="docs-sidebar-title">Documentation</div><ul class="docs-sidebar-list"><li><a href="getting-started.html">🚀 Getting Started</a></li><li><a href="keyboard-shortcuts.html">⌨️ Keyboard Shortcuts</a></li><li><a href="privacy.html">🔒 Privacy</a></li><li><a href="browser-support.html">🌐 Browser Support</a></li><li><a href="export-formats.html">📦 Export Formats</a></li><li><a href="offline-mode.html" class="active">📡 Offline Mode</a></li><li><a href="faq.html">❓ FAQ</a></li><li><a href="troubleshooting.html">🔧 Troubleshooting</a></li></ul></aside>
+  <main class="docs-content">
+    <h1>📡 Offline Mode</h1>
+    <p>MultiMian ImageKit supports full offline use through Progressive Web App (PWA) technology. Once installed, all 17 tools work without any internet connection.</p>
+    <h2>How to Install</h2>
+    <p><strong>Chrome / Edge (Desktop):</strong></p>
+    <ul>
+      <li>Open the app at <a href="https://mianhassam96.github.io/MultiMian-ImageKit/" style="color:var(--accent2)">mianhassam96.github.io/MultiMian-ImageKit/</a></li>
+      <li>Click the install banner at the bottom of the page, or</li>
+      <li>Click the install icon (➕) in the browser address bar</li>
+      <li>Click <strong>Install</strong> to confirm</li>
+    </ul>
+    <p><strong>iOS Safari:</strong></p>
+    <ul>
+      <li>Open the app in Safari</li>
+      <li>Tap the Share icon → <strong>Add to Home Screen</strong></li>
+      <li>Tap <strong>Add</strong></li>
+    </ul>
+    <p><strong>Android Chrome:</strong></p>
+    <ul>
+      <li>Open the app</li>
+      <li>Tap the three-dot menu → <strong>Add to Home Screen</strong> or <strong>Install App</strong></li>
+    </ul>
+    <h2>How Offline Caching Works</h2>
+    <p>The Service Worker (v9) pre-caches all app files on first load:</p>
+    <ul>
+      <li>All HTML, CSS, and JavaScript files</li>
+      <li>All icons and favicon files</li>
+      <li>The app manifest</li>
+    </ul>
+    <p>After the first visit with internet, the app runs entirely from cache on subsequent visits, even offline.</p>
+    <h2>What Works Offline</h2>
+    <ul>
+      <li>✅ All 16 image and utility tools (Canvas API-based)</li>
+      <li>✅ Compress, Resize, Crop, Convert, Watermark, Merge, Screenshot, Sticker, Favicon, Passport, QR Code</li>
+      <li>✅ OCR — after Tesseract.js is first loaded on the relevant tab</li>
+      <li>✅ GIF maker — after gif.js is first loaded</li>
+      <li>✅ PDF tools — after PDF.js is first loaded</li>
+      <li>❌ Share Image — requires internet (uploads to ImgBB)</li>
+    </ul>
+    <h2>Updating the App</h2>
+    <p>When a new version is deployed, the Service Worker automatically fetches the new files in the background and activates the update on the next app launch.</p>
+    <div class="docs-nav-bottom">
+      <a href="export-formats.html" class="docs-nav-btn">← Export Formats</a>
+      <a href="faq.html" class="docs-nav-btn">Next: FAQ →</a>
+    </div>
+  </main>
+</div>
+<footer class="lp-footer"><div class="lp-footer-inner"><a href="../index.html" class="lp-footer-logo">Multi<span>Mian</span>ImageKit</a><div class="lp-footer-links"><a href="../index.html">Home</a><a href="index.html">Docs</a><a href="https://github.com/Mianhassam96/MultiMian-ImageKit" target="_blank" rel="noopener">GitHub</a></div><span class="lp-footer-copy">© 2026 MultiMian ImageKit · MIT License</span></div></footer>
+<script src="../assets/js/landing.js"></script>
+</body></html>

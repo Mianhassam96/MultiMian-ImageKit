@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FAQ — MultiMian ImageKit Docs</title>
+<meta name="description" content="Frequently asked questions about MultiMian ImageKit. Privacy, file size limits, browser support, offline use and more.">
+<link rel="canonical" href="https://mianhassam96.github.io/MultiMian-ImageKit/docs/faq.html">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/landing.css"><link rel="stylesheet" href="../styles-sprint7.css">
+</head>
+<body>
+<header class="lp-header"><div class="lp-header-inner"><a href="../index.html" class="lp-logo"><span class="lp-logo-multi">Multi</span><span class="lp-logo-mian">Mian</span><span class="lp-logo-kit">ImageKit</span></a><nav class="lp-nav"><a href="../index.html">Home</a><a href="../tools/index.html">Tools</a><a href="index.html">Docs</a></nav><div class="lp-header-right"><button id="lpDarkBtn" class="lp-dark-btn">🌙</button><a href="../index.html" class="lp-launch-btn">🚀 Open App</a></div></div></header>
+<nav class="lp-breadcrumb"><a href="../index.html">Home</a><span>›</span><a href="index.html">Docs</a><span>›</span><span>FAQ</span></nav>
+<div class="docs-layout">
+  <aside class="docs-sidebar"><div class="docs-sidebar-title">Documentation</div><ul class="docs-sidebar-list"><li><a href="getting-started.html">🚀 Getting Started</a></li><li><a href="keyboard-shortcuts.html">⌨️ Keyboard Shortcuts</a></li><li><a href="privacy.html">🔒 Privacy</a></li><li><a href="browser-support.html">🌐 Browser Support</a></li><li><a href="export-formats.html">📦 Export Formats</a></li><li><a href="offline-mode.html">📡 Offline Mode</a></li><li><a href="faq.html" class="active">❓ FAQ</a></li><li><a href="troubleshooting.html">🔧 Troubleshooting</a></li></ul></aside>
+  <main class="docs-content">
+    <h1>❓ Frequently Asked Questions</h1>
+    <div class="lp-faq">
+      <div class="lp-faq-item"><button class="lp-faq-q" aria-expanded="false">Is MultiMian ImageKit really free?</button><div class="lp-faq-a">Yes, completely free forever. All 17 tools are free with no subscriptions, no watermarks, and no file size limits. The project is open source under the MIT license.</div></div>
+      <div class="lp-faq-item"><button class="lp-faq-q" aria-expanded="false">Are my files uploaded anywhere?</button><div class="lp-faq-a">No. All image processing happens in your browser using the Canvas API, Tesseract.js, PDF.js, and other client-side libraries. The only exception is the Share Image tool, which uploads to ImgBB only when you explicitly request a public link.</div></div>
+      <div class="lp-faq-item"><button class="lp-faq-q" aria-expanded="false">What is the maximum file size?</button><div class="lp-faq-a">There is no enforced file size limit — the limit is your browser's available memory. Very large files (over 50MB) may be slow. For best performance, use files under 20MB.</div></div>
+      <div class="lp-faq-item"><button class="lp-faq-q" aria-expanded="false">Can I use it offline?</button><div class="lp-faq-a">Yes. Install ImageKit as a PWA (look for the install prompt) and all 17 tools work without any internet connection. See the Offline Mode docs for details.</div></div>
+      <div class="lp-faq-item"><button class="lp-faq-q" aria-expanded="false">Why is OCR slow?</button><div class="lp-faq-a">OCR uses Tesseract.js which needs to download the language model on first use (~3–10MB depending on language). After the first load, it runs locally and is faster. Pre-processing the image (the tool does this automatically) improves accuracy.</div></div>
+      <div class="lp-faq-item"><button class="lp-faq-q" aria-expanded="false">Can I compress multiple images at once?</button><div class="lp-faq-a">Yes — use the Batch Queue on the home page. Drop multiple images and select an operation (Compress → WebP, Compress → JPG, Convert → PNG, etc.) then click Run All.</div></div>
+      <div class="lp-faq-item"><button class="lp-faq-q" aria-expanded="false">How do I add my own favicon to a website?</button><div class="lp-faq-a">Use the Favicon Generator tool. It produces all sizes (16×16 to 512×512) as a ZIP, plus an HTML snippet you paste into your &lt;head&gt; and a manifest.json icons entry.</div></div>
+      <div class="lp-faq-item"><button class="lp-faq-q" aria-expanded="false">Is the source code available?</button><div class="lp-faq-a">Yes. The full source is on GitHub at <a href="https://github.com/Mianhassam96/MultiMian-ImageKit" style="color:var(--accent2)">github.com/Mianhassam96/MultiMian-ImageKit</a>. MIT license — free for personal and commercial use.</div></div>
+      <div class="lp-faq-item"><button class="lp-faq-q" aria-expanded="false">How do I request a new feature or report a bug?</button><div class="lp-faq-a">Open an issue on GitHub or use the Contact page. Feature requests and bug reports are always welcome.</div></div>
+    </div>
+    <div class="docs-nav-bottom">
+      <a href="offline-mode.html" class="docs-nav-btn">← Offline Mode</a>
+      <a href="troubleshooting.html" class="docs-nav-btn">Next: Troubleshooting →</a>
+    </div>
+  </main>
+</div>
+<footer class="lp-footer"><div class="lp-footer-inner"><a href="../index.html" class="lp-footer-logo">Multi<span>Mian</span>ImageKit</a><div class="lp-footer-links"><a href="../index.html">Home</a><a href="index.html">Docs</a><a href="https://github.com/Mianhassam96/MultiMian-ImageKit" target="_blank" rel="noopener">GitHub</a></div><span class="lp-footer-copy">© 2026 MultiMian ImageKit · MIT License</span></div></footer>
+<script src="../assets/js/landing.js"></script>
+</body></html>

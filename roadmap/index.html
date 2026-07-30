@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roadmap — MultiMian ImageKit</title>
+<meta name="description" content="Public roadmap for MultiMian ImageKit. See what's released, what's in progress, and what's planned for future releases.">
+<link rel="canonical" href="https://mianhassam96.github.io/MultiMian-ImageKit/roadmap/">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/landing.css">
+<style>
+.roadmap-wrap{max-width:900px;margin:0 auto;padding:56px 24px 80px;}
+.roadmap-hero{text-align:center;margin-bottom:48px;}
+.roadmap-hero h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.8em,4vw,2.4em);font-weight:800;margin-bottom:12px;}
+.roadmap-hero p{font-size:1em;color:var(--text2);max-width:520px;margin:0 auto;}
+.roadmap-section{margin-bottom:40px;}
+.roadmap-section-title{font-family:'Space Grotesk',sans-serif;font-size:1.1em;font-weight:800;margin-bottom:16px;display:flex;align-items:center;gap:10px;padding-bottom:10px;border-bottom:2px solid var(--border);}
+.roadmap-items{display:flex;flex-direction:column;gap:10px;}
+.roadmap-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 18px;display:flex;align-items:flex-start;gap:12px;}
+.roadmap-item.done{border-left:4px solid #16a34a;}
+.roadmap-item.progress{border-left:4px solid #2563eb;}
+.roadmap-item.planned{border-left:4px solid #f59e0b;}
+.roadmap-item.idea{border-left:4px solid #6366f1;}
+.ri-badge{font-size:0.68em;font-weight:700;border-radius:20px;padding:3px 10px;white-space:nowrap;flex-shrink:0;margin-top:2px;}
+.badge-done{background:rgba(22,163,74,0.1);color:#16a34a;}
+.badge-progress{background:rgba(37,99,235,0.1);color:#2563eb;}
+.badge-planned{background:rgba(245,158,11,0.1);color:#d97706;}
+.badge-idea{background:rgba(99,102,241,0.1);color:#6366f1;}
+.ri-content{flex:1;}
+.ri-title{font-size:0.92em;font-weight:700;color:var(--text);margin-bottom:3px;}
+.ri-desc{font-size:0.8em;color:var(--text2);line-height:1.5;}
+.release-history{margin-top:48px;}
+.release-entry{border-left:3px solid var(--border);padding-left:20px;margin-bottom:24px;position:relative;}
+.release-entry::before{content:'';width:10px;height:10px;background:var(--accent2);border-radius:50%;position:absolute;left:-7px;top:4px;}
+.release-version{font-family:'Space Grotesk',sans-serif;font-size:1em;font-weight:800;color:var(--text);margin-bottom:4px;}
+.release-date{font-size:0.72em;color:var(--text3);margin-bottom:8px;}
+.release-items{list-style:none;padding:0;display:flex;flex-direction:column;gap:3px;}
+.release-items li{font-size:0.82em;color:var(--text2);display:flex;align-items:flex-start;gap:6px;}
+.release-items li::before{content:'→';color:var(--accent2);flex-shrink:0;}
+</style>
+</head>
+<body>
+<header class="lp-header"><div class="lp-header-inner"><a href="../index.html" class="lp-logo"><span class="lp-logo-multi">Multi</span><span class="lp-logo-mian">Mian</span><span class="lp-logo-kit">ImageKit</span></a><nav class="lp-nav"><a href="../index.html">Home</a><a href="../tools/index.html">Tools</a><a href="../docs/index.html">Docs</a><a href="../blog/index.html">Blog</a></nav><div class="lp-header-right"><button id="lpDarkBtn" class="lp-dark-btn">🌙</button><a href="../index.html" class="lp-launch-btn">🚀 Open App</a></div></div></header>
+<nav class="lp-breadcrumb"><a href="../index.html">Home</a><span>›</span><span>Roadmap</span></nav>
+<div class="roadmap-wrap">
+  <div class="roadmap-hero">
+    <div class="lp-hero-badge" style="margin-bottom:16px;">🗺 Public Roadmap</div>
+    <h1>What We're Building Next</h1>
+    <p>A transparent view of what's released, in progress, and planned. Have a suggestion? <a href="https://github.com/Mianhassam96/MultiMian-ImageKit/issues" target="_blank" rel="noopener" style="color:var(--accent2)">Open an issue on GitHub →</a></p>
+  </div>
+
+  <div class="roadmap-section">
+    <div class="roadmap-section-title">✅ Released</div>
+    <div class="roadmap-items">
+      <div class="roadmap-item done"><span class="ri-badge badge-done">v1.7</span><div class="ri-content"><div class="ri-title">QR Code Generator</div><div class="ri-desc">URL, text, WiFi, email, phone, and vCard. PNG and SVG export.</div></div></div>
+      <div class="roadmap-item done"><span class="ri-badge badge-done">v1.6</span><div class="ri-content"><div class="ri-title">Favicon Generator + Passport Photo Maker</div><div class="ri-desc">8 favicon sizes as ZIP. Official passport photo standards for UK, US, India, Pakistan.</div></div></div>
+      <div class="roadmap-item done"><span class="ri-badge badge-done">v1.5</span><div class="ri-content"><div class="ri-title">Crop Tool + Mobile Bottom Nav</div><div class="ri-desc">Interactive canvas crop with ratio lock, social presets, and rule-of-thirds grid.</div></div></div>
+      <div class="roadmap-item done"><span class="ri-badge badge-done">v1.4</span><div class="ri-content"><div class="ri-title">Workspace Dashboard + Super Search + Analytics</div><div class="ri-desc">Premium home dashboard with Continue Editing, Quick Actions, enhanced command palette.</div></div></div>
+      <div class="roadmap-item done"><span class="ri-badge badge-done">v1.3</span><div class="ri-content"><div class="ri-title">SEO Landing Pages + Documentation Center</div><div class="ri-desc">10 tool landing pages, 8 doc pages, blog learning center, sitemap.</div></div></div>
+      <div class="roadmap-item done"><span class="ri-badge badge-done">v1.2</span><div class="ri-content"><div class="ri-title">Premium Homepage + Mega Nav + FAQ</div><div class="ri-desc">Trust badges, stats row, why section, comparison table, FAQ accordion.</div></div></div>
+      <div class="roadmap-item done"><span class="ri-badge badge-done">v1.0</span><div class="ri-content"><div class="ri-title">Core 13 Tools + PWA</div><div class="ri-desc">Screenshot Studio, OCR, Compress, Resize, Convert, Watermark, Merge, Share, Text Studio, PDF→Image, Image→GIF, Video→GIF, Sticker.</div></div></div>
+    </div>
+  </div>
+
+  <div class="roadmap-section">
+    <div class="roadmap-section-title">🚧 In Progress</div>
+    <div class="roadmap-items">
+      <div class="roadmap-item progress"><span class="ri-badge badge-progress">Sprint 7</span><div class="ri-content"><div class="ri-title">Remaining Tool Landing Pages</div><div class="ri-desc">Screenshot Studio, Text Studio, GIF Maker, Video→GIF, Sticker Maker, Smart Optimize, QR Code landing pages.</div></div></div>
+      <div class="roadmap-item progress"><span class="ri-badge badge-progress">Sprint 7</span><div class="ri-content"><div class="ri-title">Blog Learning Center</div><div class="ri-desc">Educational articles on image formats, compression, OCR, favicons, passport photos.</div></div></div>
+      <div class="roadmap-item progress"><span class="ri-badge badge-progress">Sprint 7</span><div class="ri-content"><div class="ri-title">Internal Linking + SEO Strengthening</div><div class="ri-desc">Cross-linking tools, docs, and blog articles for better discoverability.</div></div></div>
+    </div>
+  </div>
+
+  <div class="roadmap-section">
+    <div class="roadmap-section-title">🗳 Planned — Sprint 8</div>
+    <div class="roadmap-items">
+      <div class="roadmap-item planned"><span class="ri-badge badge-planned">Sprint 8</span><div class="ri-content"><div class="ri-title">v2.0 — Browser AI Edition</div><div class="ri-desc">AI Background Remover, AI Upscaler, AI Image Enhance, AI Colorizer — all client-side.</div></div></div>
+      <div class="roadmap-item planned"><span class="ri-badge badge-planned">Sprint 8</span><div class="ri-content"><div class="ri-title">OG Preview Image for All Pages</div><div class="ri-desc">Professional social media preview images for all landing pages and blog posts.</div></div></div>
+      <div class="roadmap-item planned"><span class="ri-badge badge-planned">Sprint 8</span><div class="ri-content"><div class="ri-title">Image Comparison Tool</div><div class="ri-desc">/compare/ pages: JPG vs PNG, WebP vs AVIF, ImageKit vs online editors.</div></div></div>
+    </div>
+  </div>
+
+  <div class="roadmap-section">
+    <div class="roadmap-section-title">💡 Ideas — Community Requests</div>
+    <div class="roadmap-items">
+      <div class="roadmap-item idea"><span class="ri-badge badge-idea">Idea</span><div class="ri-content"><div class="ri-title">Browser Extension</div><div class="ri-desc">Right-click any image on the web → compress, resize, or convert instantly.</div></div></div>
+      <div class="roadmap-item idea"><span class="ri-badge badge-idea">Idea</span><div class="ri-content"><div class="ri-title">Image Annotation Tool</div><div class="ri-desc">Draw, add text, arrows, and shapes on any image.</div></div></div>
+      <div class="roadmap-item idea"><span class="ri-badge badge-idea">Idea</span><div class="ri-content"><div class="ri-title">Bulk Rename Tool</div><div class="ri-desc">Rename multiple files with patterns before downloading as ZIP.</div></div></div>
+      <div class="roadmap-item idea"><span class="ri-badge badge-idea">Idea</span><div class="ri-content"><div class="ri-title">Public API</div><div class="ri-desc">REST API for developers to integrate ImageKit tools into their own projects.</div></div></div>
+    </div>
+  </div>
+
+  <div class="release-history">
+    <div class="roadmap-section-title">📅 Release History</div>
+    <div class="release-entry"><div class="release-version">Sprint 7 (in progress)</div><div class="release-date">2026</div><ul class="release-items"><li>Toast notifications replacing alert()</li><li>Interactive Playground on homepage</li><li>Documentation center (8 pages)</li><li>Blog learning center (5 articles)</li><li>Roadmap page</li></ul></div>
+    <div class="release-entry"><div class="release-version">Sprint 6</div><div class="release-date">2026</div><ul class="release-items"><li>QR Code Generator (tool #17)</li><li>Format Comparison page</li><li>README v2 overhaul</li><li>Community files (CONTRIBUTING, SECURITY, CODE_OF_CONDUCT)</li></ul></div>
+    <div class="release-entry"><div class="release-version">Sprint 5</div><div class="release-date">2026</div><ul class="release-items"><li>9 SEO tool landing pages</li><li>Tools hub index</li><li>Workspace Dashboard</li><li>Super Search (enhanced command palette)</li><li>Analytics Dashboard</li></ul></div>
+    <div class="release-entry"><div class="release-version">Sprint 4</div><div class="release-date">2026</div><ul class="release-items"><li>Favicon Generator (tool #15)</li><li>Passport Photo Maker (tool #16)</li><li>sitemap.xml (28 URLs)</li></ul></div>
+    <div class="release-entry"><div class="release-version">Sprint 3</div><div class="release-date">2026</div><ul class="release-items"><li>Crop Tool (tool #14) with ratio lock + social presets</li><li>Mobile Bottom Navigation bar</li></ul></div>
+  </div>
+
+  <div style="text-align:center;margin-top:40px;">
+    <p style="font-size:0.88em;color:var(--text3);margin-bottom:16px;">Have a feature request or idea?</p>
+    <a href="https://github.com/Mianhassam96/MultiMian-ImageKit/issues" target="_blank" rel="noopener" class="lp-btn-primary" style="display:inline-flex;">💡 Submit on GitHub →</a>
+  </div>
+</div>
+<footer class="lp-footer"><div class="lp-footer-inner"><a href="../index.html" class="lp-footer-logo">Multi<span>Mian</span>ImageKit</a><div class="lp-footer-links"><a href="../index.html">Home</a><a href="../tools/index.html">Tools</a><a href="../docs/index.html">Docs</a><a href="../blog/index.html">Blog</a><a href="https://github.com/Mianhassam96/MultiMian-ImageKit" target="_blank" rel="noopener">GitHub</a></div><span class="lp-footer-copy">© 2026 MultiMian ImageKit · MIT License</span></div></footer>
+<script src="../assets/js/landing.js"></script>
+</body></html>

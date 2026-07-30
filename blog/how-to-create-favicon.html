@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Create a Favicon for Your Website (All Sizes) | MultiMian ImageKit</title>
+<meta name="description" content="Step-by-step guide to creating favicons for any website. Generate all favicon sizes (16px to 512px), add the HTML snippet, and set up your PWA icons.">
+<meta name="keywords" content="how to create favicon, favicon generator, favicon sizes, favicon html code, website icon, pwa icon">
+<link rel="canonical" href="https://mianhassam96.github.io/MultiMian-ImageKit/blog/how-to-create-favicon.html">
+<meta property="og:title" content="How to Create a Favicon for Your Website (All Sizes)">
+<meta property="og:type" content="article">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/landing.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"How to Create a Favicon for Your Website","author":{"@type":"Person","name":"Mian Hassam"},"publisher":{"@type":"Organization","name":"MultiMian ImageKit"}}</script>
+<style>.blog-article{max-width:760px;margin:0 auto;padding:48px 24px 80px;}.blog-article h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.6em,4vw,2.2em);font-weight:800;line-height:1.2;margin-bottom:16px;}.blog-article .meta{font-size:0.8em;color:var(--text3);margin-bottom:28px;display:flex;gap:16px;flex-wrap:wrap;}.blog-article h2{font-family:'Space Grotesk',sans-serif;font-size:1.2em;font-weight:700;margin:28px 0 10px;}.blog-article p{font-size:0.93em;color:var(--text2);line-height:1.8;margin-bottom:16px;}.blog-article ul,.blog-article ol{padding-left:20px;margin-bottom:16px;}.blog-article li{font-size:0.91em;color:var(--text2);line-height:1.75;margin-bottom:4px;}.blog-article code{background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-size:0.87em;font-family:monospace;}.blog-article pre{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:16px;overflow-x:auto;font-size:0.84em;margin:16px 0;}.blog-article .cta-inline{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--accent2),var(--accent2-dark));color:#fff;border-radius:8px;padding:10px 20px;text-decoration:none;font-weight:700;font-size:0.88em;margin:16px 0;}</style>
+</head>
+<body>
+<header class="lp-header"><div class="lp-header-inner"><a href="../index.html" class="lp-logo"><span class="lp-logo-multi">Multi</span><span class="lp-logo-mian">Mian</span><span class="lp-logo-kit">ImageKit</span></a><nav class="lp-nav"><a href="../index.html">Home</a><a href="../tools/index.html">Tools</a><a href="../docs/index.html">Docs</a><a href="index.html" class="active">Blog</a></nav><div class="lp-header-right"><button id="lpDarkBtn" class="lp-dark-btn">🌙</button><a href="../index.html?tab=favicon" class="lp-launch-btn">🌐 Favicon Generator</a></div></div></header>
+<nav class="lp-breadcrumb"><a href="../index.html">Home</a><span>›</span><a href="index.html">Blog</a><span>›</span><span>Create a Favicon</span></nav>
+<div class="blog-article">
+  <div class="lp-hero-badge" style="margin-bottom:16px;">🌐 Web Design Guide</div>
+  <h1>How to Create a Favicon for Your Website (All Sizes)</h1>
+  <div class="meta"><span>📅 2026</span><span>⏱ 4 min read</span><span>✍️ Mian Hassam</span></div>
+  <p>A favicon is the small icon that appears in browser tabs, bookmarks, and home screens. Getting it right means providing multiple sizes for different contexts — from the 16×16 tab icon to the 512×512 PWA splash screen icon.</p>
+  <h2>Why You Need Multiple Favicon Sizes</h2>
+  <ul>
+    <li><strong>16×16</strong> — Browser tab (classic favicon)</li>
+    <li><strong>32×32</strong> — Windows taskbar, browser shortcuts</li>
+    <li><strong>48×48</strong> — Windows desktop shortcut</li>
+    <li><strong>180×180</strong> — Apple Touch Icon (iOS home screen)</li>
+    <li><strong>192×192</strong> — Android home screen (PWA)</li>
+    <li><strong>512×512</strong> — PWA splash screen</li>
+  </ul>
+  <h2>Step 1 — Start With a Square Image</h2>
+  <p>Your favicon source should be a square image, at least 512×512 pixels. PNG works best — it supports transparency and is lossless. An SVG is even better as it scales perfectly to any size.</p>
+  <h2>Step 2 — Generate All Sizes</h2>
+  <p>Instead of manually resizing, use the MultiMian ImageKit Favicon Generator. Upload your square image and it instantly generates all 8 sizes as a ZIP file:</p>
+  <a href="../index.html?tab=favicon" class="cta-inline">🌐 Generate Favicons Free →</a>
+  <p>The ZIP also includes an HTML snippet and a manifest.json icons entry ready to paste into your project.</p>
+  <h2>Step 3 — Add to Your HTML</h2>
+  <p>Place these tags inside your <code>&lt;head&gt;</code>:</p>
+  <pre>&lt;link rel="icon" type="image/svg+xml" href="/favicon.svg"&gt;
+&lt;link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"&gt;
+&lt;link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"&gt;
+&lt;link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"&gt;
+&lt;link rel="manifest" href="/manifest.json"&gt;</pre>
+  <h2>Step 4 — Update Your manifest.json</h2>
+  <p>For PWA support, add the icons to your <code>manifest.json</code>:</p>
+  <pre>"icons": [
+  { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+  { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" }
+]</pre>
+  <h2>Tips for a Good Favicon</h2>
+  <ul>
+    <li>Keep it simple — complex logos become unreadable at 16×16</li>
+    <li>Use a single letter, icon, or simple symbol for small sizes</li>
+    <li>Test against both light and dark browser themes</li>
+    <li>Use SVG as the primary icon for perfect scaling at any size</li>
+  </ul>
+  <h2>Related Tools</h2>
+  <div class="lp-related"><a href="../tools/favicon-generator.html" class="lp-related-card"><div class="lp-related-icon">🌐</div><div class="lp-related-name">Favicon Generator</div><div class="lp-related-desc">All sizes + HTML snippet as ZIP</div></a><a href="../tools/resize-image.html" class="lp-related-card"><div class="lp-related-icon">✂️</div><div class="lp-related-name">Resize Image</div><div class="lp-related-desc">Resize your source image</div></a><a href="../tools/crop-image.html" class="lp-related-card"><div class="lp-related-icon">✂️</div><div class="lp-related-name">Crop to Square</div><div class="lp-related-desc">Crop your image to 1:1 ratio</div></a></div>
+</div>
+<footer class="lp-footer"><div class="lp-footer-inner"><a href="../index.html" class="lp-footer-logo">Multi<span>Mian</span>ImageKit</a><div class="lp-footer-links"><a href="../index.html">Home</a><a href="../tools/index.html">Tools</a><a href="index.html">Blog</a><a href="https://github.com/Mianhassam96/MultiMian-ImageKit" target="_blank" rel="noopener">GitHub</a></div><span class="lp-footer-copy">© 2026 MultiMian ImageKit · MIT License</span></div></footer>
+<script src="../assets/js/landing.js"></script>
+</body></html>

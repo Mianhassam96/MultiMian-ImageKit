@@ -228,4 +228,21 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+  <!-- Blog -->
+  <url><loc>https://mianhassam96.github.io/MultiMian-ImageKit/blog/</loc><lastmod>2026-07-22</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mianhassam96.github.io/MultiMian-ImageKit/blog/how-to-compress-images.html</loc><lastmod>2026-07-22</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mianhassam96.github.io/MultiMian-ImageKit/blog/jpg-vs-png-vs-webp.html</loc><lastmod>2026-07-22</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mianhassam96.github.io/MultiMian-ImageKit/blog/how-ocr-works-in-browser.html</loc><lastmod>2026-07-22</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mianhassam96.github.io/MultiMian-ImageKit/blog/how-to-create-favicon.html</loc><lastmod>2026-07-22</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mianhassam96.github.io/MultiMian-ImageKit/blog/passport-photo-guide.html</loc><lastmod>2026-07-22</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <!-- Roadmap -->
+  <url><loc>https://mianhassam96.github.io/MultiMian-ImageKit/roadmap/</loc><lastmod>2026-07-22</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <!-- New tool landing pages -->
+  <url><loc>https://mianhassam96.github.io/MultiMian-ImageKit/tools/screenshot-studio.html</loc><lastmod>2026-07-22</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mianhassam96.github.io/MultiMian-ImageKit/tools/qr-code-generator.html</loc><lastmod>2026-07-22</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mianhassam96.github.io/MultiMian-ImageKit/tools/gif-maker.html</loc><lastmod>2026-07-22</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mianhassam96.github.io/MultiMian-ImageKit/tools/video-to-gif.html</loc><lastmod>2026-07-22</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mianhassam96.github.io/MultiMian-ImageKit/tools/sticker-maker.html</loc><lastmod>2026-07-22</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mianhassam96.github.io/MultiMian-ImageKit/tools/text-studio.html</loc><lastmod>2026-07-22</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://mianhassam96.github.io/MultiMian-ImageKit/tools/smart-optimize.html</loc><lastmod>2026-07-22</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
 </urlset>

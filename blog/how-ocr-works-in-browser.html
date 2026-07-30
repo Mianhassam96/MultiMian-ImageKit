@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How OCR Works in Your Browser — No Upload Required | MultiMian ImageKit</title>
+<meta name="description" content="How Tesseract.js powers browser-based OCR. Extract text from images in 10+ languages without uploading your files anywhere.">
+<meta name="keywords" content="how OCR works browser, Tesseract.js, image to text browser, client-side OCR, extract text from image online">
+<link rel="canonical" href="https://mianhassam96.github.io/MultiMian-ImageKit/blog/how-ocr-works-in-browser.html">
+<meta property="og:title" content="How OCR Works in Your Browser — No Upload Required">
+<meta property="og:type" content="article">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/landing.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"How OCR Works in Your Browser","description":"How Tesseract.js powers browser-based OCR without uploading files.","author":{"@type":"Person","name":"Mian Hassam"},"publisher":{"@type":"Organization","name":"MultiMian ImageKit"}}</script>
+<style>.blog-article{max-width:760px;margin:0 auto;padding:48px 24px 80px;}.blog-article h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.6em,4vw,2.2em);font-weight:800;line-height:1.2;margin-bottom:16px;}.blog-article .meta{font-size:0.8em;color:var(--text3);margin-bottom:28px;display:flex;gap:16px;flex-wrap:wrap;}.blog-article h2{font-family:'Space Grotesk',sans-serif;font-size:1.2em;font-weight:700;margin:28px 0 10px;}.blog-article p{font-size:0.93em;color:var(--text2);line-height:1.8;margin-bottom:16px;}.blog-article ul,.blog-article ol{padding-left:20px;margin-bottom:16px;}.blog-article li{font-size:0.91em;color:var(--text2);line-height:1.75;margin-bottom:4px;}.blog-article .callout{background:var(--accent2-light);border-left:4px solid var(--accent2);border-radius:0 8px 8px 0;padding:14px 18px;margin:20px 0;font-size:0.88em;color:var(--text);}.blog-article .cta-inline{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--accent2),var(--accent2-dark));color:#fff;border-radius:8px;padding:10px 20px;text-decoration:none;font-weight:700;font-size:0.88em;margin:16px 0;}</style>
+</head>
+<body>
+<header class="lp-header"><div class="lp-header-inner"><a href="../index.html" class="lp-logo"><span class="lp-logo-multi">Multi</span><span class="lp-logo-mian">Mian</span><span class="lp-logo-kit">ImageKit</span></a><nav class="lp-nav"><a href="../index.html">Home</a><a href="../tools/index.html">Tools</a><a href="../docs/index.html">Docs</a><a href="index.html" class="active">Blog</a></nav><div class="lp-header-right"><button id="lpDarkBtn" class="lp-dark-btn">🌙</button><a href="../index.html?tab=ocr" class="lp-launch-btn">🔤 Try OCR</a></div></div></header>
+<nav class="lp-breadcrumb"><a href="../index.html">Home</a><span>›</span><a href="index.html">Blog</a><span>›</span><span>How OCR Works</span></nav>
+<div class="blog-article">
+  <div class="lp-hero-badge" style="margin-bottom:16px;">🔤 Technology Guide</div>
+  <h1>How OCR Works in Your Browser — No Upload Required</h1>
+  <div class="meta"><span>📅 2026</span><span>⏱ 5 min read</span><span>✍️ Mian Hassam</span></div>
+  <p>Most OCR tools upload your image to a server, run text recognition in the cloud, and send the result back. MultiMian ImageKit does it entirely differently — everything runs in your browser, and your images never leave your device.</p>
+  <h2>What Is OCR?</h2>
+  <p>OCR (Optical Character Recognition) is the technology that converts images of text into machine-readable text. It's used to digitize scanned documents, extract text from screenshots, read signs in photos, and more.</p>
+  <h2>How Browser-Based OCR Works</h2>
+  <p>MultiMian ImageKit uses <a href="https://github.com/naptha/tesseract.js" target="_blank" rel="noopener" style="color:var(--accent2)">Tesseract.js</a> — a JavaScript port of Google's open-source Tesseract OCR engine. Here's what happens when you process an image:</p>
+  <ol>
+    <li><strong>Pre-processing</strong> — The image is scaled up if small (for better accuracy) and converted to PNG for consistent processing</li>
+    <li><strong>Language model loading</strong> — Tesseract downloads the trained data for your selected language (3–10 MB, cached after first use)</li>
+    <li><strong>Text recognition</strong> — A Web Worker runs the OCR algorithm in the background, analyzing the image pixel by pixel</li>
+    <li><strong>Result cleaning</strong> — Paragraph breaks, trailing spaces, and page markers are cleaned up automatically</li>
+    <li><strong>Output</strong> — The extracted text appears in the editor, ready to copy, download as TXT, or export as PDF</li>
+  </ol>
+  <div class="callout">🔒 <strong>Privacy note:</strong> At no point is your image or extracted text sent to any server. Everything runs in your browser using Web Workers and the Canvas API.</div>
+  <h2>Supported Languages</h2>
+  <p>The OCR tool supports 10+ languages including English, Arabic, French, German, Spanish, Chinese (Simplified), Hindi, Urdu, Portuguese, and Russian. Selecting the correct language significantly improves accuracy.</p>
+  <h2>Getting the Best Results</h2>
+  <ul>
+    <li><strong>Use high-contrast images</strong> — Black text on white background works best</li>
+    <li><strong>Avoid blurry or skewed images</strong> — Straight, well-lit scans give the most accurate results</li>
+    <li><strong>Choose the right page layout setting</strong> — "Single block of text" works well for simple documents; "Auto" handles mixed layouts</li>
+    <li><strong>Scale up small images</strong> — The tool automatically scales images under 600px for better recognition</li>
+  </ul>
+  <h2>Use Cases</h2>
+  <ul>
+    <li>Extract text from scanned books, invoices, or receipts</li>
+    <li>Copy text from screenshots you can't edit directly</li>
+    <li>Digitize handwritten notes (works best with clear printing)</li>
+    <li>Extract subtitles or captions from video screenshots</li>
+    <li>Read text from photos of signs or menus</li>
+  </ul>
+  <a href="../index.html?tab=ocr" class="cta-inline">🔤 Try OCR Free — No Upload →</a>
+  <h2>Related Tools &amp; Docs</h2>
+  <div class="lp-related"><a href="../tools/ocr.html" class="lp-related-card"><div class="lp-related-icon">🔤</div><div class="lp-related-name">OCR Tool Page</div><div class="lp-related-desc">Feature overview and FAQ</div></a><a href="../docs/privacy.html" class="lp-related-card"><div class="lp-related-icon">🔒</div><div class="lp-related-name">Privacy</div><div class="lp-related-desc">How your data is handled</div></a><a href="../docs/browser-support.html" class="lp-related-card"><div class="lp-related-icon">🌐</div><div class="lp-related-name">Browser Support</div><div class="lp-related-desc">Compatibility notes for OCR</div></a></div>
+</div>
+<footer class="lp-footer"><div class="lp-footer-inner"><a href="../index.html" class="lp-footer-logo">Multi<span>Mian</span>ImageKit</a><div class="lp-footer-links"><a href="../index.html">Home</a><a href="../tools/index.html">Tools</a><a href="index.html">Blog</a><a href="https://github.com/Mianhassam96/MultiMian-ImageKit" target="_blank" rel="noopener">GitHub</a></div><span class="lp-footer-copy">© 2026 MultiMian ImageKit · MIT License</span></div></footer>
+<script src="../assets/js/landing.js"></script>
+</body></html>

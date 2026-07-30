@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Troubleshooting — MultiMian ImageKit Docs</title>
+<meta name="description" content="Fix common issues with MultiMian ImageKit. OCR not working, GIF encoding errors, PDF tools, and more.">
+<link rel="canonical" href="https://mianhassam96.github.io/MultiMian-ImageKit/docs/troubleshooting.html">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/landing.css"><link rel="stylesheet" href="../styles-sprint7.css">
+</head>
+<body>
+<header class="lp-header"><div class="lp-header-inner"><a href="../index.html" class="lp-logo"><span class="lp-logo-multi">Multi</span><span class="lp-logo-mian">Mian</span><span class="lp-logo-kit">ImageKit</span></a><nav class="lp-nav"><a href="../index.html">Home</a><a href="../tools/index.html">Tools</a><a href="index.html">Docs</a></nav><div class="lp-header-right"><button id="lpDarkBtn" class="lp-dark-btn">🌙</button><a href="../index.html" class="lp-launch-btn">🚀 Open App</a></div></div></header>
+<nav class="lp-breadcrumb"><a href="../index.html">Home</a><span>›</span><a href="index.html">Docs</a><span>›</span><span>Troubleshooting</span></nav>
+<div class="docs-layout">
+  <aside class="docs-sidebar"><div class="docs-sidebar-title">Documentation</div><ul class="docs-sidebar-list"><li><a href="getting-started.html">🚀 Getting Started</a></li><li><a href="keyboard-shortcuts.html">⌨️ Keyboard Shortcuts</a></li><li><a href="privacy.html">🔒 Privacy</a></li><li><a href="browser-support.html">🌐 Browser Support</a></li><li><a href="export-formats.html">📦 Export Formats</a></li><li><a href="offline-mode.html">📡 Offline Mode</a></li><li><a href="faq.html">❓ FAQ</a></li><li><a href="troubleshooting.html" class="active">🔧 Troubleshooting</a></li></ul></aside>
+  <main class="docs-content">
+    <h1>🔧 Troubleshooting</h1>
+    <h2>OCR — "No text detected"</h2>
+    <ul>
+      <li>Make sure the image has clear, readable text (not too small or blurry)</li>
+      <li>Select the correct language from the dropdown — mismatched language reduces accuracy significantly</li>
+      <li>Try <strong>Page Layout: Single block of text</strong> for simple documents</li>
+      <li>The tool auto-scales images smaller than 600px for better recognition</li>
+    </ul>
+    <h2>GIF — "GIF creation failed"</h2>
+    <ul>
+      <li>gif.js loads from a CDN — ensure you have internet on first use</li>
+      <li>Reduce the number of frames (over 100 frames can exhaust memory)</li>
+      <li>Lower the output width (480px is recommended for most cases)</li>
+      <li>Try a lower frame rate (10 fps instead of 24)</li>
+    </ul>
+    <h2>PDF Tools — "Failed to read PDF"</h2>
+    <ul>
+      <li>PDF.js loads from a CDN — ensure you have internet on first use</li>
+      <li>Some encrypted or password-protected PDFs cannot be processed</li>
+      <li>Very large PDFs (50+ pages at high scale) may run out of memory — try 1× or 2× scale</li>
+    </ul>
+    <h2>Compress — Download is larger than original</h2>
+    <ul>
+      <li>This can happen when compressing an already-optimized WebP or well-compressed JPG at high quality</li>
+      <li>Try reducing quality to 70–80% or switching to WebP format for maximum savings</li>
+    </ul>
+    <h2>Share Image — "Upload failed"</h2>
+    <ul>
+      <li>Check that you have internet connection</li>
+      <li>The default ImgBB API key has a daily limit — use your own free key from <a href="https://api.imgbb.com" target="_blank" rel="noopener" style="color:var(--accent2)">api.imgbb.com</a></li>
+      <li>Maximum file size for ImgBB is 32MB</li>
+    </ul>
+    <h2>App Not Updating After Deployment</h2>
+    <ul>
+      <li>The Service Worker caches files aggressively. To force an update: open DevTools → Application → Service Workers → click <strong>Update</strong></li>
+      <li>Or clear site data: Settings → Privacy → Clear browsing data</li>
+    </ul>
+    <h2>Still Having Issues?</h2>
+    <p>Open an issue on <a href="https://github.com/Mianhassam96/MultiMian-ImageKit/issues" target="_blank" rel="noopener" style="color:var(--accent2)">GitHub</a> or email <a href="mailto:mianhassam96@gmail.com" style="color:var(--accent2)">mianhassam96@gmail.com</a></p>
+    <div class="docs-nav-bottom">
+      <a href="faq.html" class="docs-nav-btn">← FAQ</a>
+      <a href="index.html" class="docs-nav-btn">Back to Docs →</a>
+    </div>
+  </main>
+</div>
+<footer class="lp-footer"><div class="lp-footer-inner"><a href="../index.html" class="lp-footer-logo">Multi<span>Mian</span>ImageKit</a><div class="lp-footer-links"><a href="../index.html">Home</a><a href="index.html">Docs</a><a href="https://github.com/Mianhassam96/MultiMian-ImageKit" target="_blank" rel="noopener">GitHub</a></div><span class="lp-footer-copy">© 2026 MultiMian ImageKit · MIT License</span></div></footer>
+<script src="../assets/js/landing.js"></script>
+</body></html>

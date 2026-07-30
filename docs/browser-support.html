@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Browser Support — MultiMian ImageKit Docs</title>
+<meta name="description" content="Browser compatibility for MultiMian ImageKit. Chrome, Edge, Firefox, Safari, and mobile browsers.">
+<link rel="canonical" href="https://mianhassam96.github.io/MultiMian-ImageKit/docs/browser-support.html">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/landing.css">
+<link rel="stylesheet" href="../styles-sprint7.css">
+<style>.compat-table{width:100%;border-collapse:collapse;font-size:0.88em;margin:16px 0;}.compat-table th,.compat-table td{padding:10px 14px;border-bottom:1px solid var(--border);text-align:left;}.compat-table th{background:var(--surface2);font-weight:700;color:var(--text);border-bottom:2px solid var(--border);}.compat-table .full{color:#16a34a;font-weight:700;}.compat-table .partial{color:#f59e0b;font-weight:600;}.compat-table .no{color:#dc2626;}</style>
+</head>
+<body>
+<header class="lp-header"><div class="lp-header-inner"><a href="../index.html" class="lp-logo"><span class="lp-logo-multi">Multi</span><span class="lp-logo-mian">Mian</span><span class="lp-logo-kit">ImageKit</span></a><nav class="lp-nav"><a href="../index.html">Home</a><a href="../tools/index.html">Tools</a><a href="index.html">Docs</a></nav><div class="lp-header-right"><button id="lpDarkBtn" class="lp-dark-btn">🌙</button><a href="../index.html" class="lp-launch-btn">🚀 Open App</a></div></div></header>
+<nav class="lp-breadcrumb"><a href="../index.html">Home</a><span>›</span><a href="index.html">Docs</a><span>›</span><span>Browser Support</span></nav>
+<div class="docs-layout">
+  <aside class="docs-sidebar">
+    <div class="docs-sidebar-title">Documentation</div>
+    <ul class="docs-sidebar-list">
+      <li><a href="getting-started.html">🚀 Getting Started</a></li>
+      <li><a href="keyboard-shortcuts.html">⌨️ Keyboard Shortcuts</a></li>
+      <li><a href="privacy.html">🔒 Privacy</a></li>
+      <li><a href="browser-support.html" class="active">🌐 Browser Support</a></li>
+      <li><a href="export-formats.html">📦 Export Formats</a></li>
+      <li><a href="offline-mode.html">📡 Offline Mode</a></li>
+      <li><a href="faq.html">❓ FAQ</a></li>
+      <li><a href="troubleshooting.html">🔧 Troubleshooting</a></li>
+    </ul>
+  </aside>
+  <main class="docs-content">
+    <h1>🌐 Browser Support</h1>
+    <p>MultiMian ImageKit uses modern browser APIs. Here's what works where:</p>
+    <h2>Desktop Browsers</h2>
+    <table class="compat-table">
+      <thead><tr><th>Browser</th><th>Version</th><th>Support</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Chrome</td><td>90+</td><td class="full">✅ Full</td><td>Best performance, all features</td></tr>
+        <tr><td>Edge (Chromium)</td><td>90+</td><td class="full">✅ Full</td><td>Same as Chrome, PWA install works great</td></tr>
+        <tr><td>Firefox</td><td>88+</td><td class="full">✅ Full</td><td>All tools work; no PWA install prompt</td></tr>
+        <tr><td>Safari</td><td>14+</td><td class="full">✅ Full</td><td>WebP output supported from Safari 14</td></tr>
+        <tr><td>Opera</td><td>76+</td><td class="full">✅ Full</td><td>Based on Chromium</td></tr>
+      </tbody>
+    </table>
+    <h2>Mobile Browsers</h2>
+    <table class="compat-table">
+      <thead><tr><th>Browser</th><th>Platform</th><th>Support</th></tr></thead>
+      <tbody>
+        <tr><td>Chrome for Android</td><td>Android</td><td class="full">✅ Full</td></tr>
+        <tr><td>Safari</td><td>iOS 14+</td><td class="full">✅ Full</td></tr>
+        <tr><td>Firefox for Android</td><td>Android</td><td class="full">✅ Full</td></tr>
+        <tr><td>Samsung Internet</td><td>Android</td><td class="full">✅ Full</td></tr>
+      </tbody>
+    </table>
+    <h2>Feature-Specific Notes</h2>
+    <ul>
+      <li><strong>WebP output</strong> — requires Chrome 32+, Firefox 65+, Safari 14+, Edge 18+</li>
+      <li><strong>PWA install</strong> — Chrome/Edge only on desktop; iOS Safari for home screen install</li>
+      <li><strong>Web Workers</strong> (used by OCR and compression) — all modern browsers</li>
+      <li><strong>OffscreenCanvas</strong> (faster compression) — Chrome/Edge only; gracefully falls back on others</li>
+      <li><strong>Clipboard API</strong> — Chrome/Edge for copy-to-clipboard; Firefox requires user permission</li>
+    </ul>
+    <div class="docs-nav-bottom">
+      <a href="privacy.html" class="docs-nav-btn">← Privacy</a>
+      <a href="export-formats.html" class="docs-nav-btn">Next: Export Formats →</a>
+    </div>
+  </main>
+</div>
+<footer class="lp-footer"><div class="lp-footer-inner"><a href="../index.html" class="lp-footer-logo">Multi<span>Mian</span>ImageKit</a><div class="lp-footer-links"><a href="../index.html">Home</a><a href="index.html">Docs</a><a href="https://github.com/Mianhassam96/MultiMian-ImageKit" target="_blank" rel="noopener">GitHub</a></div><span class="lp-footer-copy">© 2026 MultiMian ImageKit · MIT License</span></div></footer>
+<script src="../assets/js/landing.js"></script>
+</body></html>

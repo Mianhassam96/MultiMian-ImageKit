@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy — MultiMian ImageKit Docs</title>
+<meta name="description" content="How MultiMian ImageKit protects your privacy. All processing happens in your browser — no files are ever uploaded to any server.">
+<link rel="canonical" href="https://mianhassam96.github.io/MultiMian-ImageKit/docs/privacy.html">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/landing.css">
+<link rel="stylesheet" href="../styles-sprint7.css">
+</head>
+<body>
+<header class="lp-header"><div class="lp-header-inner"><a href="../index.html" class="lp-logo"><span class="lp-logo-multi">Multi</span><span class="lp-logo-mian">Mian</span><span class="lp-logo-kit">ImageKit</span></a><nav class="lp-nav"><a href="../index.html">Home</a><a href="../tools/index.html">Tools</a><a href="index.html">Docs</a></nav><div class="lp-header-right"><button id="lpDarkBtn" class="lp-dark-btn">🌙</button><a href="../index.html" class="lp-launch-btn">🚀 Open App</a></div></div></header>
+<nav class="lp-breadcrumb"><a href="../index.html">Home</a><span>›</span><a href="index.html">Docs</a><span>›</span><span>Privacy</span></nav>
+<div class="docs-layout">
+  <aside class="docs-sidebar">
+    <div class="docs-sidebar-title">Documentation</div>
+    <ul class="docs-sidebar-list">
+      <li><a href="getting-started.html">🚀 Getting Started</a></li>
+      <li><a href="keyboard-shortcuts.html">⌨️ Keyboard Shortcuts</a></li>
+      <li><a href="privacy.html" class="active">🔒 Privacy</a></li>
+      <li><a href="browser-support.html">🌐 Browser Support</a></li>
+      <li><a href="export-formats.html">📦 Export Formats</a></li>
+      <li><a href="offline-mode.html">📡 Offline Mode</a></li>
+      <li><a href="faq.html">❓ FAQ</a></li>
+      <li><a href="troubleshooting.html">🔧 Troubleshooting</a></li>
+    </ul>
+  </aside>
+  <main class="docs-content">
+    <h1>🔒 Privacy</h1>
+    <p>Privacy is the core design principle of MultiMian ImageKit. Every architectural decision prioritizes keeping your files on your device.</p>
+    <h2>How Processing Works</h2>
+    <p>Every tool uses browser-native APIs to process files entirely on your device:</p>
+    <ul>
+      <li><strong>Canvas API</strong> — compress, resize, crop, convert, watermark, merge, screenshot, sticker, favicon, passport photo, QR codes</li>
+      <li><strong>Tesseract.js</strong> — OCR text extraction (runs as a Web Worker in your browser)</li>
+      <li><strong>PDF.js</strong> — PDF parsing and rendering (Mozilla's library, runs locally)</li>
+      <li><strong>gif.js</strong> — GIF encoding (runs as a Web Worker in your browser)</li>
+    </ul>
+    <h2>What Data Is Stored</h2>
+    <p>Only minimal data is stored locally in your browser:</p>
+    <ul>
+      <li><strong>localStorage</strong> — theme preference, achievement stats, recent workspace thumbnails, API key for Share tool</li>
+      <li><strong>sessionStorage</strong> — current session file count and session start time</li>
+      <li>This data never leaves your device and can be cleared at any time via your browser settings</li>
+    </ul>
+    <h2>The One Exception — Share Image Tool</h2>
+    <p>The <strong>Share Anywhere</strong> tool uploads your image to <a href="https://imgbb.com" target="_blank" rel="noopener" style="color:var(--accent2);">ImgBB</a> to generate a public link. This only happens when you explicitly click <strong>Upload &amp; Get Link</strong>. No other tool sends any data anywhere.</p>
+    <h2>No Tracking, No Analytics</h2>
+    <ul>
+      <li>No Google Analytics, no tracking pixels, no cookies</li>
+      <li>No user accounts, no email collection</li>
+      <li>No advertising networks</li>
+      <li>The only external requests are for Google Fonts (fonts only, no image data)</li>
+    </ul>
+    <h2>Open Source Verification</h2>
+    <p>Because the project is open source, you can verify exactly what the code does: <a href="https://github.com/Mianhassam96/MultiMian-ImageKit" target="_blank" rel="noopener" style="color:var(--accent2);">github.com/Mianhassam96/MultiMian-ImageKit</a></p>
+    <div class="docs-nav-bottom">
+      <a href="keyboard-shortcuts.html" class="docs-nav-btn">← Keyboard Shortcuts</a>
+      <a href="browser-support.html" class="docs-nav-btn">Next: Browser Support →</a>
+    </div>
+  </main>
+</div>
+<footer class="lp-footer"><div class="lp-footer-inner"><a href="../index.html" class="lp-footer-logo">Multi<span>Mian</span>ImageKit</a><div class="lp-footer-links"><a href="../index.html">Home</a><a href="index.html">Docs</a><a href="https://github.com/Mianhassam96/MultiMian-ImageKit" target="_blank" rel="noopener">GitHub</a></div><span class="lp-footer-copy">© 2026 MultiMian ImageKit · MIT License</span></div></footer>
+<script src="../assets/js/landing.js"></script>
+</body></html>

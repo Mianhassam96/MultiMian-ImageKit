@@ -11,7 +11,7 @@ const WorkspaceDashboard = (() => {
     'Use <kbd>1–9</kbd> number keys to jump straight to any tool without touching the mouse.',
     'After compressing, click <strong>🌐 Share</strong> to get a permanent public link instantly.',
     'The <strong>Universal Export Pack</strong> gives you 9 social sizes + WebP + favicon in one click.',
-    'Enable <strong>PWA Install</strong> to use all 16 tools offline — no internet needed.',
+    'Enable <strong>PWA Install</strong> to use all 17 tools offline — no internet needed.',
     'The <strong>Smart Optimize</strong> button analyzes, compresses, and converts any image automatically.',
     'In <strong>Screenshot Studio</strong>, pick a Preset Scene to get professional results in one click.',
     'The <strong>Batch Queue</strong> on the home page lets you compress or convert multiple images at once.',

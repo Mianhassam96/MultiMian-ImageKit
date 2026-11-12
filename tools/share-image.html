@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Share Images Online — Get Instant Public Link &amp; QR Code | MultiMian ImageKit</title>
+<meta name="description" content="Share images quickly with a direct public link, embed codes, and scannable QR code. Powered by your free ImgBB API key with custom expiration options.">
+<meta name="keywords" content="share image online, upload image get link, image link generator, share picture qr code, free image sharing, direct image url, host image online">
+<link rel="canonical" href="https://mianhassam96.github.io/MultiMian-ImageKit/tools/share-image.html">
+<meta property="og:title" content="Share Images Online Free | MultiMian ImageKit">
+<meta property="og:description" content="Generate direct image links, embed codes, and QR codes instantly. Easy, flexible, and powered by your own free key.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mianhassam96.github.io/MultiMian-ImageKit/tools/share-image.html">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/landing.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "MultiMian ImageKit — Share Anywhere",
+  "description": "Fast, privacy-conscious image sharing tool. Generate instant public URLs, QR codes, Markdown links, and HTML embed codes.",
+  "url": "https://mianhassam96.github.io/MultiMian-ImageKit/tools/share-image.html",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web Browser",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "featureList": ["Direct public URL", "QR Code generation", "HTML embed code", "Markdown embed code", "Custom expiration timer"]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How does the Share Anywhere tool work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The tool connects to the ImgBB API using your free API key. When you select an image and click Upload, it uploads your file directly and provides a permanent or time-limited direct URL, embed code, and scannable QR code."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I get an ImgBB API key?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Getting a key takes 30 seconds: create a free account at api.imgbb.com, click 'Get API Key', and paste it into ImageKit. It is securely saved in your browser's localStorage so you only need to enter it once."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I set an expiration time for shared images?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. You can choose to make the link permanent or set auto-expiration from 5 minutes up to 30 days."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does MultiMian ImageKit store my shared images or key?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. MultiMian ImageKit has no database or backend server. Your API key remains on your device in localStorage, and the image is sent directly from your browser to ImgBB only when you click upload."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="lp-header">
+  <div class="lp-header-inner">
+    <a href="../index.html" class="lp-logo">
+      <span class="lp-logo-multi">Multi</span><span class="lp-logo-mian">Mian</span><span class="lp-logo-kit">ImageKit</span>
+    </a>
+    <nav class="lp-nav">
+      <a href="../index.html">Home</a>
+      <a href="index.html">All Tools</a>
+      <a href="compress-image.html">Compress</a>
+      <a href="resize-image.html">Resize</a>
+      <a href="qr-code-generator.html">QR Code</a>
+      <a href="share-image.html" class="active">Share</a>
+    </nav>
+    <div class="lp-header-right">
+      <button id="lpDarkBtn" class="lp-dark-btn" aria-label="Toggle dark mode">🌙</button>
+      <a href="../index.html?tab=share" class="lp-launch-btn">🚀 Open Tool</a>
+    </div>
+  </div>
+</header>
+
+<nav class="lp-breadcrumb" aria-label="Breadcrumb">
+  <a href="../index.html">Home</a>
+  <span>›</span>
+  <a href="index.html">Tools</a>
+  <span>›</span>
+  <span>Share Image</span>
+</nav>
+
+<section style="max-width:1100px;margin:0 auto;padding:56px 24px 48px;">
+  <div class="lp-hero" style="padding:0;border:none;">
+    <div>
+      <div class="lp-hero-badge">🌐 Instant Sharing · Direct Links · QR Code</div>
+      <h1>Share Images Anywhere — <span>Fast Public Links &amp; QR Codes</span></h1>
+      <p class="lp-hero-desc">Upload and share images effortlessly. Generate permanent or expiring public URLs, full HTML embed codes, Markdown forum links, and scan-ready QR codes for instant mobile access.</p>
+      <div class="lp-hero-btns">
+        <a href="../index.html?tab=share" class="lp-btn-primary">🌐 Share an Image Now →</a>
+        <a href="index.html" class="lp-btn-ghost">Browse All Tools</a>
+      </div>
+      <div class="lp-hero-trust">
+        <span class="lp-trust-pill"><span>✓</span> Instant Direct URL</span>
+        <span class="lp-trust-pill"><span>✓</span> Scannable QR Code</span>
+        <span class="lp-trust-pill"><span>✓</span> Auto-Expiry Options</span>
+        <span class="lp-trust-pill"><span>✓</span> HTML &amp; Markdown Embeds</span>
+      </div>
+    </div>
+    <div class="lp-hero-visual">🌐</div>
+  </div>
+</section>
+
+<section class="lp-section">
+  <div class="lp-section-label">How It Works</div>
+  <h2>Share Any Image in 3 Quick Steps</h2>
+  <div class="lp-steps">
+    <div class="lp-step"><div class="lp-step-num">1</div><h4>Select Image</h4><p>Drag and drop any JPG, PNG, WebP, or GIF from your phone, tablet, or computer.</p></div>
+    <div class="lp-step"><div class="lp-step-num">2</div><h4>Set Expiry</h4><p>Choose whether your link stays permanent or auto-expires after 5 minutes, 1 hour, or several days.</p></div>
+    <div class="lp-step"><div class="lp-step-num">3</div><h4>Copy &amp; Share</h4><p>Copy the direct link, grab the HTML/Markdown snippet, or display the instant QR code for mobile scanning.</p></div>
+  </div>
+</section>
+
+<section class="lp-section">
+  <div class="lp-section-label">Features</div>
+  <h2>Complete Toolset for Quick Image Sharing</h2>
+  <div class="lp-features">
+    <div class="lp-feature"><div class="lp-feature-icon">🔗</div><h4>Direct Public URLs</h4><p>Get a clean, high-speed direct image link that works anywhere across the web and social media.</p></div>
+    <div class="lp-feature"><div class="lp-feature-icon">⬛</div><h4>Instant QR Code</h4><p>Generate a scannable QR code on the spot so friends or mobile users can scan and view the image immediately.</p></div>
+    <div class="lp-feature"><div class="lp-feature-icon">⏱</div><h4>Self-Destructing Links</h4><p>Set automated link expiration from 5 minutes to 30 days when sharing temporary proofs or sensitive screenshots.</p></div>
+    <div class="lp-feature"><div class="lp-feature-icon">💻</div><h4>HTML &amp; Markdown Code</h4><p>One-click copy for responsive HTML <code>&lt;img&gt;</code> tags and standard Markdown links ready for GitHub, Reddit, or Discord.</p></div>
+    <div class="lp-feature"><div class="lp-feature-icon">🔒</div><h4>Your Key, Your Control</h4><p>Connect your free ImgBB API key stored safely in your browser's localStorage. You retain complete ownership of your hosted uploads.</p></div>
+    <div class="lp-feature"><div class="lp-feature-icon">⚡</div><h4>Zero Hassle</h4><p>No waiting in queues or dealing with complex FTP configurations. Drag, click upload, and share in seconds.</p></div>
+  </div>
+</section>
+
+<section class="lp-section">
+  <div class="lp-section-label">Why Choose Us</div>
+  <h2>Why Share With MultiMian ImageKit?</h2>
+  <div class="lp-why-list">
+    <div class="lp-why-item"><span class="lp-why-check">✓</span><span>Generates direct links, embed codes, and QR codes</span></div>
+    <div class="lp-why-item"><span class="lp-why-check">✓</span><span>Flexible auto-expiration controls (5 mins to permanent)</span></div>
+    <div class="lp-why-item"><span class="lp-why-check">✓</span><span>API key stored strictly in your browser (not on our servers)</span></div>
+    <div class="lp-why-item"><span class="lp-why-check">✓</span><span>One-click copy buttons for links and Markdown</span></div>
+    <div class="lp-why-item"><span class="lp-why-check">✓</span><span>Quick social sharing shortcuts</span></div>
+    <div class="lp-why-item"><span class="lp-why-check">✓</span><span>Free forever with transparent privacy controls</span></div>
+    <div class="lp-why-item"><span class="lp-why-check">✓</span><span>Fast loading on both mobile and desktop</span></div>
+    <div class="lp-why-item"><span class="lp-why-check">✓</span><span>Integrated with all 17 creative tools in the toolkit</span></div>
+  </div>
+</section>
+
+<section class="lp-section">
+  <div class="lp-section-label">Comparison</div>
+  <h2>How We Compare</h2>
+  <table class="lp-compare-table">
+    <thead><tr><th>Feature</th><th>MultiMian ImageKit</th><th>Typical File Uploader</th></tr></thead>
+    <tbody>
+      <tr class="highlight"><td>User data ownership</td><td class="yes">✓ Direct to your API key</td><td class="no">✗ Locked in third-party silos</td></tr>
+      <tr><td>Instant QR Code</td><td class="yes">✓ Auto-generated</td><td class="no">✗ Usually missing</td></tr>
+      <tr class="highlight"><td>Markdown &amp; HTML codes</td><td class="yes">✓ 1-click copy</td><td class="no">✗ Bare link only</td></tr>
+      <tr><td>Auto-expiration options</td><td class="yes">✓ 5 min to 30 days</td><td class="no">✗ Often permanent or paid</td></tr>
+      <tr class="highlight"><td>No intrusive ad walls</td><td class="yes">✓ Clean &amp; ad-free</td><td class="no">✗ Cluttered with banner ads</td></tr>
+      <tr><td>Cost</td><td class="yes">✓ 100% Free</td><td>Subscription for premium</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="lp-section">
+  <div class="lp-section-label">FAQ</div>
+  <h2>Frequently Asked Questions</h2>
+  <div class="lp-faq">
+    <div class="lp-faq-item"><button class="lp-faq-q" aria-expanded="false">How does the Share Anywhere tool work?</button><div class="lp-faq-a">The tool connects to the ImgBB API using your free API key. When you select an image and click Upload, it uploads your file directly and provides a permanent or time-limited direct URL, embed code, and scannable QR code.</div></div>
+    <div class="lp-faq-item"><button class="lp-faq-q" aria-expanded="false">How do I get an ImgBB API key?</button><div class="lp-faq-a">Getting a key takes 30 seconds: create a free account at api.imgbb.com, click 'Get API Key', and paste it into ImageKit. It is securely saved in your browser's localStorage so you only need to enter it once.</div></div>
+    <div class="lp-faq-item"><button class="lp-faq-q" aria-expanded="false">Can I set an expiration time for shared images?</button><div class="lp-faq-a">Yes. You can choose to make the link permanent or set auto-expiration from 5 minutes up to 30 days.</div></div>
+    <div class="lp-faq-item"><button class="lp-faq-q" aria-expanded="false">Does MultiMian ImageKit store my shared images or key?</button><div class="lp-faq-a">No. MultiMian ImageKit has no database or backend server. Your API key remains on your device in localStorage, and the image is sent directly from your browser to ImgBB only when you click upload.</div></div>
+    <div class="lp-faq-item"><button class="lp-faq-q" aria-expanded="false">Can I share images directly from my smartphone?</button><div class="lp-faq-a">Yes. You can select pictures straight from your phone's photo library, upload them, and share the generated URL or QR code immediately.</div></div>
+  </div>
+</section>
+
+<section class="lp-section">
+  <div class="lp-section-label">Related Tools</div>
+  <h2>Other Tools You Might Need</h2>
+  <div class="lp-related">
+    <a href="compress-image.html" class="lp-related-card"><div class="lp-related-icon">🗜</div><div class="lp-related-name">Compress Image</div><div class="lp-related-desc">Reduce size before uploading for faster sharing</div></a>
+    <a href="watermark.html" class="lp-related-card"><div class="lp-related-icon">💧</div><div class="lp-related-name">Watermark</div><div class="lp-related-desc">Protect your images with text or logo stamps</div></a>
+    <a href="qr-code-generator.html" class="lp-related-card"><div class="lp-related-icon">⬛</div><div class="lp-related-name">QR Code Generator</div><div class="lp-related-desc">Create custom styled QR codes for any link</div></a>
+    <a href="resize-image.html" class="lp-related-card"><div class="lp-related-icon">✂️</div><div class="lp-related-name">Resize Image</div><div class="lp-related-desc">Scale images to social media friendly dimensions</div></a>
+  </div>
+</section>
+
+<section class="lp-section">
+  <div class="lp-cta">
+    <h2>Ready to Share Your Image?</h2>
+    <p>Generate public links, embed codes, and scannable QR codes in seconds.</p>
+    <div class="lp-cta-badges">
+      <span class="lp-cta-badge">🔒 Private &amp; Secure</span>
+      <span class="lp-cta-badge">⚡ Instant</span>
+      <span class="lp-cta-badge">⬛ QR Code Ready</span>
+      <span class="lp-cta-badge">🆓 Free Forever</span>
+    </div>
+    <a href="../index.html?tab=share" class="lp-btn-primary" style="font-size:1.05em; padding:14px 32px;">🌐 Open Share Tool Now →</a>
+  </div>
+</section>
+
+<footer class="lp-footer">
+  <div class="lp-footer-inner">
+    <a href="../index.html" class="lp-footer-logo">Multi<span>Mian</span>ImageKit</a>
+    <div class="lp-footer-links">
+      <a href="../index.html">Home</a>
+      <a href="index.html">All Tools</a>
+      <a href="compress-image.html">Compress</a>
+      <a href="resize-image.html">Resize</a>
+      <a href="qr-code-generator.html">QR Code</a>
+      <a href="../index.html?tab=about">About</a>
+      <a href="https://github.com/Mianhassam96/MultiMian-ImageKit" target="_blank" rel="noopener">GitHub</a>
+    </div>
+    <span class="lp-footer-copy">© 2026 MultiMian ImageKit · Free browser-based image toolkit · MIT License</span>
+  </div>
+</footer>
+
+<script src="../assets/js/landing.js"></script>
+</body>
+</html>

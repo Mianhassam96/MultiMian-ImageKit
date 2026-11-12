@@ -46,14 +46,18 @@
       <li><strong>sessionStorage</strong> — current session file count and session start time</li>
       <li>This data never leaves your device and can be cleared at any time via your browser settings</li>
     </ul>
-    <h2>The One Exception — Share Image Tool</h2>
-    <p>The <strong>Share Anywhere</strong> tool uploads your image to <a href="https://imgbb.com" target="_blank" rel="noopener" style="color:var(--accent2);">ImgBB</a> to generate a public link. This only happens when you explicitly click <strong>Upload &amp; Get Link</strong>. No other tool sends any data anywhere.</p>
-    <h2>No Tracking, No Analytics</h2>
+    <h2>External Services &amp; Network Requests</h2>
+    <p>We believe in absolute transparency about every network request the app makes:</p>
     <ul>
-      <li>No Google Analytics, no tracking pixels, no cookies</li>
-      <li>No user accounts, no email collection</li>
-      <li>No advertising networks</li>
-      <li>The only external requests are for Google Fonts (fonts only, no image data)</li>
+      <li><strong>Share Anywhere (Optional):</strong> The Share tool uploads an image to <a href="https://imgbb.com" target="_blank" rel="noopener" style="color:var(--accent2);">ImgBB</a> only when you explicitly click <em>Upload &amp; Get Link</em>. It uses your personal API key (or saved preference), and no image is uploaded without explicit action.</li>
+      <li><strong>Contact Form:</strong> When you submit the feedback form, your name, email, and message are sent via <a href="https://formspree.io" target="_blank" rel="noopener" style="color:var(--accent2);">Formspree</a> solely to deliver your message. No files or media are attached.</li>
+      <li><strong>Static CDNs &amp; Fonts:</strong> External requests fetch public client-side libraries (such as PDF.js, Tesseract.js language data, gif.js) and Google Fonts. These requests retrieve static code and assets only—no user content is transmitted.</li>
+    </ul>
+    <h2>No Third-Party Trackers</h2>
+    <ul>
+      <li>No advertising networks, tracking pixels, or third-party marketing cookies</li>
+      <li>No mandatory user accounts or login requirements</li>
+      <li>All local analytics (stats, exports count, streaks) remain in your browser's <code>localStorage</code> and are never transmitted externally</li>
     </ul>
     <h2>Open Source Verification</h2>
     <p>Because the project is open source, you can verify exactly what the code does: <a href="https://github.com/Mianhassam96/MultiMian-ImageKit" target="_blank" rel="noopener" style="color:var(--accent2);">github.com/Mianhassam96/MultiMian-ImageKit</a></p>

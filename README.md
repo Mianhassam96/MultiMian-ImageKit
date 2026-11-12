@@ -29,15 +29,18 @@ Most online image tools upload your files to a server, require an account, add w
 
 | | **MultiMian ImageKit** | Typical Online Tool |
 |---|---|---|
-| Files uploaded to server | ✅ **Never** | ❌ Always |
+| Files uploaded to server | ✅ **Never**\* | ❌ Always |
 | Registration required | ✅ **None** | ❌ Often required |
 | Watermark on output | ✅ **Never** | ❌ Sometimes |
-| Works offline | ✅ **Full PWA** | ❌ No |
-| File size limit | ✅ **None** | ❌ Usually 5–20 MB |
+| Works offline | ✅ **Full PWA**\*\* | ❌ No |
+| File size limit | ✅ **None** (browser memory) | ❌ Usually 5–20 MB |
 | OCR support | ✅ **10+ languages** | ⚠️ Limited |
 | PDF tools | ✅ **Built-in** | ❌ Separate app |
 | Open source | ✅ **MIT License** | Varies |
 | Cost | ✅ **Free forever** | Free with limits |
+
+*\* 100% client-side processing. Optional Share tool uploads to ImgBB only when user requests a public link; contact form sends feedback via Formspree.*  
+*\*\* Core Canvas tools work 100% offline; OCR and PDF tools run offline after initial asset caching.*
 
 ---
 
@@ -91,7 +94,7 @@ Most online image tools upload your files to a server, require an account, add w
 | 🔗 **Asset Pipeline** | Upload once, continue across multiple tools |
 | ⚡ **Workflow Engine** | Smart next-step suggestions after every action |
 | 🗂 **Batch Processing** | Process multiple images with one operation |
-| 📱 **PWA + Offline** | Install as app, all 17 tools work without internet |
+| 📱 **PWA + Offline** | Install as app, canvas tools work 100% offline (OCR/PDF after initial load) |
 | 🎨 **Screenshot Annotations** | Text, arrows, highlights, blur, emoji layers |
 | 🎯 **Keyboard Shortcuts** | `1–9` for tools, `0` for home, `Ctrl+K` for search |
 | 🌙 **Dark/Light Mode** | Persistent theme preference |
@@ -123,7 +126,7 @@ Browser
 /blog/                  → 5 educational articles
 /roadmap/               → Public roadmap
 /assets/                → Shared CSS + JS for landing pages
-sitemap.xml             → 60+ indexed URLs
+sitemap.xml             → Canonical indexable URLs
 ```
 
 **Data flow:**
@@ -157,11 +160,10 @@ triggerDownload() → Client-only blob URL
 ✅ jsPDF             → PDF generation (pure JS)
 ✅ Service Worker    → Caches all assets for offline use
 
-❌ No analytics
-❌ No tracking pixels
-❌ No cookies
-❌ No user accounts
-❌ No server uploads (except Share Image tool, user-initiated)
+❌ No third-party tracking pixels or cookies
+❌ No user accounts required
+❌ No server uploads for image processing (100% in-browser; optional user-initiated ImgBB share)
+💬 Feedback form transmitted directly via Formspree
 ```
 
 **Storage:** Only `localStorage` and `sessionStorage` — theme, recent files, stats. Cleared by browser settings. Never synced anywhere.
@@ -210,7 +212,7 @@ triggerDownload() → Client-only blob URL
 **Option 2 — Install as PWA:**
 1. Open the app in Chrome or Edge
 2. Click the install prompt (bottom of page) or browser menu → Install
-3. All 17 tools now work fully offline
+3. Canvas tools work fully offline (OCR & PDF after initial cache; Share requires network)
 
 **Option 3 — Run locally:**
 ```bash

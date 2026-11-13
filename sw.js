@@ -1,5 +1,5 @@
-// MultiMian ImageKit — Service Worker v9.0
-const CACHE = 'imagekit-v9';
+// MultiMian ImageKit — Service Worker v10.0
+const CACHE = 'imagekit-v10';
 const STATIC = [
   './',
   './index.html',
@@ -28,7 +28,9 @@ const STATIC = [
   './favicon-16x16.png',
   './apple-touch-icon.png',
   './icon-192.png',
-  './icon-512.png'
+  './icon-512.png',
+  './screenshot-wide.png',
+  './social-preview.png'
 ];
 
 self.addEventListener('install', e => {
@@ -48,18 +50,37 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
   const url = new URL(e.request.url);
-  // Don't cache external CDN or API calls
-  if (url.origin !== location.origin) return;
+
+  // Skip unsupported schemes (e.g. chrome-extension://)
+  if (!url.protocol.startsWith('http')) return;
+
+  // Never cache external API endpoints or upload services
+  if (url.hostname.includes('api.imgbb.com') || url.hostname.includes('formspree.io')) return;
+
   e.respondWith(
     caches.match(e.request).then(cached => {
       if (cached) return cached;
       return fetch(e.request).then(res => {
-        if (res && res.status === 200) {
+        // Cache successful responses from same-origin or trusted static CDNs
+        if (res && res.status === 200 && (
+          url.origin === location.origin ||
+          url.hostname.includes('cdnjs.cloudflare.com') ||
+          url.hostname.includes('cdn.jsdelivr.net') ||
+          url.hostname.includes('unpkg.com') ||
+          url.hostname.includes('fonts.googleapis.com') ||
+          url.hostname.includes('fonts.gstatic.com')
+        )) {
           const clone = res.clone();
           caches.open(CACHE).then(c => c.put(e.request, clone));
         }
         return res;
-      }).catch(() => cached);
+      }).catch(() => {
+        // Offline navigation fallback to main app shell
+        if (e.request.mode === 'navigate') {
+          return caches.match('./index.html');
+        }
+        return cached;
+      });
     })
   );
 });

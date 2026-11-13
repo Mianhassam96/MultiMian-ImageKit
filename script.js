@@ -312,7 +312,24 @@ document.querySelectorAll('.tab-btn[data-tab="home"]').forEach(b => {
 setTimeout(animateCounters, 400);
 
 // ── Shared Helpers ─────────────────────────────────────────────
+function checkFileSizeNotice(files) {
+    if (!files || !files.length) return;
+    const large = files.find(f => f.size > 30 * 1024 * 1024);
+    if (large) {
+        const mb = (large.size / (1024 * 1024)).toFixed(1);
+        const notice = `Large file (${mb} MB) detected. Processing runs in browser memory and may take a moment.`;
+        if (window.Toast && window.Toast.info) {
+            window.Toast.info(notice, 6000);
+        }
+    }
+}
+
 function setupDrop(zone, input, onFiles) {
+    const handleFiles = (files) => {
+        checkFileSizeNotice(files);
+        onFiles(files);
+    };
+
     // Clicking the label already opens the dialog — only trigger manually for other clicks
     zone.addEventListener('click', e => {
         if (e.target.closest('label') || e.target.tagName === 'INPUT') return;
@@ -325,10 +342,10 @@ function setupDrop(zone, input, onFiles) {
     zone.addEventListener('drop', e => {
         e.preventDefault();
         zone.classList.remove('dragover');
-        onFiles(Array.from(e.dataTransfer.files));
+        handleFiles(Array.from(e.dataTransfer.files));
     });
     input.addEventListener('change', () => {
-        if (input.files.length) onFiles(Array.from(input.files));
+        if (input.files.length) handleFiles(Array.from(input.files));
         input.value = ''; // allow re-selecting same file
     });
 }
